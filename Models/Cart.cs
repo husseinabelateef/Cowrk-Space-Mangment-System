@@ -11,6 +11,5 @@ namespace Cowrk_Space_Mangment_System.Models
         public int TotalPrice { get; set; }
         public virtual Reservation reservation { get; set; }
         public virtual List<Product> Products { get; set; }
-        public virtual List<Drink> Drinks { get; set; }
     }
 }
