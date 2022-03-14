@@ -9,14 +9,17 @@ namespace Cowrk_Space_Mangment_System.Models
         public int ID { get; set; }
         public DateTime Start_Time { get; set; }
         public DateTime End_Time { get; set; }
+
         public int Reciptionist_ID { get; set; }
-        [ForeignKey("client")]
+        [ForeignKey("Client")]
         public int Client_ID { get; set; }
-        [ForeignKey("cart")]
+        [ForeignKey("Cart")]
         public int Cart_ID { get; set; }
         public DateTime Date { get; set; }
-        public decimal TotalPrice { get; set; }
-        public virtual Client client { get; set; }
-        public virtual Cart cart { get; set; }
+        public double Hours_Price { get; set; }
+
+        public double TotalPrice { get; set; }
+        public virtual Client Client { get; set; }
+        public virtual Cart Cart { get; set; }
     }
 }
