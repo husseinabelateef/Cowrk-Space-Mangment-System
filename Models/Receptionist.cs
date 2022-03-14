@@ -1,4 +1,6 @@
-﻿namespace Cowrk_Space_Mangment_System.Models
+﻿using System.Collections.Generic;
+
+namespace Cowrk_Space_Mangment_System.Models
 {
     public class Receptionist
     {
@@ -9,10 +11,13 @@
         public string Phone { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public double Salary { get; set; }
+        //for Hour
+        public double SalaryPerHour { get; set; }
 
-        // Ask for Datatype ??
-        public int Shift { get; set; }
-        
+        // Total working hours without payed for 
+        public int TotalHours { get; set; }
+        public virtual ICollection<Incomming> Incommings { get; set; }
+
+
     }
 }

@@ -13,7 +13,8 @@ namespace Cowrk_Space_Mangment_System.Models
         // total price of catering in log out shift
         public double ShiftCloseCateringIncome { get; set; }
         [ForeignKey("Receptionst")]
-        public int Receptionst_Id { get; set; } // Collection of incomming in Receprionst
-        //public Receptionst Receptionst { get; set; }
+        public int Receptionst_Id { get; set; } 
+        // Collection of incomming in Receprionst
+        public Receptionist Receptionst { get; set; }
     }
 }
