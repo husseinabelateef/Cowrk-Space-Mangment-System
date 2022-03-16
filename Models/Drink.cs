@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Cowrk_Space_Mangment_System.Models
@@ -6,11 +7,9 @@ namespace Cowrk_Space_Mangment_System.Models
     public class Drink
     {
 
-
+        public int ID { get; set; }
         [ForeignKey("Product")]
-        [Key, Column(Order = 0)]
-        public int ProductId { get; set; }
-        [Key, Column(Order = 1)]
+        public Guid ProductId { get; set; }
         [ForeignKey("RawProduct")]
         public int RawProID { get; set; }
         public virtual Product Product { get; set; }

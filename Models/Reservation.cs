@@ -14,7 +14,7 @@ namespace Cowrk_Space_Mangment_System.Models
         [ForeignKey("Receptionst")]
         public int Receptionst_Id { get; set; }
         [ForeignKey("Client")]
-        public int Client_ID { get; set; }
+        public Guid Client_ID { get; set; }
         [ForeignKey("Cart")]
         public int Cart_ID { get; set; }
         // DD/MM/YY

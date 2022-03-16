@@ -5,10 +5,9 @@ namespace Cowrk_Space_Mangment_System.Models
 {
     public class ClientCart
     {
-        [Key, Column(Order = 0)]
+        public  int ID { get; set; }
         [ForeignKey("Reservation")]
         public int Reservation_ID { get; set; }
-        [Key, Column(Order = 1)]
         [ForeignKey("Cart")]
         public int Cart_Id { get; set; }
         public virtual Reservation Reservation { get; set; }
