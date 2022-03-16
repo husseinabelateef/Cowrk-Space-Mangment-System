@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cowrk_Space_Mangment_System.Migrations
 {
-    public partial class initialization : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -278,45 +278,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reservation",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Start_Time = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpextedHours = table.Column<int>(type: "int", nullable: false),
-                    Receptionst_Id = table.Column<int>(type: "int", nullable: false),
-                    Client_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Cart_ID = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Hours_Price = table.Column<double>(type: "float", nullable: false),
-                    TotalPrice = table.Column<double>(type: "float", nullable: false),
-                    RecpetionstId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reservation", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Reservation_Cart_Cart_ID",
-                        column: x => x.Cart_ID,
-                        principalTable: "Cart",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Reservation_Client_Client_ID",
-                        column: x => x.Client_ID,
-                        principalTable: "Client",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Reservation_Receptionist_RecpetionstId",
-                        column: x => x.RecpetionstId,
-                        principalTable: "Receptionist",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Chair",
                 columns: table => new
                 {
@@ -380,9 +341,69 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         principalTable: "Cart",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reservation",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Start_Time = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpextedHours = table.Column<int>(type: "int", nullable: false),
+                    Receptionst_Id = table.Column<int>(type: "int", nullable: false),
+                    Client_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClientCart_ID = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Hours_Price = table.Column<double>(type: "float", nullable: false),
+                    TotalPrice = table.Column<double>(type: "float", nullable: false),
+                    RecpetionstId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservation", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_clientCart_Reservation_Reservation_ID",
-                        column: x => x.Reservation_ID,
+                        name: "FK_Reservation_Client_Client_ID",
+                        column: x => x.Client_ID,
+                        principalTable: "Client",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Reservation_clientCart_ClientCart_ID",
+                        column: x => x.ClientCart_ID,
+                        principalTable: "clientCart",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Reservation_Receptionist_RecpetionstId",
+                        column: x => x.RecpetionstId,
+                        principalTable: "Receptionist",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "chairReserve",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Chair_Id = table.Column<int>(type: "int", nullable: false),
+                    Reservation_Id = table.Column<int>(type: "int", nullable: false),
+                    End_Time = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_chairReserve", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_chairReserve_Chair_Chair_Id",
+                        column: x => x.Chair_Id,
+                        principalTable: "Chair",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_chairReserve_Reservation_Reservation_Id",
+                        column: x => x.Reservation_Id,
                         principalTable: "Reservation",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.NoAction);
@@ -411,33 +432,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         name: "FK_RoomReserve_Room_Rooom_Id",
                         column: x => x.Rooom_Id,
                         principalTable: "Room",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "chairReserve",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Chair_Id = table.Column<int>(type: "int", nullable: false),
-                    Reservation_Id = table.Column<int>(type: "int", nullable: false),
-                    End_Time = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_chairReserve", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_chairReserve_Chair_Chair_Id",
-                        column: x => x.Chair_Id,
-                        principalTable: "Chair",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_chairReserve_Reservation_Reservation_Id",
-                        column: x => x.Reservation_Id,
-                        principalTable: "Reservation",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.NoAction);
                 });
@@ -514,14 +508,14 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 column: "CartID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservation_Cart_ID",
-                table: "Reservation",
-                column: "Cart_ID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Reservation_Client_ID",
                 table: "Reservation",
                 column: "Client_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservation_ClientCart_ID",
+                table: "Reservation",
+                column: "ClientCart_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservation_RecpetionstId",
@@ -537,10 +531,26 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 name: "IX_RoomReserve_Rooom_Id",
                 table: "RoomReserve",
                 column: "Rooom_Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_clientCart_Reservation_Reservation_ID",
+                table: "clientCart",
+                column: "Reservation_ID",
+                principalTable: "Reservation",
+                principalColumn: "ID",
+                onDelete: ReferentialAction.NoAction);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Reservation_Client_Client_ID",
+                table: "Reservation");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_clientCart_Reservation_Reservation_ID",
+                table: "clientCart");
+
             migrationBuilder.DropTable(
                 name: "Admin");
 
@@ -552,9 +562,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
             migrationBuilder.DropTable(
                 name: "chairReserve");
-
-            migrationBuilder.DropTable(
-                name: "clientCart");
 
             migrationBuilder.DropTable(
                 name: "Drink");
@@ -587,19 +594,22 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 name: "RawProduct");
 
             migrationBuilder.DropTable(
-                name: "Reservation");
-
-            migrationBuilder.DropTable(
                 name: "Room");
-
-            migrationBuilder.DropTable(
-                name: "Cart");
 
             migrationBuilder.DropTable(
                 name: "Client");
 
             migrationBuilder.DropTable(
+                name: "Reservation");
+
+            migrationBuilder.DropTable(
+                name: "clientCart");
+
+            migrationBuilder.DropTable(
                 name: "Receptionist");
+
+            migrationBuilder.DropTable(
+                name: "Cart");
         }
     }
 }

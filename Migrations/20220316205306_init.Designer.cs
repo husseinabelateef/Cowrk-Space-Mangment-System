@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cowrk_Space_Mangment_System.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220316200614_initialization")]
-    partial class initialization
+    [Migration("20220316205306_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -466,7 +466,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Cart_ID")
+                    b.Property<int>("ClientCart_ID")
                         .HasColumnType("int");
 
                     b.Property<Guid>("Client_ID")
@@ -495,7 +495,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Cart_ID");
+                    b.HasIndex("ClientCart_ID");
 
                     b.HasIndex("Client_ID");
 
@@ -682,9 +682,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Reservation", b =>
                 {
-                    b.HasOne("Cowrk_Space_Mangment_System.Models.Cart", "Cart")
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.ClientCart", "ClientCart")
                         .WithMany()
-                        .HasForeignKey("Cart_ID")
+                        .HasForeignKey("ClientCart_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -698,9 +698,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .WithMany()
                         .HasForeignKey("RecpetionstId");
 
-                    b.Navigation("Cart");
-
                     b.Navigation("Client");
+
+                    b.Navigation("ClientCart");
 
                     b.Navigation("Recpetionst");
                 });
