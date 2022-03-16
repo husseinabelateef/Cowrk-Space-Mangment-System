@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cowrk_Space_Mangment_System.Migrations
 {
-    public partial class init : Migration
+    public partial class initialization : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -195,13 +195,13 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         column: x => x.ClientID,
                         principalTable: "Client",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_AssignDeals_Deal_DealID",
                         column: x => x.DealID,
                         principalTable: "Deal",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,13 +223,13 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         column: x => x.ClientID,
                         principalTable: "Client",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_AssignPackage_Package_PackageID",
                         column: x => x.PackageID,
                         principalTable: "Package",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -251,7 +251,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         column: x => x.Receptionst_Id,
                         principalTable: "Receptionist",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -301,13 +301,13 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         column: x => x.Cart_ID,
                         principalTable: "Cart",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Reservation_Client_Client_ID",
                         column: x => x.Client_ID,
                         principalTable: "Client",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Reservation_Receptionist_RecpetionstId",
                         column: x => x.RecpetionstId,
@@ -333,7 +333,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         column: x => x.Room_ID,
                         principalTable: "Room",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -353,13 +353,13 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Drink_RawProduct_RawProID",
                         column: x => x.RawProID,
                         principalTable: "RawProduct",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -379,13 +379,13 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         column: x => x.Cart_Id,
                         principalTable: "Cart",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_clientCart_Reservation_Reservation_ID",
                         column: x => x.Reservation_ID,
                         principalTable: "Reservation",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -406,13 +406,13 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         column: x => x.Reservation_Id,
                         principalTable: "Reservation",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_RoomReserve_Room_Rooom_Id",
                         column: x => x.Rooom_Id,
                         principalTable: "Room",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -433,13 +433,13 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         column: x => x.Chair_Id,
                         principalTable: "Chair",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_chairReserve_Reservation_Reservation_Id",
                         column: x => x.Reservation_Id,
                         principalTable: "Reservation",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
