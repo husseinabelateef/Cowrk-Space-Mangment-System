@@ -2,12 +2,12 @@
 
 namespace Cowrk_Space_Mangment_System.Repository
 {
-    public interface Irepository <T>
+    public interface Irepository <T,T1>
     {
         List<T> GetAll();
-        int Delete(int id);
-        T GetById(int id);
+        int Delete(T1 id);
+        T GetById(T1 id);
         int Insert(T item);
-        int Update(int id, T item);
+        int Update(T1 id, T item);
     }
 }
