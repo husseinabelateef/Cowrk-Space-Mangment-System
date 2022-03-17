@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Cowrk_Space_Mangment_System.Repository;
 
 namespace Cowrk_Space_Mangment_System
 {
@@ -23,6 +24,13 @@ namespace Cowrk_Space_Mangment_System
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<IReservationRepository,ReservationRepository>();
+            
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
