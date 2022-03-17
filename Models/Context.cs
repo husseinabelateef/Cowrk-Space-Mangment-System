@@ -39,7 +39,7 @@ namespace Cowrk_Space_Mangment_System.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=Nook;Integrated Security=True");
+            
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
