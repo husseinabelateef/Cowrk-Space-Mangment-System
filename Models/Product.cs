@@ -13,8 +13,13 @@ namespace Cowrk_Space_Mangment_System.Models
         public double SellingPrice { get; set; }
         // barcode printed in every product 
         public string BarCode { get; set; }
-        public ICollection<Drink> Drinks{ get; set; }
+
+        //Actual Amount in place
+        public int ActualAmount { get; set; }
+        public ICollection<Drink> Drinks { get; set; }
+        public virtual ICollection<ProductMovments> ProductMovments { get; set; }
+
     }
 
-    
+
 }

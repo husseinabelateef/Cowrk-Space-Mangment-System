@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Runtime.ConstrainedExecution;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cowrk_Space_Mangment_System.Models
 {
@@ -12,6 +13,8 @@ namespace Cowrk_Space_Mangment_System.Models
         {
 
         }
+        public DbSet<RawProductMovments> RawProductMovments { get; set; }
+        public DbSet<ProductMovments> ProductMovments { get; set; }
 
         public DbSet<Admin> Admin { get; set; }
         public DbSet<AssignDeals> AssignDeals { get; set; }
@@ -37,7 +40,15 @@ namespace Cowrk_Space_Mangment_System.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=Nook;Integrated Security=True");
-        }
 
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RawProductMovments>()
+                .HasKey(b => new { b.Raw_ProductID, b.OutgoingID });
+            modelBuilder.Entity<ProductMovments>()
+              .HasKey(b => new { b.ProductID, b.OutgoingID });
+
+        }
     }
 }

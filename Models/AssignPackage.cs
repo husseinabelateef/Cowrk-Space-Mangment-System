@@ -12,6 +12,8 @@ namespace Cowrk_Space_Mangment_System.Models
         public Guid ClientID { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        //Available Hours could use 
+        public int AvailableHours { get; set; }
         public virtual Package package { get; set; }
         public virtual Client client { get; set; }
 
