@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Cowrk_Space_Mangment_System.Models
 {
@@ -17,6 +18,8 @@ namespace Cowrk_Space_Mangment_System.Models
 
         //number of cups has been sealed
         public int NOC { get; set; }
+        // Expire date 
+        public DateTime ExpireDate { get; set; }
 
         public virtual ICollection<Drink> Drinks { get; set; }
         public virtual ICollection<RawProductMovments> RawProductMovments { get; set; }

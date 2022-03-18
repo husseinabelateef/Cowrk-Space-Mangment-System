@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cowrk_Space_Mangment_System.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220318095017_H20")]
-    partial class H20
+    [Migration("20220318100636_Z")]
+    partial class Z
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -437,6 +437,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
                     b.Property<double>("ActualAmount")
                         .HasColumnType("float");
+
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("NOC")
                         .HasColumnType("int");

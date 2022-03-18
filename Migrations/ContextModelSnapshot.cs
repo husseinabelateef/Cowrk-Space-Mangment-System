@@ -436,6 +436,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<double>("ActualAmount")
                         .HasColumnType("float");
 
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("NOC")
                         .HasColumnType("int");
 
