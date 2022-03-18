@@ -17,6 +17,7 @@ namespace Cowrk_Space_Mangment_System.Models
 
         //Actual Amount in place
         public int ActualAmount { get; set; }
+        public DateTime ExpireDate { get; set; }
         public ICollection<Drink> Drinks { get; set; }
         public virtual ICollection<ProductMovments> ProductMovments { get; set; }
 
