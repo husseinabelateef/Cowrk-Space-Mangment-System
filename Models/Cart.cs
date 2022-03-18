@@ -15,7 +15,8 @@ namespace Cowrk_Space_Mangment_System.Models
         public int TotalPrice { get; set; }
         [Display(Name ="Invoice Date")]
         public DateTime Date { get; set; }
-
+        // Paid or not
+        public bool IsPaid { get; set; }
 
         public virtual List<Product> Products { get; set; }
     }

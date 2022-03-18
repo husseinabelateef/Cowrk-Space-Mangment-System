@@ -9,7 +9,7 @@ namespace Cowrk_Space_Mangment_System.Models
         [ForeignKey("package")]
         public int PackageID { get; set; }
         [ForeignKey("client")]
-        public Guid ClientID { get; set; }
+        public int ClientID { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         //Available Hours could use 

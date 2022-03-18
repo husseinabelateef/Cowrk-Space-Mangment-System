@@ -8,7 +8,7 @@ namespace Cowrk_Space_Mangment_System.Models
         [ForeignKey("Deal")]
         public int DealID { get; set; }
         [ForeignKey("Client")]
-        public Guid ClientID { get; set; }
+        public int ClientID { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public virtual Deal Deal { get; set; }

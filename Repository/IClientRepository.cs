@@ -3,7 +3,7 @@ using System;
 
 namespace Cowrk_Space_Mangment_System.Repository
 {
-    public interface IClientRepository: Irepository<Client,Guid>
+    public interface IClientRepository: Irepository<Client,int>
     {
      
     }
