@@ -8,7 +8,7 @@ namespace Cowrk_Space_Mangment_System.Models
         //Individual / shared / nook1/nook2
         public string Name { get; set; }
 
-        public virtual List<Chair> Chairs { get; set; }
+        public virtual ICollection<Chair> Chairs { get; set; }
         public ICollection<RoomReserve> RoomReserve { get; set; }
 
     }

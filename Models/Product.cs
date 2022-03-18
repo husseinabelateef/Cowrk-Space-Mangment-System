@@ -12,6 +12,7 @@ namespace Cowrk_Space_Mangment_System.Models
         //price I will sell to clients with
         public double SellingPrice { get; set; }
         // barcode printed in every product 
+
         public string BarCode { get; set; }
 
         //Actual Amount in place
