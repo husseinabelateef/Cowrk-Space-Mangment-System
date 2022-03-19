@@ -42,7 +42,7 @@ namespace Cowrk_Space_Mangment_System.Repository
         public int Delete(int id)
         {
             ChairReserve Old_CR = GetById(id);
-            context.Reservation.Remove(Old_CR);
+            context.chairReserve.Remove(Old_CR);
             return context.SaveChanges();
         }
 
