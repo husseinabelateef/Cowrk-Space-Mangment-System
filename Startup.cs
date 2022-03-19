@@ -32,7 +32,9 @@ namespace Cowrk_Space_Mangment_System
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IReservationRepository,ReservationRepository>();
-            
+            services.AddScoped<IReserveClassRepository, ReserveClassRepository>();
+            services.AddScoped<IRawProductRepository, RawProductRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
 
 

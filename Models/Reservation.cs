@@ -21,7 +21,7 @@ namespace Cowrk_Space_Mangment_System.Models
         public int Receptionst_Id { get; set; }
         [Display(Name = "Client Id")]
         [ForeignKey("Client")]
-        public Guid Client_ID { get; set; }
+        public int Client_ID { get; set; }
         [Display(Name = "ClientCart Id")]
         [ForeignKey("ClientCart")]
         public int ClientCart_ID { get; set; }
