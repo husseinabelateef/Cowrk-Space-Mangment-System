@@ -4,14 +4,16 @@ using Cowrk_Space_Mangment_System.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cowrk_Space_Mangment_System.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220318202416_init12")]
+    partial class init12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,8 +52,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ClientID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ClientID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("DealID")
                         .HasColumnType("int");
@@ -81,8 +83,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<int>("AvailableHours")
                         .HasColumnType("int");
 
-                    b.Property<int>("ClientID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ClientID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -113,9 +115,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsClient")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
                     b.Property<int>("TotalPrice")
@@ -174,10 +173,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Client", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Faculty")
                         .HasColumnType("nvarchar(max)");
@@ -191,9 +189,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QR_Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
@@ -526,8 +521,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<int>("ClientCart_ID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Client_ID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Client_ID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
