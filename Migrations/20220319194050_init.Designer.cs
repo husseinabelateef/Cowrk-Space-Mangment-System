@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cowrk_Space_Mangment_System.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220317205531_husin")]
-    partial class husin
+    [Migration("20220319194050_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,8 +52,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("ClientID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ClientID")
+                        .HasColumnType("int");
 
                     b.Property<int>("DealID")
                         .HasColumnType("int");
@@ -80,8 +80,11 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("ClientID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("AvailableHours")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClientID")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -112,6 +115,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsClient")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
                     b.Property<int>("TotalPrice")
@@ -170,20 +176,26 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Client", b =>
                 {
-                    b.Property<Guid>("ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Faculty")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Profession")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QR_Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
@@ -379,6 +391,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("ActualAmount")
+                        .HasColumnType("int");
+
                     b.Property<double>("ActualPrice")
                         .HasColumnType("float");
 
@@ -387,6 +402,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
                     b.Property<int?>("CartID")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -401,6 +419,24 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.ToTable("Product");
                 });
 
+            modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.ProductMovments", b =>
+                {
+                    b.Property<Guid>("ProductID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("OutgoingID")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.HasKey("ProductID", "OutgoingID");
+
+                    b.HasIndex("OutgoingID");
+
+                    b.ToTable("ProductMovments");
+                });
+
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.RawProduct", b =>
                 {
                     b.Property<int>("Id")
@@ -411,8 +447,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<double>("ActualAmount")
                         .HasColumnType("float");
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("NOC")
                         .HasColumnType("int");
@@ -429,6 +465,24 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RawProduct");
+                });
+
+            modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.RawProductMovments", b =>
+                {
+                    b.Property<int>("Raw_ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OutgoingID")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.HasKey("Raw_ProductID", "OutgoingID");
+
+                    b.HasIndex("OutgoingID");
+
+                    b.ToTable("RawProductMovments");
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Receptionist", b =>
@@ -474,8 +528,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<int>("ClientCart_ID")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("Client_ID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Client_ID")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -517,9 +571,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
@@ -696,6 +747,44 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasForeignKey("CartID");
                 });
 
+            modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.ProductMovments", b =>
+                {
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.Outgoing", "Outgoing")
+                        .WithMany("ProductMovments")
+                        .HasForeignKey("OutgoingID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.Product", "Product")
+                        .WithMany("ProductMovments")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Outgoing");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.RawProductMovments", b =>
+                {
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.Outgoing", "Outgoing")
+                        .WithMany("RawProductMovments")
+                        .HasForeignKey("OutgoingID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.RawProduct", "RawProduct")
+                        .WithMany("RawProductMovments")
+                        .HasForeignKey("Raw_ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Outgoing");
+
+                    b.Navigation("RawProduct");
+                });
+
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Reservation", b =>
                 {
                     b.HasOne("Cowrk_Space_Mangment_System.Models.ClientCart", "ClientCart")
@@ -755,14 +844,25 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Navigation("Reservations");
                 });
 
+            modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Outgoing", b =>
+                {
+                    b.Navigation("ProductMovments");
+
+                    b.Navigation("RawProductMovments");
+                });
+
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Product", b =>
                 {
                     b.Navigation("Drinks");
+
+                    b.Navigation("ProductMovments");
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.RawProduct", b =>
                 {
                     b.Navigation("Drinks");
+
+                    b.Navigation("RawProductMovments");
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Receptionist", b =>

@@ -17,7 +17,7 @@ namespace Cowrk_Space_Mangment_System.Repository
             return context.Client.ToList();
         }
 
-        public Client GetById(Guid id)
+        public Client GetById(int id)
         {
             return context.Client.FirstOrDefault(client =>client.ID  == id);
         }
@@ -28,7 +28,7 @@ namespace Cowrk_Space_Mangment_System.Repository
             return context.SaveChanges();
         }
 
-        public int Update(Guid id, Client client)
+        public int Update(int id, Client client)
         {
             Client oldClient = GetById(id);
             if (oldClient != null)
@@ -41,7 +41,7 @@ namespace Cowrk_Space_Mangment_System.Repository
             return 0;
         }
 
-        public int Delete(Guid id)
+        public int Delete(int id)
         {
             Client oldClient = GetById(id);
             context.Client.Remove(oldClient);
