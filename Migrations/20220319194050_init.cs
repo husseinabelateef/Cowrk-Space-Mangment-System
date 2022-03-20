@@ -31,7 +31,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsClient = table.Column<bool>(type: "bit", nullable: false),
                     TotalPrice = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,9 +43,11 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 name: "Client",
                 columns: table => new
                 {
-                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Profession = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Profession = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Faculty = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     QR_Code = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -73,21 +76,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Outgoing",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Outgoing", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Package",
                 columns: table => new
                 {
@@ -111,10 +99,10 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ActualAmount = table.Column<double>(type: "float", nullable: false),
-                    Amount = table.Column<double>(type: "float", nullable: false),
                     RefrenceCupWeight = table.Column<double>(type: "float", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    NOC = table.Column<int>(type: "int", nullable: false)
+                    NOC = table.Column<int>(type: "int", nullable: false),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -146,8 +134,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -163,6 +150,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     ActualPrice = table.Column<double>(type: "float", nullable: false),
                     SellingPrice = table.Column<double>(type: "float", nullable: false),
                     BarCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ActualAmount = table.Column<int>(type: "int", nullable: false),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CartID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -183,7 +172,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DealID = table.Column<int>(type: "int", nullable: false),
-                    ClientID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClientID = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -211,9 +200,10 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PackageID = table.Column<int>(type: "int", nullable: false),
-                    ClientID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClientID = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AvailableHours = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -278,6 +268,28 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Outgoing",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Reciption_ID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Outgoing", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Outgoing_Receptionist_Reciption_ID",
+                        column: x => x.Reciption_ID,
+                        principalTable: "Receptionist",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Chair",
                 columns: table => new
                 {
@@ -324,6 +336,56 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductMovments",
+                columns: table => new
+                {
+                    ProductID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OutgoingID = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductMovments", x => new { x.ProductID, x.OutgoingID });
+                    table.ForeignKey(
+                        name: "FK_ProductMovments_Outgoing_OutgoingID",
+                        column: x => x.OutgoingID,
+                        principalTable: "Outgoing",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_ProductMovments_Product_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RawProductMovments",
+                columns: table => new
+                {
+                    Raw_ProductID = table.Column<int>(type: "int", nullable: false),
+                    OutgoingID = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RawProductMovments", x => new { x.Raw_ProductID, x.OutgoingID });
+                    table.ForeignKey(
+                        name: "FK_RawProductMovments_Outgoing_OutgoingID",
+                        column: x => x.OutgoingID,
+                        principalTable: "Outgoing",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_RawProductMovments_RawProduct_Raw_ProductID",
+                        column: x => x.Raw_ProductID,
+                        principalTable: "RawProduct",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "clientCart",
                 columns: table => new
                 {
@@ -352,7 +414,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     Start_Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpextedHours = table.Column<int>(type: "int", nullable: false),
                     Receptionst_Id = table.Column<int>(type: "int", nullable: false),
-                    Client_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Client_ID = table.Column<int>(type: "int", nullable: false),
                     ClientCart_ID = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Hours_Price = table.Column<double>(type: "float", nullable: false),
@@ -503,9 +565,24 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 column: "RecpetionstId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Outgoing_Reciption_ID",
+                table: "Outgoing",
+                column: "Reciption_ID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Product_CartID",
                 table: "Product",
                 column: "CartID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductMovments_OutgoingID",
+                table: "ProductMovments",
+                column: "OutgoingID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RawProductMovments_OutgoingID",
+                table: "RawProductMovments",
+                column: "OutgoingID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservation_Client_ID",
@@ -573,7 +650,10 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 name: "Loging");
 
             migrationBuilder.DropTable(
-                name: "Outgoing");
+                name: "ProductMovments");
+
+            migrationBuilder.DropTable(
+                name: "RawProductMovments");
 
             migrationBuilder.DropTable(
                 name: "RoomReserve");
@@ -589,6 +669,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
             migrationBuilder.DropTable(
                 name: "Product");
+
+            migrationBuilder.DropTable(
+                name: "Outgoing");
 
             migrationBuilder.DropTable(
                 name: "RawProduct");
