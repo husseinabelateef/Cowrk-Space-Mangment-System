@@ -33,14 +33,14 @@ namespace Cowrk_Space_Mangment_System
 
 
 
-            services.AddIdentity<Admin, IdentityRole>(
-           )
-               .AddEntityFrameworkStores<Context>();
+           // services.AddIdentity<Admin, IdentityRole>(
+           //)
+           //    .AddEntityFrameworkStores<Context>();
 
-            services.AddSession(sessionoptions => {
-                sessionoptions.IdleTimeout = TimeSpan.FromMinutes(10);
+            // services.AddSession(sessionoptions => {
+            //     sessionoptions.IdleTimeout = TimeSpan.FromMinutes(10);
 
-            });
+            // });
 
 
 

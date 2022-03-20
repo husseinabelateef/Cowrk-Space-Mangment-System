@@ -14,7 +14,8 @@ namespace Cowrk_Space_Mangment_System.Repository
         }
         public List<Admin> GetAll()
         {
-            return context.Admin.ToList();
+            List<Admin> list = context.Admin.ToList();
+            return list;
         }
 
         public Admin GetById(int id)
