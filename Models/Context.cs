@@ -1,9 +1,10 @@
 ﻿using System.Runtime.ConstrainedExecution;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cowrk_Space_Mangment_System.Models
 {
-    public class Context:DbContext 
+    public class Context : IdentityDbContext<ApplicationUser>
     {
         public Context() : base()//onconfigu
         {

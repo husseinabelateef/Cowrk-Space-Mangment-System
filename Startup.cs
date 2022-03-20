@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Cowrk_Space_Mangment_System.Repository;
 using Cowrk_Space_Mangment_System.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Cowrk_Space_Mangment_System
 {
@@ -29,6 +30,20 @@ namespace Cowrk_Space_Mangment_System
             services.AddDbContext<Context>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("Cs"));
             });
+
+
+
+            services.AddIdentity<Admin, IdentityRole>(
+           )
+               .AddEntityFrameworkStores<Context>();
+
+            services.AddSession(sessionoptions => {
+                sessionoptions.IdleTimeout = TimeSpan.FromMinutes(10);
+
+            });
+
+
+
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IReservationRepository,ReservationRepository>();
