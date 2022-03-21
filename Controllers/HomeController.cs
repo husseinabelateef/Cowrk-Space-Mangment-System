@@ -22,7 +22,22 @@ namespace Cowrk_Space_Mangment_System.Controllers
         {
             return View();
         }
-
+        public IActionResult classReservation()
+        {
+            return View();
+        }
+        public IActionResult IndividualReservation()
+        {
+            return View();
+        }
+        public IActionResult Catring()
+        {
+            return View();
+        }
+        public IActionResult Checkout()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
