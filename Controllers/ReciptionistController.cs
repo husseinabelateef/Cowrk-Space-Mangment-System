@@ -24,34 +24,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             Receptionist Receptionist = ReceptionistRepository.GetById(id);
             return View(Receptionist);
         }
-        [HttpGet]
-        public IActionResult Create()
-        {
-            Receptionist Receptionist = new Receptionist();
 
-            return View(Receptionist);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Receptionist Receptionist)
-        {
-            if (ModelState.IsValid)
-            {
-                Receptionist ReceptionistModel = new Receptionist();
-                ReceptionistModel.Name = Receptionist.Name;
-                ReceptionistModel.Email = Receptionist.Email;
-                ReceptionistModel.Phone = Receptionist.Phone;
-                ReceptionistModel.SalaryPerHour = Receptionist.SalaryPerHour;
-                ReceptionistModel.Username = Receptionist.Username;
-                ReceptionistModel.Password = Receptionist.Password;
-                //save 
-                ReceptionistRepository.Insert(Receptionist);
-                return RedirectToAction("GetAllReceptionists");
-
-            }
-            return View(Receptionist);
-        }
 
         [HttpGet]
         public IActionResult Edit(int id)
@@ -63,7 +36,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Receptionist Receptionist)
         {
-            ReceptionistRepository.Update(Receptionist.Id, Receptionist);
+            ReceptionistRepository.UpdateAsync(Receptionist.Id, Receptionist);
             return RedirectToAction("GetAllReceptionists");
         }
 
@@ -77,7 +50,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(Receptionist Receptionist)
         {
-            ReceptionistRepository.Delete(Receptionist.Id);
+            ReceptionistRepository.DeleteAsync(Receptionist.Id);
             return RedirectToAction("GetAllReceptionists");
         }
     }

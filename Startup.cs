@@ -33,14 +33,15 @@ namespace Cowrk_Space_Mangment_System
 
 
 
-           // services.AddIdentity<Admin, IdentityRole>(
-           //)
-           //    .AddEntityFrameworkStores<Context>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(
+           )
+               .AddEntityFrameworkStores<Context>();
 
-            // services.AddSession(sessionoptions => {
-            //     sessionoptions.IdleTimeout = TimeSpan.FromMinutes(10);
+            services.AddSession(sessionoptions =>
+            {
+                sessionoptions.IdleTimeout = TimeSpan.FromMinutes(10);
 
-            // });
+            });
 
 
 
@@ -50,7 +51,6 @@ namespace Cowrk_Space_Mangment_System
             services.AddScoped<IReserveClassRepository, ReserveClassRepository>();
             services.AddScoped<IRawProductRepository, RawProductRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IAssignDeal_Repository, AssignDealRepository>();
             services.AddScoped<IAssignPackageRepository, AssignPackageRepository>();
             services.AddScoped<IChairRepository, ChairRepository>();
@@ -85,6 +85,7 @@ namespace Cowrk_Space_Mangment_System
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

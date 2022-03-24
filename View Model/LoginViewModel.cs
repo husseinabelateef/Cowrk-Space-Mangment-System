@@ -4,11 +4,13 @@ namespace Demo.ViewModel
 {
     public class LoginViewModel
     {
-        [Required]
-        public string USerName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Enter Username")]
+        [MaxLength(15)]
+        [MinLength(6)]
+        public string Username { get; set; }
+        [Required(ErrorMessage = "Enter Password")]
         [DataType(DataType.Password)]
-        public string  Password { get; set; }
-        public bool isPersistent { get; set; }
+        public string password { get; set; }
+        public bool RemmemberMe { get; set; }
     }
 }
