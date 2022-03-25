@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace Cowrk_Space_Mangment_System.Controllers
 {
     public class HomeController : Controller
-    {
+    { 
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
