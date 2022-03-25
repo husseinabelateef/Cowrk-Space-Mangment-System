@@ -51,7 +51,7 @@ namespace Cowrk_Space_Mangment_System
             services.AddScoped<IRawProductMovmentRepository, RawProductMovmentsRepository>();
             services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
-
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
