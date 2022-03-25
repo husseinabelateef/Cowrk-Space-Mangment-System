@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Cowrk_Space_Mangment_System.Repository;
 using Cowrk_Space_Mangment_System.Models;
 using Microsoft.EntityFrameworkCore;
-
+  
 namespace Cowrk_Space_Mangment_System
 {
     public class Startup
