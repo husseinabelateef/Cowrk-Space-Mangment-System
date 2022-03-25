@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Cowrk_Space_Mangment_System.Repository;
 using Cowrk_Space_Mangment_System.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 namespace Cowrk_Space_Mangment_System
 {
@@ -30,41 +29,12 @@ namespace Cowrk_Space_Mangment_System
             services.AddDbContext<Context>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("Cs"));
             });
-
-
-
-            services.AddIdentity<ApplicationUser, IdentityRole>(
-           )
-               .AddEntityFrameworkStores<Context>();
-
-            services.AddSession(sessionoptions =>
-            {
-                sessionoptions.IdleTimeout = TimeSpan.FromMinutes(10);
-
-            });
-
-
-
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IReservationRepository,ReservationRepository>();
             services.AddScoped<IReserveClassRepository, ReserveClassRepository>();
             services.AddScoped<IRawProductRepository, RawProductRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IAssignDeal_Repository, AssignDealRepository>();
-            services.AddScoped<IAssignPackageRepository, AssignPackageRepository>();
-            services.AddScoped<IChairRepository, ChairRepository>();
-            services.AddScoped<IChairReserveRepository, ChairReserveRepository>();
-            services.AddScoped<IDealsRepository, DealsRepository>();
-            services.AddScoped<IDrinkRepository, DrinkRepository>();
-            services.AddScoped<IIncommingRepository, IncommingRepository>();
-            services.AddScoped<ILogingRepository, LogingRepository>();
-            services.AddScoped<IOutgoingRepository, OutgoingRepository>();
-            services.AddScoped<IPackageRepository, PackageRepository>();
-            services.AddScoped<IProductMovementsRepository,ProductMovementRepository>();
-            services.AddScoped<IRawProductMovmentRepository, RawProductMovmentsRepository>();
-            services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
-            services.AddScoped<IRoomRepository, RoomRepository>();
 
 
 
@@ -85,7 +55,6 @@ namespace Cowrk_Space_Mangment_System
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
