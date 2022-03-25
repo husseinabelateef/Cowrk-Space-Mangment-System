@@ -12,7 +12,7 @@ namespace Cowrk_Space_Mangment_System.Models
         public DateTime Date { get; set; }
 
         [ForeignKey("reciption")]
-        public int Reciption_ID { get; set; }
+        public string Reciption_ID { get; set; }
         public virtual Receptionist reciption { get; set; }
         public virtual ICollection<RawProductMovments> RawProductMovments { get; set; }
         public virtual ICollection<ProductMovments> ProductMovments { get; set; }

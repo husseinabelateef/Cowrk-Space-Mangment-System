@@ -7,7 +7,7 @@ namespace Cowrk_Space_Mangment_System.Models
     public class Receptionist
     {
         //Receptionist : (Name / Email / Phone / SSN / Username /Password / Salary / Shift)
-        public int Id { get; set; }
+        //public int Id { get; set; }
         //for Hour
         [Required(ErrorMessage ="Please, indicate Salary Per Hour!?")]
         public double SalaryPerHour { get; set; }
@@ -15,9 +15,10 @@ namespace Cowrk_Space_Mangment_System.Models
         // Total working hours without payed for 
         public int TotalHours { get; set; }
         public virtual ICollection<Incomming> Incommings { get; set; }
+        [Key]
         [ForeignKey("Applicationuser")]
-        public string AppuserID { get; set; }
-        public virtual ApplicationUser Applicationuser { get; set; }=new ApplicationUser();
+        public string Id { get; set; }
+        public virtual ApplicationUser Applicationuser { get; set; } 
 
 
     }

@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Cowrk_Space_Mangment_System.Repository
 {
-    public interface IReceptionistRepository : Irepository<Receptionist, int>
+    public interface IReceptionistRepository : Irepository<Receptionist, string>
     {
-        Task<int> UpdateAsync(int id, Receptionist Receptionist);
+        Task<int> UpdateAsync(string id, Receptionist Receptionist);
 
-        Task<int> DeleteAsync(int id);
+        Task<int> DeleteAsync(string id);
    
     }
 }

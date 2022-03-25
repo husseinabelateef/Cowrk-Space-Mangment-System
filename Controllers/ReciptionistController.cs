@@ -19,7 +19,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             return View(Receptionists);
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(string id)
         {
             Receptionist Receptionist = ReceptionistRepository.GetById(id);
             return View(Receptionist);
@@ -27,7 +27,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(string id)
         {
             Receptionist Receptionist = ReceptionistRepository.GetById(id);
             return View(Receptionist);
