@@ -35,21 +35,6 @@ namespace Cowrk_Space_Mangment_System
             services.AddScoped<IReserveClassRepository, ReserveClassRepository>();
             services.AddScoped<IRawProductRepository, RawProductRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IAdminRepository, AdminRepository>();
-            services.AddScoped<IAssignDeal_Repository, AssignDealRepository>();
-            services.AddScoped<IAssignPackageRepository, AssignPackageRepository>();
-            services.AddScoped<IChairRepository, ChairRepository>();
-            services.AddScoped<IChairReserveRepository, ChairReserveRepository>();
-            services.AddScoped<IDealsRepository, DealsRepository>();
-            services.AddScoped<IDrinkRepository, DrinkRepository>();
-            services.AddScoped<IIncommingRepository, IncommingRepository>();
-            services.AddScoped<ILogingRepository, LogingRepository>();
-            services.AddScoped<IOutgoingRepository, OutgoingRepository>();
-            services.AddScoped<IPackageRepository, PackageRepository>();
-            services.AddScoped<IProductMovementsRepository,ProductMovementRepository>();
-            services.AddScoped<IRawProductMovmentRepository, RawProductMovmentsRepository>();
-            services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
-            services.AddScoped<IRoomRepository, RoomRepository>();
 
 
 
