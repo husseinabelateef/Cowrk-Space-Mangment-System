@@ -1,6 +1,7 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace Cowrk_Space_Mangment_System.Repository
             return Entities.Receptionist.ToList();
         }
 
-        public Receptionist GetById(int id)
+        public Receptionist GetById(string id)
         {
             return Entities.Receptionist.FirstOrDefault(r => r.Id == id);
         }
@@ -42,7 +43,7 @@ namespace Cowrk_Space_Mangment_System.Repository
             return Entities.SaveChanges();
         }
 
-        public async Task<int> UpdateAsync(int id, Receptionist Receptionist)
+        public async Task<int> UpdateAsync(string id, Receptionist Receptionist)
         {
             Receptionist Old_Receptionist = GetById(id);
             if (Old_Receptionist != null)
@@ -68,11 +69,11 @@ namespace Cowrk_Space_Mangment_System.Repository
             return 0;
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(string id)
         {
             Receptionist receptionist = GetById(id);
             Entities.Receptionist.Remove(receptionist);
-            var user = await userManager.FindByIdAsync(receptionist.AppuserID);
+            var user = await userManager.FindByIdAsync(receptionist.Id);
 
             var result = await userManager.DeleteAsync(user);
             if (result.Succeeded)
@@ -84,12 +85,12 @@ namespace Cowrk_Space_Mangment_System.Repository
         }
 
 
-        int Irepository<Receptionist, int>.Delete(int id)
+        int Irepository<Receptionist, string>.Delete(string id)
         {
             throw new System.NotImplementedException();
         }
 
-        int Irepository<Receptionist, int>.Update(int id, Receptionist item)
+        int Irepository<Receptionist, string>.Update(string id, Receptionist item)
         {
             throw new System.NotImplementedException();
         }

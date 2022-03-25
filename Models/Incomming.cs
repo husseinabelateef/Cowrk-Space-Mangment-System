@@ -12,9 +12,9 @@ namespace Cowrk_Space_Mangment_System.Models
         public double ShiftCloseReservationIncome{ get; set; }
         // total price of catering in log out shift
         public double ShiftCloseCateringIncome { get; set; }
-        [ForeignKey("Applicationuser")]
+        [ForeignKey("Receptionist")]
         public string AppuserID { get; set; } 
         // Collection of incomming in Receprionst
-        public ApplicationUser Applicationuser { get; set; }
+        public Receptionist Receptionist { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Cowrk_Space_Mangment_System.Models
         [Display(Name = "Expexted Hours")]
         public int ExpextedHours { get; set; }
         [Display(Name = "Receptionst Id")]
-        [ForeignKey("Applicationuser")]
+        [ForeignKey("Receptionist")]
         public string AppuserID { get; set; }
         [Display(Name = "Client Id")]
         [ForeignKey("Client")]
@@ -38,6 +38,7 @@ namespace Cowrk_Space_Mangment_System.Models
         public virtual ClientCart ClientCart { get; set; }
         public ICollection<RoomReserve> RoomReserve { get; set; }
         public virtual ChairReserve ChairReserves { get; set; }
-        public virtual ApplicationUser Applicationuser { get; set; }
+        public virtual Receptionist Receptionist  { get; set; }
+        //public virtual ApplicationUser Applicationuser { get; set; }
     }
 }
