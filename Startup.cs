@@ -10,7 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Cowrk_Space_Mangment_System.Repository;
 using Cowrk_Space_Mangment_System.Models;
 using Microsoft.EntityFrameworkCore;
-  
+using Cowrk_Space_Mangment_System.Hubs;
+
 namespace Cowrk_Space_Mangment_System
 {
     public class Startup
@@ -72,8 +73,9 @@ namespace Cowrk_Space_Mangment_System
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
+               endpoints.MapHub<CatringNotificationHub>("CatringNotification");
+
+               endpoints.MapControllerRoute( name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
