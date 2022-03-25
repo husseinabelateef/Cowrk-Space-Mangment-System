@@ -36,7 +36,7 @@ namespace Cowrk_Space_Mangment_System
             services.AddScoped<IReserveClassRepository, ReserveClassRepository>();
             services.AddScoped<IRawProductRepository, RawProductRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddSignalR();
+            services.AddSignalR(); 
 
 
 
