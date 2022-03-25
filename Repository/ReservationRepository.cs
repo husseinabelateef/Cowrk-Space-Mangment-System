@@ -37,7 +37,7 @@ namespace Cowrk_Space_Mangment_System.Repository
                 oldReservation.Date = Reservation.Date;
                 oldReservation.ClientCart_ID = Reservation.ClientCart_ID;
                 oldReservation.Client_ID = Reservation.Client_ID;
-                oldReservation.Receptionst_Id = Reservation.Receptionst_Id;
+                oldReservation.AppuserID = Reservation.AppuserID;
                 oldReservation.Hours_Price = Reservation.Hours_Price;
                 oldReservation.TotalPrice = Reservation.TotalPrice;
                 return context.SaveChanges();
