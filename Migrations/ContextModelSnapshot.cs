@@ -28,10 +28,12 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -47,10 +49,12 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -68,11 +72,20 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationUser");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.AssignDeals", b =>
@@ -323,8 +336,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ReceptionistId")
-                        .HasColumnType("int");
+                    b.Property<string>("ReceptionistAppId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("ShiftCloseCateringIncome")
                         .HasColumnType("float");
@@ -336,7 +349,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
                     b.HasIndex("AppuserID");
 
-                    b.HasIndex("ReceptionistId");
+                    b.HasIndex("ReceptionistAppId");
 
                     b.ToTable("Incomming");
                 });
@@ -357,15 +370,15 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<int>("Receptionst_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RecpetionstId")
-                        .HasColumnType("int");
+                    b.Property<string>("RecpetionstAppId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("TotalHours")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RecpetionstId");
+                    b.HasIndex("RecpetionstAppId");
 
                     b.ToTable("Loging");
                 });
@@ -386,8 +399,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int>("Reciption_ID")
-                        .HasColumnType("int");
+                    b.Property<string>("Reciption_ID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
 
@@ -522,12 +535,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Receptionist", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AppuserID")
+                    b.Property<string>("AppId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("SalaryPerHour")
@@ -536,9 +544,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<int>("TotalHours")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppuserID");
+                    b.HasKey("AppId");
 
                     b.ToTable("Receptionist");
                 });
@@ -623,6 +629,137 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.HasIndex("Rooom_Id");
 
                     b.ToTable("RoomReserve");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.AssignDeals", b =>
@@ -733,35 +870,33 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Incomming", b =>
                 {
-                    b.HasOne("Cowrk_Space_Mangment_System.Models.ApplicationUser", "Applicationuser")
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("AppuserID");
 
                     b.HasOne("Cowrk_Space_Mangment_System.Models.Receptionist", null)
                         .WithMany("Incommings")
-                        .HasForeignKey("ReceptionistId");
+                        .HasForeignKey("ReceptionistAppId");
 
-                    b.Navigation("Applicationuser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Loging", b =>
                 {
                     b.HasOne("Cowrk_Space_Mangment_System.Models.Receptionist", "Recpetionst")
                         .WithMany()
-                        .HasForeignKey("RecpetionstId");
+                        .HasForeignKey("RecpetionstAppId");
 
                     b.Navigation("Recpetionst");
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Outgoing", b =>
                 {
-                    b.HasOne("Cowrk_Space_Mangment_System.Models.Receptionist", "reciption")
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.ApplicationUser", "Applicationuser")
                         .WithMany()
-                        .HasForeignKey("Reciption_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Reciption_ID");
 
-                    b.Navigation("reciption");
+                    b.Navigation("Applicationuser");
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Product", b =>
@@ -813,7 +948,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 {
                     b.HasOne("Cowrk_Space_Mangment_System.Models.ApplicationUser", "Applicationuser")
                         .WithMany()
-                        .HasForeignKey("AppuserID");
+                        .HasForeignKey("AppId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Applicationuser");
                 });
@@ -860,6 +997,57 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Navigation("Reservation");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Cart", b =>
