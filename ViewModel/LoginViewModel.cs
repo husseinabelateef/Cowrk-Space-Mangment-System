@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Demo.ViewModel
+namespace Cowrk_Space_Mangment_System.ViewModel
 {
     public class LoginViewModel
     {

@@ -1,7 +1,8 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
-using Demo.ViewModel;
+using Cowrk_Space_Mangment_System.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Cowrk_Space_Mangment_System.Controllers
@@ -114,8 +115,9 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 }
 
 
+
             }
-            return View(newUser);
+            return View("Login",newUser);
         }
 
 
@@ -144,13 +146,41 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     ModelState.AddModelError("", "Username & password Invalid");
                 }
             }
-            return View(LoginAccount);
+            return View(new RegisterViewModel());
 
         }
         public async Task<IActionResult> LogOut()
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Login");
+        }
+
+        public IActionResult Checkusername(string Username)
+        {
+            Receptionist receptionist = Entities.Receptionist.
+                FirstOrDefault(recept => recept.Applicationuser.UserName == Username);
+            if (receptionist == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json(false);
+            }
+        }
+
+        public IActionResult CheckEmail(string Email)
+        {
+            Receptionist receptionist = Entities.Receptionist.
+                FirstOrDefault(recept => recept.Applicationuser.Email == Email);
+            if (receptionist == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json(false);
+            }
         }
     }
 }
