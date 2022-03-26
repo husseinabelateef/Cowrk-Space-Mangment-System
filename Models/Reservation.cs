@@ -38,6 +38,7 @@ namespace Cowrk_Space_Mangment_System.Models
         public virtual ClientCart ClientCart { get; set; }
         public ICollection<RoomReserve> RoomReserve { get; set; }
         public virtual ChairReserve ChairReserves { get; set; }
-        public virtual ApplicationUser Applicationuser { get; set; }
+        //public virtual Receptionist Receptionist  { get; set; }
+        public virtual ApplicationUser Applicationuser { get; set; } 
     }
 }

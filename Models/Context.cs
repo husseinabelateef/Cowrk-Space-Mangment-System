@@ -10,7 +10,7 @@ namespace Cowrk_Space_Mangment_System.Models
         {
 
         }
-        public Context(DbContextOptions options) : base(options)
+        public Context(DbContextOptions options ) : base(options)
         {
 
         }
@@ -35,6 +35,7 @@ namespace Cowrk_Space_Mangment_System.Models
         public DbSet<Reservation> Reservation { get; set; }
         public DbSet<Room> Room { get; set; }
         public DbSet<RoomReserve> RoomReserve { get; set; }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -47,6 +48,8 @@ namespace Cowrk_Space_Mangment_System.Models
                 .HasKey(b => new { b.Raw_ProductID, b.OutgoingID });
             modelBuilder.Entity<ProductMovments>()
               .HasKey(b => new { b.ProductID, b.OutgoingID });
+            modelBuilder.Entity<Receptionist>()
+              .HasKey(b => b.AppId);
             base.OnModelCreating(modelBuilder);
         }
     }

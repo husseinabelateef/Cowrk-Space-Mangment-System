@@ -19,7 +19,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             return View(Receptionists);
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(string id)
         {
             Receptionist Receptionist = ReceptionistRepository.GetById(id);
             return View(Receptionist);
@@ -27,7 +27,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(string id)
         {
             Receptionist Receptionist = ReceptionistRepository.GetById(id);
             return View(Receptionist);
@@ -36,7 +36,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Receptionist Receptionist)
         {
-            ReceptionistRepository.UpdateAsync(Receptionist.Id, Receptionist);
+            ReceptionistRepository.UpdateAsync(Receptionist.AppId, Receptionist);
             return RedirectToAction("GetAllReceptionists");
         }
 
@@ -50,7 +50,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(Receptionist Receptionist)
         {
-            ReceptionistRepository.DeleteAsync(Receptionist.Id);
+            ReceptionistRepository.DeleteAsync(Receptionist.AppId);
             return RedirectToAction("GetAllReceptionists");
         }
     }

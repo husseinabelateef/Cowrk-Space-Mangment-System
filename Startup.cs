@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Cowrk_Space_Mangment_System.Repository;
 using Cowrk_Space_Mangment_System.Models;
 using Microsoft.EntityFrameworkCore;
+using Cowrk_Space_Mangment_System.Hubs;
 using Microsoft.AspNetCore.Identity;
 
 namespace Cowrk_Space_Mangment_System
@@ -31,23 +32,9 @@ namespace Cowrk_Space_Mangment_System
                 options.UseSqlServer(Configuration.GetConnectionString("Cs"));
             });
 
-
-
-            services.AddIdentity<ApplicationUser, IdentityRole>(
-           )
-               .AddEntityFrameworkStores<Context>();
-
-            services.AddSession(sessionoptions =>
-            {
-                sessionoptions.IdleTimeout = TimeSpan.FromMinutes(10);
-
-            });
-
-
-
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
-            services.AddScoped<IReservationRepository,ReservationRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IReserveClassRepository, ReserveClassRepository>();
             services.AddScoped<IRawProductRepository, RawProductRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
@@ -61,14 +48,21 @@ namespace Cowrk_Space_Mangment_System
             services.AddScoped<ILogingRepository, LogingRepository>();
             services.AddScoped<IOutgoingRepository, OutgoingRepository>();
             services.AddScoped<IPackageRepository, PackageRepository>();
-            services.AddScoped<IProductMovementsRepository,ProductMovementRepository>();
+            services.AddScoped<IProductMovementsRepository, ProductMovementRepository>();
             services.AddScoped<IRawProductMovmentRepository, RawProductMovmentsRepository>();
             services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
-
-
-
+            services.AddSignalR();
+            //services.AddIdentity<ApplicationUser, IdentityRole>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Context>();
         }
+
+        //option => {
+        //    option.Password.RequireUppercase = false;
+        //    option.Password.RequiredLength = 4;
+        //    option.Password.RequireDigit = false;
+        //}
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -85,13 +79,13 @@ namespace Cowrk_Space_Mangment_System
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
+               endpoints.MapHub<CatringNotificationHub>("CatringNotification");
+
+               endpoints.MapControllerRoute( name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
