@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cowrk_Space_Mangment_System.Models
 {
-    public class Context : DbContext//IdentityDbContext<Admin>
+    public class Context :IdentityDbContext<ApplicationUser>
     {
         public Context() : base()//onconfigu
         {
