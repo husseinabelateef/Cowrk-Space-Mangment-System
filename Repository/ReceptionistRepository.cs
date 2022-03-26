@@ -1,6 +1,7 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +13,19 @@ namespace Cowrk_Space_Mangment_System.Repository
     {
         
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
+        //private readonly SignInManager<ApplicationUser> signInManager;
+        //private readonly RoleManager<IdentityRole> roleManager;
         Context Entities;
 
         public ReceptionistRepository(UserManager<ApplicationUser> _userManager
-            , SignInManager<ApplicationUser> _signInManager
-            , RoleManager<IdentityRole> _roleManager
+            //, SignInManager<ApplicationUser> _signInManager
+            //, RoleManager<IdentityRole> _roleManager
             , Context _Entities
             )
         {
-            this.signInManager = _signInManager;
+            //this.signInManager = _signInManager;
             this.userManager = _userManager;
-            this.roleManager = _roleManager;
+            //this.roleManager = _roleManager;
             this.Entities = _Entities;
         }
         public List<Receptionist> GetAll()
@@ -34,7 +35,7 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public Receptionist GetById(string id)
         {
-            return Entities.Receptionist.FirstOrDefault(r => r.Id == id);
+            return Entities.Receptionist.Include(x => x.Applicationuser).FirstOrDefault(r => r.AppId == id);
         }
 
         public int Insert(Receptionist Receptionist)
@@ -48,7 +49,7 @@ namespace Cowrk_Space_Mangment_System.Repository
             Receptionist Old_Receptionist = GetById(id);
             if (Old_Receptionist != null)
             {
-                Old_Receptionist.Id = Receptionist.Id;
+                Old_Receptionist.AppId = Receptionist.AppId;
                 Old_Receptionist.Applicationuser.Name =
                     Receptionist.Applicationuser.Name;
                 Old_Receptionist.Applicationuser.UserName = 
@@ -73,7 +74,7 @@ namespace Cowrk_Space_Mangment_System.Repository
         {
             Receptionist receptionist = GetById(id);
             Entities.Receptionist.Remove(receptionist);
-            var user = await userManager.FindByIdAsync(receptionist.Id);
+            var user = await userManager.FindByIdAsync(receptionist.AppId);
 
             var result = await userManager.DeleteAsync(user);
             if (result.Succeeded)
@@ -82,6 +83,16 @@ namespace Cowrk_Space_Mangment_System.Repository
             }
             return 0;
 
+        }
+
+        public int Delete(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update(string id, Receptionist item)
+        {
+            throw new NotImplementedException();
         }
 
 

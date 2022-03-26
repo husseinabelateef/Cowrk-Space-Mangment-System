@@ -17,7 +17,7 @@ namespace Cowrk_Space_Mangment_System.Models
         public virtual ICollection<Incomming> Incommings { get; set; }
         [Key]
         [ForeignKey("Applicationuser")]
-        public string Id { get; set; }
+        public string AppId { get; set; }
         public virtual ApplicationUser Applicationuser { get; set; } 
 
 

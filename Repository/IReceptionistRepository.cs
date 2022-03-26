@@ -9,6 +9,6 @@ namespace Cowrk_Space_Mangment_System.Repository
         Task<int> UpdateAsync(string id, Receptionist Receptionist);
 
         Task<int> DeleteAsync(string id);
-   
+
     }
 }
