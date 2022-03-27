@@ -30,7 +30,7 @@ namespace Cowrk_Space_Mangment_System.Repository
         }
         public List<Receptionist> GetAll()
         {
-            return Entities.Receptionist.ToList();
+            return Entities.Receptionist.Include(recep=>recep.Applicationuser).ToList();
         }
 
         public Receptionist GetById(string id)

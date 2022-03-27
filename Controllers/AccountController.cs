@@ -9,9 +9,9 @@ namespace Cowrk_Space_Mangment_System.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
+        private UserManager<ApplicationUser> userManager;
+        private SignInManager<ApplicationUser> signInManager;
+        private RoleManager<IdentityRole> roleManager;
         Context Entities;
 
         public AccountController(UserManager<ApplicationUser> _userManager
@@ -26,33 +26,33 @@ namespace Cowrk_Space_Mangment_System.Controllers
             this.Entities = _Entities;
         }
 
-        [HttpGet]
-        public IActionResult AddRole()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult AddRole()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddRole(string RoleName)
-        {
-            if (RoleName != null)
-            {
-                IdentityRole role = new IdentityRole();
-                role.Name = RoleName;
-                IdentityResult result = await roleManager.CreateAsync(role);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Home");
-                }
-                else
-                {
-                    ViewData["Error"] = result.Errors;
-                }
-            }
-            ViewData["RoleName"] = RoleName;
-            return View();
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddRole(string RoleName)
+        //{
+        //    if (RoleName != null)
+        //    {
+        //        IdentityRole role = new IdentityRole();
+        //        role.Name = RoleName;
+        //        IdentityResult result = await roleManager.CreateAsync(role);
+        //        if (result.Succeeded)
+        //        {
+        //            return RedirectToAction("Home");
+        //        }
+        //        else
+        //        {
+        //            ViewData["Error"] = result.Errors;
+        //        }
+        //    }
+        //    ViewData["RoleName"] = RoleName;
+        //    return View();
+        //}
 
 
 
@@ -82,26 +82,63 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     IdentityResult roleResult=null;
                     if(newUser.Role == "Reciptionist")
                     {
-                        //Add to Role Reciptionist
-                        roleResult = await userManager.
-                            AddToRoleAsync(UserModel, "Reciptionist");
-                        Receptionist receptionist = new Receptionist();
-                        receptionist.Applicationuser = UserModel;
-                        receptionist.SalaryPerHour= newUser.SalaryPerHour;
-                        Entities.Receptionist.Add(receptionist);
-                        Entities.SaveChanges();
+
+                        if (await roleManager.RoleExistsAsync("Reciptionist") == false)
+                        {
+                            // first we create Admin role    
+                            IdentityRole role = new IdentityRole();
+                            role.Name = "Reciptionist";
+                            await roleManager.CreateAsync(role);
+              
+                           //Add to Role Reciptionist
+                            roleResult = await userManager.
+                                AddToRoleAsync(UserModel, "Reciptionist");
+                            Receptionist receptionist = new Receptionist();
+                            receptionist.Applicationuser = UserModel;
+                            receptionist.SalaryPerHour = newUser.SalaryPerHour;
+                            Entities.Receptionist.Add(receptionist);
+                            Entities.SaveChanges();
+                        }
+                        else
+                        {
+                            //Add to Role Reciptionist
+                            roleResult = await userManager.
+                                AddToRoleAsync(UserModel, "Reciptionist");
+                            Receptionist receptionist = new Receptionist();
+                            receptionist.Applicationuser = UserModel;
+                            receptionist.SalaryPerHour = newUser.SalaryPerHour;
+                            Entities.Receptionist.Add(receptionist);
+                            Entities.SaveChanges();
+                        }
                     }
                     else if(newUser.Role=="Admin")
                     {
-                        //Add to Role Admin
-                        roleResult = await userManager.
+
+                        // In Startup iam creating first Admin Role and creating a default Admin User     
+                        if (await roleManager.RoleExistsAsync("Admin") == false)
+                        {
+                            // first we create Admin rool    
+                            IdentityRole role = new IdentityRole();
+                            role.Name = "Admin";
+                            await roleManager.CreateAsync(role);
+
+                            //Add to Role Admin
+                            roleResult = await userManager.
                             AddToRoleAsync(UserModel, "Admin");
+                        }
+                        else
+                        {
+                            //Add to Role Admin
+                            roleResult = await userManager.
+                            AddToRoleAsync(UserModel, "Admin");
+                        }
+
                     }
                     //create cookie
                     if (roleResult.Succeeded)
                     {
                         await signInManager.SignInAsync(UserModel, false);
-                        return RedirectToAction("Home");
+                        return RedirectToAction("Login");
                     }
 
                 }
@@ -113,14 +150,11 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     }
 
                 }
-
-
-
             }
-            return View("Login",newUser);
+            return View("Register", newUser);
         }
 
-
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
@@ -139,14 +173,15 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     Microsoft.AspNetCore.Identity.SignInResult result =
                         await signInManager.PasswordSignInAsync
                         (UserModel, LoginAccount.password, LoginAccount.RemmemberMe, false);
-                    return RedirectToAction("Home");
+                    return Content("login success");
+                   
                 }
                 else
                 {
                     ModelState.AddModelError("", "Username & password Invalid");
                 }
             }
-            return View(new RegisterViewModel());
+            return View(LoginAccount);
 
         }
         public async Task<IActionResult> LogOut()

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.ConstrainedExecution;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ namespace Cowrk_Space_Mangment_System.Models
         {
 
         }
+
         public Context(DbContextOptions options ) : base(options)
         {
 
@@ -51,6 +53,9 @@ namespace Cowrk_Space_Mangment_System.Models
             modelBuilder.Entity<Receptionist>()
               .HasKey(b => b.AppId);
             base.OnModelCreating(modelBuilder);
+            
         }
+      
+
     }
 }

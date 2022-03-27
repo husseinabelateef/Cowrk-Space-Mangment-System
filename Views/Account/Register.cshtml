@@ -2,7 +2,7 @@
     Layout = null;
 }
 
-@model LoginViewModel
+@model RegisterViewModel
 
 
 <!DOCTYPE html>
@@ -278,15 +278,33 @@ font-weight: 700;
     <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-md-8 col-md-offset-2">
       <div id="userform">
         <ul class="nav nav-tabs nav-justified" role="tablist">
-          <li><a href="/Account/Register">Sign up</a></li>
-          <li class="active"><a href="#login"  role="tab" data-toggle="tab">Log in</a></li>
+          <li class="active"><a href="#signup"  role="tab" data-toggle="tab">Sign up</a></li>
+          <li><a href="/Account/Login">Log in</a></li>
         </ul>
         <div class="tab-content">
+          <div class="tab-pane fade active in" id="signup">
+            <h2 class="text-uppercase text-center">Welcome In NOOK</h2>
+            <form asp-action="Register">
+      
+			  <div class="form-group">
+					<label asp-for="@Model.Name" class="control-label">Full Name<span class="req">*</span></label>
+					<input asp-for="@Model.Name" class="form-control" autocomplete="off"/>
+					<span asp-validation-for="@Model.Name" class="text-danger"></span>
+			  </div>
+			 
+			  <div class="form-group">
+			   <label asp-for="@Model.Email" class="control-label">Email<span class="req">*</span></label>
+               <input asp-for="@Model.Email" class="form-control" autocomplete="off"/>
+               <span asp-validation-for="@Model.Email" class="text-danger"></span>
+              </div>
 
-         <div class="tab-pane fade active in" id="login">
-            <h2 class="text-uppercase text-center"> Log in</h2>
-         <form asp-action="Login">
-            <div class="form-group">
+              <div class="form-group">
+			   <label asp-for="@Model.Phone" class="control-label">Phone<span class="req">*</span></label>
+               <input asp-for="@Model.Phone" class="form-control" autocomplete="off"/>
+               <span asp-validation-for="@Model.Phone" class="text-danger"></span>
+              </div>
+
+              <div class="form-group">
 			   <label asp-for="@Model.Username" class="control-label">User Name<span class="req">*</span></label>
                <input asp-for="@Model.Username" class="form-control" autocomplete="off"/>
                <span asp-validation-for="@Model.Username" class="text-danger"></span>
@@ -297,16 +315,35 @@ font-weight: 700;
                <input asp-for="@Model.password" class="form-control" autocomplete="off"/>
                <span asp-validation-for="@Model.password" class="text-danger"></span>
               </div>
-              <div>
-			  <input type="checkbox" value="Remmember Me"> Remember Me
-			  </div>
+
+			   <div class="form-group">
+			   <label asp-for="@Model.ConfirmPassword" class="control-label">Confirm Password<span class="req">*</span></label>
+               <input asp-for="@Model.ConfirmPassword" class="form-control" autocomplete="off"/>
+               <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
+               </div>
+
+			   <div class="form-group">
+			   <label asp-for="@Model.Role" class="control-label" >Role</label>
+                <select asp-for="@Model.Role" class="form-control" onchange="DetectSPHour()">
+				    <option value="0" selected>Select Role</option>
+                    <option value="Admin">Admin</option>
+					<option value="Reciptionist">Reciptionist</option>
+                </select>
+               <span asp-validation-for="@Model.Role" class="text-danger"></span>
+              </div>
+			  <div class="form-group" id="SalaryPerHour">
+			   <label asp-for="@Model.SalaryPerHour" class="control-label">Salary Per Hour</label>
+               <input asp-for="@Model.SalaryPerHour" id="SalaryPerHour" class="form-control" autocomplete="off"/>
+               <span asp-validation-for="@Model.SalaryPerHour" class="text-danger"></span>
+              </div>
 
               <div class="mrgn-30-top">
                 <button type="submit" class="btn btn-larger btn-block">
-                Log in
+                Sign up
                 </button>
               </div>
             </form>
+          </div>
           </div>
         </div>
       </div>
@@ -364,6 +401,16 @@ $('.tab a').on('click', function (e) {
   
 });
   
+
+        function DetectSPHour()
+        {
+            console.log(document.getElementById("Role").value);
+			if(document.getElementById("Role").value=="Admin")
+			{
+				document.getElementById("SalaryPerHour").innerText="0";
+			}
+            
+        }
   
   </script>
 
