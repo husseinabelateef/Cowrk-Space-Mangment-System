@@ -8,10 +8,23 @@ namespace Cowrk_Space_Mangment_System.Repository
     public class ClientCartRepository : IClientCart
     {
         Context context;
-        public ClientCartRepository(Context context)
+        private IReservationRepository reservation;
+        public ClientCartRepository(Context context , IReservationRepository reservation)
         {
             this.context = context;
+            this.reservation = reservation;
         }
+
+        public string clientName(int CartId)
+        {
+             Reservation res = reservation.GetById(CartId);
+            if (res != null)
+            {
+                return res.Client.Name;
+            }
+            return null;
+        }
+
         public int Delete(int id)
         {
             context.clientCart.Remove(GetById(id));

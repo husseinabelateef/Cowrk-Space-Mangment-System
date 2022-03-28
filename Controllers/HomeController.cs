@@ -45,7 +45,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     if( clientCartRepo.GetById(c.ID)!= null)
                     {
 
-                    asd.ClientName = clientCartRepo.ClientName(c.ID);
+                    asd.ClientName = clientCartRepo.clientName(c.ID);
                     }
                     if(asd.ClientName == null)
                     {
