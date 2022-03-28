@@ -20,6 +20,21 @@ namespace Cowrk_Space_Mangment_System.Models
         public DateTime ExpireDate { get; set; }
         public ICollection<Drink> Drinks { get; set; }
         public virtual ICollection<ProductMovments> ProductMovments { get; set; }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+
+        }
+        public override bool Equals(object obj)
+        {
+            Product product = obj as Product;
+            if (product == null)
+                return false;
+            if (product.Id != this.Id)
+                return false;
+            return true;
+            
+        }
 
     }
 

@@ -19,7 +19,7 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public Cart GetById(int id)
         {
-            return context.Cart.FirstOrDefault(Cart => Cart.ID == id);
+            return context.Cart.Include(x=>x.Products).FirstOrDefault(Cart => Cart.ID == id);
         }
 
         public int Insert(Cart Cart)
