@@ -3,24 +3,48 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cowrk_Space_Mangment_System.Migrations
 {
-    public partial class init : Migration
+    public partial class _263Modification : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Admin",
+                name: "AspNetRoles",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Admin", x => x.ID);
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,25 +134,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Receptionist",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SalaryPerHour = table.Column<double>(type: "float", nullable: false),
-                    TotalHours = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Receptionist", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Room",
                 columns: table => new
                 {
@@ -139,6 +144,153 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Room", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Outgoing",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Reciption_ID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Outgoing", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Outgoing_AspNetUsers_Reciption_ID",
+                        column: x => x.Reciption_ID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Receptionist",
+                columns: table => new
+                {
+                    AppId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SalaryPerHour = table.Column<double>(type: "float", nullable: false),
+                    TotalHours = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Receptionist", x => x.AppId);
+                    table.ForeignKey(
+                        name: "FK_Receptionist_AspNetUsers_AppId",
+                        column: x => x.AppId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,73 +375,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Incomming",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ShiftCloseReservationIncome = table.Column<double>(type: "float", nullable: false),
-                    ShiftCloseCateringIncome = table.Column<double>(type: "float", nullable: false),
-                    Receptionst_Id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Incomming", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Incomming_Receptionist_Receptionst_Id",
-                        column: x => x.Receptionst_Id,
-                        principalTable: "Receptionist",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Loging",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Login = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LogOut = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalHours = table.Column<int>(type: "int", nullable: false),
-                    Receptionst_Id = table.Column<int>(type: "int", nullable: false),
-                    RecpetionstId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Loging", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Loging_Receptionist_RecpetionstId",
-                        column: x => x.RecpetionstId,
-                        principalTable: "Receptionist",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Outgoing",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Reciption_ID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Outgoing", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Outgoing_Receptionist_Reciption_ID",
-                        column: x => x.Reciption_ID,
-                        principalTable: "Receptionist",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Chair",
                 columns: table => new
                 {
@@ -307,6 +392,83 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         principalTable: "Room",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RawProductMovments",
+                columns: table => new
+                {
+                    Raw_ProductID = table.Column<int>(type: "int", nullable: false),
+                    OutgoingID = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RawProductMovments", x => new { x.Raw_ProductID, x.OutgoingID });
+                    table.ForeignKey(
+                        name: "FK_RawProductMovments_Outgoing_OutgoingID",
+                        column: x => x.OutgoingID,
+                        principalTable: "Outgoing",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_RawProductMovments_RawProduct_Raw_ProductID",
+                        column: x => x.Raw_ProductID,
+                        principalTable: "RawProduct",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Incomming",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ShiftCloseReservationIncome = table.Column<double>(type: "float", nullable: false),
+                    ShiftCloseCateringIncome = table.Column<double>(type: "float", nullable: false),
+                    AppuserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReceptionistAppId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Incomming", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Incomming_AspNetUsers_AppuserID",
+                        column: x => x.AppuserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Incomming_Receptionist_ReceptionistAppId",
+                        column: x => x.ReceptionistAppId,
+                        principalTable: "Receptionist",
+                        principalColumn: "AppId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Loging",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Login = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LogOut = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalHours = table.Column<int>(type: "int", nullable: false),
+                    Receptionst_Id = table.Column<int>(type: "int", nullable: false),
+                    RecpetionstAppId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Loging", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Loging_Receptionist_RecpetionstAppId",
+                        column: x => x.RecpetionstAppId,
+                        principalTable: "Receptionist",
+                        principalColumn: "AppId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -361,51 +523,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RawProductMovments",
-                columns: table => new
-                {
-                    Raw_ProductID = table.Column<int>(type: "int", nullable: false),
-                    OutgoingID = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RawProductMovments", x => new { x.Raw_ProductID, x.OutgoingID });
-                    table.ForeignKey(
-                        name: "FK_RawProductMovments_Outgoing_OutgoingID",
-                        column: x => x.OutgoingID,
-                        principalTable: "Outgoing",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_RawProductMovments_RawProduct_Raw_ProductID",
-                        column: x => x.Raw_ProductID,
-                        principalTable: "RawProduct",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "clientCart",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Reservation_ID = table.Column<int>(type: "int", nullable: false),
-                    Cart_Id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_clientCart", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_clientCart_Cart_Cart_Id",
-                        column: x => x.Cart_Id,
-                        principalTable: "Cart",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reservation",
                 columns: table => new
                 {
@@ -413,35 +530,28 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Start_Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpextedHours = table.Column<int>(type: "int", nullable: false),
-                    Receptionst_Id = table.Column<int>(type: "int", nullable: false),
+                    AppuserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Client_ID = table.Column<int>(type: "int", nullable: false),
                     ClientCart_ID = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Hours_Price = table.Column<double>(type: "float", nullable: false),
-                    TotalPrice = table.Column<double>(type: "float", nullable: false),
-                    RecpetionstId = table.Column<int>(type: "int", nullable: true)
+                    TotalPrice = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reservation", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Reservation_AspNetUsers_AppuserID",
+                        column: x => x.AppuserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reservation_Client_Client_ID",
                         column: x => x.Client_ID,
                         principalTable: "Client",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Reservation_clientCart_ClientCart_ID",
-                        column: x => x.ClientCart_ID,
-                        principalTable: "clientCart",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Reservation_Receptionist_RecpetionstId",
-                        column: x => x.RecpetionstId,
-                        principalTable: "Receptionist",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -466,6 +576,32 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     table.ForeignKey(
                         name: "FK_chairReserve_Reservation_Reservation_Id",
                         column: x => x.Reservation_Id,
+                        principalTable: "Reservation",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "clientCart",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Reservation_ID = table.Column<int>(type: "int", nullable: false),
+                    Cart_Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_clientCart", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_clientCart_Cart_Cart_Id",
+                        column: x => x.Cart_Id,
+                        principalTable: "Cart",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_clientCart_Reservation_Reservation_ID",
+                        column: x => x.Reservation_ID,
                         principalTable: "Reservation",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.NoAction);
@@ -497,6 +633,45 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.NoAction);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AssignDeals_ClientID",
@@ -555,14 +730,19 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 column: "RawProID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Incomming_Receptionst_Id",
+                name: "IX_Incomming_AppuserID",
                 table: "Incomming",
-                column: "Receptionst_Id");
+                column: "AppuserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Loging_RecpetionstId",
+                name: "IX_Incomming_ReceptionistAppId",
+                table: "Incomming",
+                column: "ReceptionistAppId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Loging_RecpetionstAppId",
                 table: "Loging",
-                column: "RecpetionstId");
+                column: "RecpetionstAppId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Outgoing_Reciption_ID",
@@ -585,6 +765,11 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 column: "OutgoingID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reservation_AppuserID",
+                table: "Reservation",
+                column: "AppuserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reservation_Client_ID",
                 table: "Reservation",
                 column: "Client_ID");
@@ -593,11 +778,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 name: "IX_Reservation_ClientCart_ID",
                 table: "Reservation",
                 column: "ClientCart_ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservation_RecpetionstId",
-                table: "Reservation",
-                column: "RecpetionstId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoomReserve_Reservation_Id",
@@ -610,16 +790,20 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 column: "Rooom_Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_clientCart_Reservation_Reservation_ID",
-                table: "clientCart",
-                column: "Reservation_ID",
-                principalTable: "Reservation",
+                name: "FK_Reservation_clientCart_ClientCart_ID",
+                table: "Reservation",
+                column: "ClientCart_ID",
+                principalTable: "clientCart",
                 principalColumn: "ID",
                 onDelete: ReferentialAction.NoAction);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Reservation_AspNetUsers_AppuserID",
+                table: "Reservation");
+
             migrationBuilder.DropForeignKey(
                 name: "FK_Reservation_Client_Client_ID",
                 table: "Reservation");
@@ -629,7 +813,19 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 table: "clientCart");
 
             migrationBuilder.DropTable(
-                name: "Admin");
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
                 name: "AssignDeals");
@@ -659,6 +855,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 name: "RoomReserve");
 
             migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
                 name: "Deal");
 
             migrationBuilder.DropTable(
@@ -666,6 +865,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
             migrationBuilder.DropTable(
                 name: "Chair");
+
+            migrationBuilder.DropTable(
+                name: "Receptionist");
 
             migrationBuilder.DropTable(
                 name: "Product");
@@ -680,6 +882,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 name: "Room");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "Client");
 
             migrationBuilder.DropTable(
@@ -687,9 +892,6 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
             migrationBuilder.DropTable(
                 name: "clientCart");
-
-            migrationBuilder.DropTable(
-                name: "Receptionist");
 
             migrationBuilder.DropTable(
                 name: "Cart");

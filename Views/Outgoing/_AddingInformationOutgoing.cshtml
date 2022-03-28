@@ -1,0 +1,56 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Outgoing
+@{
+    
+        SelectList OutgoingList=new SelectList (ViewBag.Outgoings,"Id","Name");
+        SelectList rawProductMovments=new SelectList (ViewBag.rawM,"Id","Name");
+         SelectList productMovments=new SelectList (ViewBag.productM,"Id","Name");
+        
+}
+<button style="background-color: #F9CB38; width:100px;border:1px solid white;" id="btnclick" type="button" class="btn btn-primary ms-4" data-toggle="modal" data-target="#exampleModal">
+  Add
+</button>
+<form  method="post"  id="addInf" asp-action="AddingInformation" asp-controller="Outgoing" >
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+          <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+          <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Date"></label>
+        <input asp-for="Date" class="form-control" />
+          <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+   
+    <div>
+        <label asp-for="Reciption_ID"></label>
+       <input asp-for="Reciption_ID" class="form-control" />
+          <span asp-validation-for="Reciption_ID" class="text-danger"></span>
+    </div>
+     <div>
+        <label asp-for="RawProductMovments"></label>
+        <select class="form-control" asp-for="RawProductMovments" asp-items="rawProductMovments">
+        </select>
+    </div>
+     <div>
+        <label asp-for="ProductMovments"></label>
+        <select class="form-control" asp-for="ProductMovments" asp-items="productMovments">
+        </select>
+    </div>
+    <input type="submit" value="Save" class="btn btn-success" />
+</form>
+<script>
+    $(document).ready(function(){
+        $('btnclick').click(function(){
+            $('#addInf').modal('toggle')
+        })
+    })
+</script>

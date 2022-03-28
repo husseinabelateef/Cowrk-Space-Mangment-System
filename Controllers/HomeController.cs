@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace Cowrk_Space_Mangment_System.Controllers
 {
     public class HomeController : Controller
-    {
+    { 
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -22,11 +22,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
         {
             return View();
         }
-        public IActionResult classReservation()
-        {
-            return View();
-        }
-        public IActionResult IndividualReservation()
+
+        public IActionResult Privacy()
         {
             return View();
         }
@@ -38,11 +35,14 @@ namespace Cowrk_Space_Mangment_System.Controllers
         {
             return View();
         }
-        public IActionResult Privacy()
+        public IActionResult classReservation()
         {
             return View();
         }
-
+        public IActionResult IndividualReservation()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
