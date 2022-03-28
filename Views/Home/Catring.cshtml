@@ -12,7 +12,7 @@
             <div class="icon-box mt-5 mt-lg-0" data-aos="zoom-in" data-aos-delay="150">
               <i class="bx bx-receipt"></i>
               <h4>@item.ClientName</h4> 
-              <h4><a asp-action="CartProducts" asp-controller="Catring" asp-route="@item.CartId"></a></h4>
+              <h4><a asp-action="Index" asp-controller="Catring" asp-route-id="@item.CartId">View Cart num @item.CartId</a></h4>
               @{string ProductName = " ";}
               @foreach (var product in item.Products)
                             {

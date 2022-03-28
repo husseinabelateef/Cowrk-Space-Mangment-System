@@ -35,27 +35,44 @@ namespace Cowrk_Space_Mangment_System.Controllers
         {
             return View();
         }
-        public IActionResult Catring()
+        public IActionResult Catring(int id)
         {
-            List<Cart> carts = CartRepository.GetAllUnpaidCart();
+            List<Cart> carts;
+            List<CartViewModel> cartViewModels;
+            if (id == 3) //GetAll Carts
+            {
+                carts = CartRepository.GetAllUnpaidCart();
+            }
+            else if(id == 2) // Get All Clients Cart
+            {
+                carts = CartRepository.GetAllUnpaidClientsCart();
+            }
+            else // get All Vistors Cart
+            {
+                carts = CartRepository.GetAllUnpaidVistorsCart();
+            }
+            cartViewModels =  cartViewModelsHelp(carts);
+            return View(cartViewModels);
+        }
+        public List<CartViewModel> cartViewModelsHelp(List<Cart> carts)
+        {
             List<CartViewModel> cartViewModels = new List<CartViewModel>();
             foreach (Cart c in carts)
             {
                 CartViewModel asd = new CartViewModel();
-                    if( clientCartRepo.GetById(c.ID)!= null)
-                    {
-
+                if (clientCartRepo.GetById(c.ID) != null)
+                {
                     asd.ClientName = clientCartRepo.clientName(c.ID);
-                    }
-                    if(asd.ClientName == null)
-                    {
-                        asd.ClientName = "Visitor";
-                        asd.CartId = c.ID;
-                        asd.Products = c.Products;
-                    }
+                }
+                if (asd.ClientName == null)
+                {
+                    asd.ClientName = "Visitor";
+                    asd.CartId = c.ID;
+                    asd.Products = c.Products;
+                }
                 cartViewModels.Add(asd);
             }
-            return View(cartViewModels);
+            return cartViewModels;
         }
         public IActionResult Checkout()
         {
