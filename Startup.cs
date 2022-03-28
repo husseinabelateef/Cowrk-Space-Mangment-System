@@ -52,6 +52,8 @@ namespace Cowrk_Space_Mangment_System
             services.AddScoped<IRawProductMovmentRepository, RawProductMovmentsRepository>();
             services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IClientCart,ClientCartRepository>();
+
             services.AddSignalR();
             //services.AddIdentity<ApplicationUser, IdentityRole>();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Context>();
