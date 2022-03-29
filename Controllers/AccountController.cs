@@ -1,7 +1,9 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
+using Cowrk_Space_Mangment_System.Repository;
 using Cowrk_Space_Mangment_System.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,17 +15,22 @@ namespace Cowrk_Space_Mangment_System.Controllers
         private SignInManager<ApplicationUser> signInManager;
         private RoleManager<IdentityRole> roleManager;
         Context Entities;
-
+        private ILogingRepository LogingRepository;
+        private IReceptionistRepository ReceptionistRepository; 
         public AccountController(UserManager<ApplicationUser> _userManager
             , SignInManager<ApplicationUser> _signInManager
             , RoleManager<IdentityRole> _roleManager
             , Context _Entities
+            , ILogingRepository _LogingRepository
+            , IReceptionistRepository _ReceptionistRepository
             )
         {
             this.signInManager = _signInManager;
             this.userManager = _userManager;
             this.roleManager = _roleManager;
             this.Entities = _Entities;
+            this.LogingRepository = _LogingRepository;
+            this.ReceptionistRepository = _ReceptionistRepository;
         }
 
         //[HttpGet]
@@ -173,6 +180,14 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     Microsoft.AspNetCore.Identity.SignInResult result =
                         await signInManager.PasswordSignInAsync
                         (UserModel, LoginAccount.password, LoginAccount.RemmemberMe, false);
+                    //Check user role to add Logging Record As Reciptionist
+                    if(await userManager.IsInRoleAsync(UserModel, "Reciptionist"))
+                    {
+                        Loging loging = new Loging();
+                        loging.Receptionst_Id = UserModel.Id;
+                        loging.Login = DateTime.Now;
+                        LogingRepository.Insert(loging);
+                    }
                     return Content("login success");
                    
                 }
@@ -184,8 +199,19 @@ namespace Cowrk_Space_Mangment_System.Controllers
             return View(LoginAccount);
 
         }
-        public async Task<IActionResult> LogOut()
+        public async Task<IActionResult> LogOut(string username)
         {
+            ApplicationUser UserModel =
+                    await userManager.FindByNameAsync(username);
+            //Check user role to add Logging Record As Reciptionist
+            if (await userManager.IsInRoleAsync(UserModel, "Reciptionist"))
+            {
+                Receptionist receptionist= ReceptionistRepository.GetById(UserModel.Id);
+                Loging loging = LogingRepository.GetbyReceptionistId(UserModel.Id);
+                loging.LogOut = DateTime.Now;
+                loging.TotalHours = (loging.LogOut - loging.Login).Hours;
+                LogingRepository.Update(loging.Id,loging);
+            }
             await signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }

@@ -55,5 +55,17 @@ namespace Cowrk_Space_Mangment_System.Controllers
             ReceptionistRepository.DeleteAsync(Receptionist.AppId);
             return RedirectToAction("GetAllReceptionists");
         }
+        
+        [HttpGet]
+        public IActionResult ResetHour(string id)
+        {
+            Receptionist receptionist = ReceptionistRepository.GetById(id);
+            receptionist.TotalHours = 0;
+            ReceptionistRepository.UpdateAsync(id, receptionist);
+            return RedirectToAction("GetAllReceptionists");
+
+        }
+
+
     }
 }

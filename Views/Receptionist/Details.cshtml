@@ -43,6 +43,18 @@
         <dd class = "col-sm-7">
             @Html.DisplayFor(model => model.TotalHours)
         </dd>
+        <dt class = "col-sm-5">
+            Salary
+        </dt>
+        @{
+            int b = Convert.ToInt32(@Model.SalaryPerHour * @Model.TotalHours);
+         }
+        <dd class = "col-sm-7">
+               @b
+        </dd>
+        <dd class = "col-sm-7">
+             <a href="/Receptionist/ResetHour/@Model.AppId" class="btn btn-btn-warning bg-warning m-2">Paid</a>
+        </dd>
 
     </dl>
 </div>

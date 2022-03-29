@@ -1,59 +1,51 @@
 ﻿
-@model IEnumerable<Cowrk_Space_Mangment_System.Models.Receptionist>
+@{
+    ViewData["Title"] = "GetAllProducts";
+}
 
-    <h4>Reciptionists</h4>
+<h1>GetAllProducts</h1>
+
+
+@model IEnumerable<Cowrk_Space_Mangment_System.Models.Product>
+
+    <h4>Products</h4>
     <hr/>
-    <table class="table table-hover table-bordered" id="ReceptionistGrid">
+    <table class="table table-hover table-bordered" id="ProductGrid">
         <thead>
         <tr>
             <th>
                 
-                @Html.DisplayNameFor(model => model.AppId)
+                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Applicationuser.Name)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Applicationuser.Email)
+                @Html.DisplayNameFor(model => model.ExpireDate)
             </th>
-@*            <th>
-                @Html.DisplayNameFor(model => model.Applicationuser.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Applicationuser.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Applicationuser.PasswordHash)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SalaryPerHour)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalHours)
-            </th>*@
-            <th></th>
+
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @item.AppId
+                @item.Id
             </td>
             <td>
-                @item.Applicationuser.Name
+                @item.Name
             </td>
             <td>
-                @item.Applicationuser.Email
+                @item.ExpireDate
             </td>
             <td>    
-            <a onclick="opendetails('@item.AppId','Details')" class="details btn btn-btn-warning bg-warning m-2">Details</a>
+            <a onclick="opendetails('@item.Id','Details')" class="details btn btn-btn-warning bg-warning m-2">Details</a>
            </td>
            <td> 
-            <a onclick="opendetails('@item.AppId','Edit')" class="details btn btn-btn-warning bg-warning m-2">Edit</a>
+            <a onclick="opendetails('@item.Id','Edit')" class="details btn btn-btn-warning bg-warning m-2">Edit</a>
           </td>
           <td> 
-            <a onclick="opendetails('@item.AppId','Delete')" class="details btn btn-btn-warning bg-warning m-2">Delete</a>
+            <a onclick="opendetails('@item.Id','Delete')" class="details btn btn-btn-warning bg-warning m-2">Delete</a>
           </td>
 
             </tr>         
@@ -82,10 +74,10 @@
                 title: "Hi From Nook"
             });
 
-            $("#ReceptionistGrid .details").click(function () {
+            $("#ProductGrid .details").click(function () {
                 $.ajax({
                     type: "POST",        
-                    url:"/Receptionist/"+a+"?appid="+idd,
+                    url:"/Product/"+a+"?id="+idd,
                     contentType: "application/json; charset=utf-8",
                     dataType: "html",
                     success: function (response) {
