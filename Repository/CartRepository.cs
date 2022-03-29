@@ -1,5 +1,6 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -76,6 +77,13 @@ namespace Cowrk_Space_Mangment_System.Repository
         public int GetAllUnpaidCountClientsCart()
         {
             return GetAllUnpaidVistorsCart().Count;
+        }
+
+        public int RemoveProductInCart(int cartId , Guid productId)
+        {
+            var cart = GetById(cartId);
+            cart.Products.Remove(cart.Products.FirstOrDefault(x => x.Id == productId));
+            return context.SaveChanges();
         }
     }
 }

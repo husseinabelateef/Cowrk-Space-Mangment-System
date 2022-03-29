@@ -11,7 +11,6 @@ namespace Cowrk_Space_Mangment_System.Controllers
     public class CatringController : Controller
     {
         ICartRepository cartRepository;
-
          IProductRepository ProductRepository { get; }
 
         public CatringController(ICartRepository cartRepository , IProductRepository productRepository)
@@ -26,8 +25,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
             if (cart != null)
             {
                 var ProductsDetails = productDetail(cart.Products);
-                ViewBag.TotalPrice = cart.TotalPrice;
-                ViewBag.CartId = cart.ID;
+                ViewData["TotalPrice"] = cart.TotalPrice;
+                ViewData["CartId"] = 12;//cart.ID;
                 return View(ProductsDetails);
             }
             else
@@ -35,12 +34,14 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 List<ProductsDetailsCartViewModel> det = new List<ProductsDetailsCartViewModel>();
                 ProductsDetailsCartViewModel ite = new ProductsDetailsCartViewModel();
                 ite.Name = "Manga";
-                ite.BarCode = "Bar1";
+                ite.BarCode = "45";
                 ite.price = 10;
                 ite.Quantity = 5;
                 //det.Add(ite);
                 //det.Add(ite);
                 //ite.ProductId = Guid.NewGuid() ;
+
+                ViewData["CartId"] = 12;
                 det.Add(ite);
                 return View(det);
             }
@@ -60,39 +61,90 @@ namespace Cowrk_Space_Mangment_System.Controllers
             }
             return result;
         }
-        [HttpPost]
-        public IActionResult decrease (string BarCode, string CartId)
+        //[HttpPost]
+        public IActionResult decrease (string BarCode, int CartId)
         {
-           //Cart cart = cartRepository.GetById(int.Parse(CartId));
-           //List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
-           //var pro =  cart.Products.FirstOrDefault(x => x.BarCode == BarCode);
-           //pro.ActualAmount++;
-           //var data =  res.FirstOrDefault(x => x.BarCode == BarCode);
-           // ProductRepository.Update(pro.Id , pro);
-           // data.Quantity--;
-            ProductsDetailsCartViewModel data = new ProductsDetailsCartViewModel();
-            data.Quantity = 5;
-            data.price = 4;
-            data.Name = "Hussein";
-            data.BarCode = "45";
-            return Json(data);
+            bool status;
+            var res = decreeasing(BarCode, CartId, out status);
+            ViewData["status"] = status;
+            if (status) { //مبدئيا                
+                return Json(res);
+            }
             
+            ProductsDetailsCartViewModel dataa = new ProductsDetailsCartViewModel();
+            dataa.Quantity = 7;
+            dataa.price = 4;
+            dataa.Name = "Hussein";
+            dataa.BarCode = "45";
+            return Json(dataa);
+            
+        }
+        private ProductsDetailsCartViewModel decreeasing(string BarCode, int CartId , out bool status)
+        {
+            Cart cart = cartRepository.GetById(CartId);
+            if (cart != null)
+            {
+                List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
+                var produt = cart.Products.FirstOrDefault(x => x.BarCode == BarCode);
+                produt.ActualAmount++;
+                var data = res.FirstOrDefault(x => x.BarCode == BarCode);
+                ProductRepository.Update(produt.Id, produt);
+                data.Quantity--;
+                if(data.Quantity == 0)
+                {
+                    cartRepository.RemoveProductInCart(CartId, produt.Id);
+                }
+                cart.TotalPrice -= data.price;
+               
+                ViewData["TotalPrice"] = cart.TotalPrice;
+                cartRepository.Update(cart.ID, cart);
+                status = true;
+                return data;
+            }
+            status = false;
+            return null;
+        }
+        private ProductsDetailsCartViewModel increasing(string BarCode, string CartId, out bool status)
+        {
+            Cart cart = cartRepository.GetById(int.Parse(CartId));
+            if (cart != null)
+            {
+                List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
+                var produt = cart.Products.FirstOrDefault(x => x.BarCode == BarCode);
+                var data = res.FirstOrDefault(x => x.BarCode == BarCode);
+                if (produt.ActualAmount != 0)
+                {
+                    produt.ActualAmount--;
+                    data.Quantity++;
+                    ProductRepository.Update(produt.Id, produt);
+                    cart.TotalPrice += data.price;
+                    ViewData["TotalPrice"] = cart.TotalPrice;
+                    cartRepository.Update(cart.ID, cart);
+                    status = true;
+                    return data;
+                }
+                status = false;
+                return data;
+            }
+            status = false;
+            return null;
         }
         public IActionResult Increase(string BarCode, string CartId)
         {
-            //Cart cart = cartRepository.GetById(int.Parse(CartId));
-            //List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
-            //var pro = cart.Products.FirstOrDefault(x => x.BarCode == BarCode);
-            //pro.ActualAmount--;
-            //var data = res.FirstOrDefault(x => x.BarCode == BarCode);
-            //ProductRepository.Update(pro.Id, pro);
-            //data.Quantity++;
-            ProductsDetailsCartViewModel data = new ProductsDetailsCartViewModel();
-            data.Quantity = 5;
-            data.price = 4;
-            data.Name = "Hussein";
-            data.BarCode = "45";
-            return Json(data);
+            bool status;
+            var res = increasing(BarCode, CartId, out status);
+            ViewData["status"] = status;
+            if (status) //مبدئيا 
+            {
+                return Json(res);
+            }
+
+            ProductsDetailsCartViewModel dataa = new ProductsDetailsCartViewModel();
+            dataa.Quantity = 6;
+            dataa.price = 4;
+            dataa.Name = "Hussein";
+            dataa.BarCode = "45";
+            return Json(dataa);
         }
 
     }

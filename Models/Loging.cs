@@ -16,7 +16,7 @@ namespace Cowrk_Space_Mangment_System.Models
         public int TotalHours { get; set; }
 
         [ForeignKey("Receptionst")]
-        public int Receptionst_Id { get; set; }
+        public string Receptionst_Id { get; set; }
         public virtual Receptionist Recpetionst { get; set; }
 
     }

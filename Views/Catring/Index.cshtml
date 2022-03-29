@@ -1,12 +1,12 @@
 ﻿@model List< ProductsDetailsCartViewModel>
-<div class="container mt-5 mb-5">
+<div   class="container mt-5 mb-5">
         <div class="d-flex justify-content-center row">
             <div class="col-md-8">
                 <div class="p-2">
                     <h4>Shopping cart</h4>
                 </div>
 
-                 <div id="product-Cart-Container">
+                 <div id="product-Cart-Container" data-CartId = "@ViewData["CartId"]">
 
               @{if(Model!= null)
               @foreach(var item in Model){  
@@ -36,7 +36,7 @@
                 </div>
                 <div class="d-flex flex-row align-items-center justify-content-between mt-3 p-2 bg-white rounded">
                     <h5 class="text-grey"> Total Price</h5>
-                    <h5 id="totalCartPrice"class="text-grey">@ViewBag.TotalPrice</h5>
+                    <h5 id="totalCartPrice"class="text-grey">@ViewData["TotalPrice"]</h5>
                 </div>
                 <div class="d-flex flex-row align-items-center justify-content-center mt-3 p-2 bg-white rounded">
                     <button class="btn btn-warning btn-block btn-lg ml-2 pay-button" type="button">Proceed to Pay
@@ -51,66 +51,108 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
 
     <script>
-     function update ( qty , totalPrice , BarCode)
-            {
-            var proCont = document.getElementById(BarCode)
-            var quantity = proCont.children[2]
-            var QuntityValue = quantity.children[1]
-            QuntityValue.textContent = qty
+    var VariableCartId = document.getElementById("product-Cart-Container");
+    var VariableCartIdContent  = VariableCartId.getAttribute('data-CartId');
+    function update(qty, BarCode) {
+  var proCont = document.getElementById(BarCode);
+  var quantity = proCont.children[2];
+  var QuntityValue = quantity.children[1];
+  var totPriceCart = documentGetElementById("totalCartPrice")
+  if (QuntityValue.textContent !== 1) {
+    QuntityValue.textContent = qty;
+    totPriceCart.textContent = ViewData["TotalPrice"]
+  } else {
+    if (confirm("Are you sure you want to Delete")) {
+      Delete(BarCode);
+    } else {
+      console.log("Thing was not saved to the database.");
+    }
+  }
+}
+function Delete(BarCode)
+{
+  var proCont = document.getElementById(BarCode);
+  proCont.remove();
+}
+function DeleteProd(BarCode) {
+  if (confirm("Are you sure you want to Delete")) 
+  {
+    Delete(BarCode)
+  }
+  else 
+  {
+    // Do nothing!
+    console.log("Thing was not saved to the database.");
+  }
+  console.log("Fatma");
+}
+function decreaseProductQty(BarCode) {
+  var proCont = document.getElementById(BarCode);
+  var quantity = proCont.children[2];
+  var QuntityValue = quantity.children[1];
+  if (QuntityValue.textContent !== 1) {
+   decreaseAjaxCall(BarCode) 
+  } else {
+    if (confirm("Are you sure you want to Delete")) {
+      Delete(BarCode);
+    } else {
+      console.log("Thing was not saved to the database.");
+    }
+  }
 
-            }
-        function DeleteProd(BarCode)
-        {
-                //var productDecreasing = {  
-                // ProductId: '10001',  
-                //    Name: 'Shashangka',  
-                //    Quantity : 31  
-                //    }
-                console.log("Fatma")
-        }
-        function decreaseProductQty(BarCode)
-        { 
-                //    $.ajax({  
-                //    url: "/Catring/decrease",  
-                //    type: "POST",
-                //    data: {"BarCode" :  BarCode , "CartId" : '@ViewBag.CartId'}, 
-                //    contentType: "application/json; charset=utf-8",
-                //    processData: false ,
-                //    success: function(data)
-                //    {  
-                //           update (data.ProductId , data.Quantity,'@ViewBag.CartId')
-                //    }
-                //    error: function() 
-                //    {  
-                //        alert("Error occured!!")  
-                //    }  
-                //});
-                 console.log("Decrease")
-               
-        }
-         
-        function increseProductQty (BarCode)
-        {
-        
-                $.ajax(
-                    {   
-                    url: "/Catring/Increase",  
-                    data: {"BarCode" :  BarCode , "CartId" : '@ViewBag.CartId'}, 
-                    success: function(data)
-                    {  
-                        console.log(data.name);
-                           update (data.barCode , data.quantity,'@ViewBag.CartId')
-                    },  
-                    error: function() 
-                    {  
-                        alert("Error occured!!")  
-                    }  
-                });
-          console.log("Increase")
-         }
-            
+  console.log("Decrease");
+}
+function deleteAjaxCall(BarCode) {
+  $.ajax({
+    url: "/Catring/delete",
+    //type: "POST",
+    data: { BarCode: BarCode, CartId: VariableCartIdContent },
+    contentType: "application/json; charset=utf-8",
+    processData: false,
+    success: function (data) {
+      console.log(data);
+      alert(data)
+    },
+    error: function () {
+      alert("Error occured!!");
+    },
+  });
+}
+function decreaseAjaxCall(BarCode) {
+  $.ajax({
+    url: "/Catring/decrease",
+    //type: "POST",
+    data: { BarCode: BarCode, CartId: VariableCartIdContent },
+    contentType: "application/json; charset=utf-8",
+    processData: false,
+    success: function (data) {
+      console.log(data);
+      update(data.quantity, data.barCode);
+    },
+    error: function () {
+      alert("Error occured!!");
+    },
+  });
+}
 
-        
-      
+function increseProductQty(BarCode) {
+  $.ajax({
+    url: "/Catring/Increase",
+    data: { BarCode: BarCode, CartId: VariableCartIdContent },
+    success: function (data) {
+      console.log(data.name);
+      if(View.Data["status"]){
+      update(data.quantity, data.barCode)}
+      else{
+          alert("Product Out Of Stock");
+      }
+    },
+    error: function () {
+      alert("Error occured!!");
+    },
+  });
+  console.log("Increase");
+}
+
     </script>
     }
