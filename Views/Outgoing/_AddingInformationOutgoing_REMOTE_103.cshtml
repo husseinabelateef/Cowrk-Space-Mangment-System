@@ -1,15 +1,28 @@
-﻿
-@*
+﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @model Outgoing
-@{
-        SelectList OutgoingList=new SelectList (ViewBag.Outgoings,"Id","Name");
-}
+<style>
+     .discrpt{   
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:#F9CB38;
+    background-color: rgba(12, 1, 1, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+</style>
+
 <button style="background-color: #F9CB38; width:100px;border:1px solid white;" id="btnclick" type="button" class="btn btn-primary ms-4" data-toggle="modal" data-target="#exampleModal">
   Add
 </button>
-<form  method="post"  id="addInf" asp-action="AddingInformation" asp-controller="Outgoing" >
+<div class="discrpt " style="margin-top: 7%; " id="addInf"  >
+<form  method="post"   asp-action="AddingInformation" asp-controller="Outgoing" >
     <div>
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
@@ -31,8 +44,9 @@
        <input asp-for="Reciption_ID" class="form-control" />
           <span asp-validation-for="Reciption_ID" class="text-danger"></span>
     </div>
-    <input type="submit" value="Save" class="btn btn-success" />
+    <input style="background-color: #F9CB38; width:100px;border:1px solid white;" type="submit" value="Save" class="btn btn-success" />
 </form>
+</div>
 <script>
     $(document).ready(function(){
         $('btnclick').click(function(){
