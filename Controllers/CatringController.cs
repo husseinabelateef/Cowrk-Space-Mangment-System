@@ -104,9 +104,9 @@ namespace Cowrk_Space_Mangment_System.Controllers
             status = false;
             return null;
         }
-        private ProductsDetailsCartViewModel increasing(string BarCode, string CartId, out bool status)
+        private ProductsDetailsCartViewModel increasing(string BarCode, int CartId, out bool status)
         {
-            Cart cart = cartRepository.GetById(int.Parse(CartId));
+            Cart cart = cartRepository.GetById(CartId);
             if (cart != null)
             {
                 List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
@@ -129,7 +129,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             status = false;
             return null;
         }
-        public IActionResult Increase(string BarCode, string CartId)
+        public IActionResult Increase(string BarCode, int CartId)
         {
             bool status;
             var res = increasing(BarCode, CartId, out status);
@@ -146,6 +146,16 @@ namespace Cowrk_Space_Mangment_System.Controllers
             dataa.BarCode = "45";
             return Json(dataa);
         }
-
+        public IActionResult delete(string BarCode, int CartId)
+        {
+            var cart = cartRepository.GetById(CartId);
+            var product = cart.Products.FirstOrDefault(p => p.BarCode == BarCode);
+           int result =  cartRepository.RemoveAllProductWithId(CartId, product.Id);
+            if(result == 0)
+                return Json("un SuccessFully");
+            else
+                return Json("Delete SuccessFully");
+        }
     }
+    
 }

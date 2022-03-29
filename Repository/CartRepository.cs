@@ -85,5 +85,16 @@ namespace Cowrk_Space_Mangment_System.Repository
             cart.Products.Remove(cart.Products.FirstOrDefault(x => x.Id == productId));
             return context.SaveChanges();
         }
+
+        public int RemoveAllProductWithId(int cartId, Guid productId)
+        {
+            Cart cart = GetById(cartId);
+            if (cart != null)
+            {
+                cart.Products.RemoveAll(x=>x.Id == productId);
+                return context.SaveChanges();
+            }
+            return 0;
+        }
     }
 }
