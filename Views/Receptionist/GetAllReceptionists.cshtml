@@ -1,11 +1,21 @@
-﻿@model IEnumerable<Cowrk_Space_Mangment_System.Models.Receptionist>
+﻿@*@model IEnumerable<Cowrk_Space_Mangment_System.Models.Receptionist>
 
 @{
     ViewData["Title"] = "GetAllReceptionists";
 }
 
+
+<!DOCTYPE html>
+ 
+<html>
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <title>Index</title>
+</head>
+<body>
+
 <h1>GetAllReceptionists</h1>
-<table class="table">
+<table class="table"  id="CustomerGrid">
     <thead>
         <tr>
             <th>
@@ -62,12 +72,195 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TotalHours)
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=@item.AppId}) |
-                @Html.ActionLink("Details", "Details", new { id=@item.AppId }) |
-                @Html.ActionLink("Delete", "Delete", new { id=@item.AppId})
-            </td>
-        </tr>
+            <td><a class="details" href="javascript:;">View</a></td>
+            
+            <td>    
+            <a href="/Receptionist/Details/@item.AppId" class="btn btn-btn-warning bg-warning">Details</a>
+           </td>
+           <td> 
+            <a href="/Receptionist/Edit/@item.AppId" class="btn btn-btn-warning bg-warning">Edit</a>
+          </td>
+          <td> 
+            <a href="/Receptionist/Delete/@item.AppId" class="btn btn-btn-warning bg-warning">Delete</a>
+          </td>
+
+            </tr>  
+       
 }
     </tbody>
 </table>
+
+  <div id="dialog" style="display: none">
+    </div>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+    <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css"
+          rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "View Details"
+            });
+            $("#CustomerGrid .details").click(function () {
+                var customerId = $(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    type: "POST",
+                    url: "/Reciptionist/Details",
+                    data: '{customerId: "' + customerId + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#dialog').html(response);
+                        $('#dialog').dialog('open');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    </body>
+</html>*@
+
+
+
+
+
+
+
+
+@model IEnumerable<Cowrk_Space_Mangment_System.Models.Receptionist>
+
+    <h4>Reciptionists</h4>
+    <hr/>
+    <table class="table table-hover table-bordered" id="ReciptionistGrid">
+
+
+
+        <thead>
+        <tr>
+            <th>
+                
+                @Html.DisplayNameFor(model => model.AppId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Applicationuser.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Applicationuser.Email)
+            </th>
+@*            <th>
+                @Html.DisplayNameFor(model => model.Applicationuser.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Applicationuser.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Applicationuser.PasswordHash)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalaryPerHour)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalHours)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.AppId
+            </td>
+            <td>
+                @item.Applicationuser.Name
+            </td>
+            <td>
+                @item.Applicationuser.Email
+            </td>
+@*            <td>
+                @Html.DisplayFor(modelItem => item.Applicationuser.PhoneNumber)
+            </td>
+@*            <td>
+                @Html.DisplayFor(modelItem => item.Applicationuser.UserName)
+            </td>*@
+@*            <td>
+                @Html.DisplayFor(modelItem => item.Applicationuser.PasswordHash)
+            </td>*@
+@*            <td>
+                @Html.DisplayFor(modelItem => item.SalaryPerHour)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalHours)
+            </td>*@
+            <td>    
+            <a onclick="opendetails('@item.AppId','Details')" class="details btn btn-btn-warning bg-warning m-2">Details</a>
+           </td>
+           <td> 
+            <a onclick="opendetails('@item.AppId','Edit')" class="details btn btn-btn-warning bg-warning m-2">Edit</a>
+          </td>
+          <td> 
+            <a onclick="opendetails('@item.AppId','Delete')" class="details btn btn-btn-warning bg-warning m-2">Delete</a>
+          </td>
+
+            </tr>         
+}
+    </tbody>
+    </table>
+    <div id="dialog" style="display: none">
+    </div>
+    @section Scripts
+    {
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+    <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css"
+          rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+
+        function opendetails(idd,a)
+        {
+
+        $(function () {
+            $("#dialog").dialog({
+                resizable: true, 
+                draggable: true,                
+                autoOpen: false,
+                modal: true,
+                title: "Hi From Nook"
+            });
+
+            $("#ReciptionistGrid .details").click(function () {
+                //var RecepId = $(this).closest("tr").find("td").eq(0).html();
+                //var x=0;
+                //console.log(idd);
+                //console.log(typeof(idd));
+                $.ajax({
+                    type: "POST",        
+                    url:"/Receptionist/"+a+"?appid="+idd,//: "/Receptionist/Edit?appid="+idd,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        //console.log(response);
+                        $('#dialog').html(response);
+                        $('#dialog').dialog('open');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+        }
+    </script>
+ }
+

@@ -1,4 +1,8 @@
-﻿@model Cowrk_Space_Mangment_System.Models.Receptionist
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Cowrk_Space_Mangment_System.Models.Receptionist
 
 @{
     ViewData["Title"] = "Edit";
@@ -9,13 +13,11 @@
 <h4>Receptionist</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="w-auto">
+        <form asp-action="SaveEdit">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="AppId" class="control-label"></label>
-                <input asp-for="AppId" class="form-control" />
-                <span asp-validation-for="AppId" class="text-danger"></span>
+                <label asp-for="AppId" class="control-label">@Model.AppId</label>
             </div>
             <div class="form-group">
                 <label asp-for="Applicationuser.Name" class="control-label"></label>
@@ -53,7 +55,7 @@
                 <span asp-validation-for="TotalHours" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </form>
     </div>
@@ -62,4 +64,3 @@
 <div>
     <a asp-action="GetAllReceptionists">Back to List</a>
 </div>
-

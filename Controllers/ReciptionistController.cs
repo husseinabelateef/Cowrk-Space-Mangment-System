@@ -1,6 +1,7 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
 using Cowrk_Space_Mangment_System.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace Cowrk_Space_Mangment_System.Controllers
@@ -18,37 +19,38 @@ namespace Cowrk_Space_Mangment_System.Controllers
             List<Receptionist> Receptionists = ReceptionistRepository.GetAll();
             return View(Receptionists);
         }
-
-        public IActionResult Details(string id)
+        
+        [HttpPost]
+        public IActionResult Details(string appid)
         {
-            Receptionist Receptionist = ReceptionistRepository.GetById(id);
-            return View(Receptionist);
+            Receptionist receptionist = ReceptionistRepository.GetById(appid);
+            return PartialView("Details", receptionist);
         }
 
-
-        [HttpGet]
-        public IActionResult Edit(string id)
+        [HttpPost]
+        public IActionResult Edit(string appid)
         {
-            Receptionist Receptionist = ReceptionistRepository.GetById(id);
-            return View(Receptionist);
+            Receptionist Receptionist = ReceptionistRepository.GetById(appid);
+            return PartialView("Edit",Receptionist);
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Receptionist Receptionist)
+        //[ValidateAntiForgeryToken]
+        public IActionResult SaveEdit(Receptionist Receptionist)
         {
             ReceptionistRepository.UpdateAsync(Receptionist.AppId, Receptionist);
             return RedirectToAction("GetAllReceptionists");
         }
 
-        [HttpGet]
-        public IActionResult Delete(int id)
+        [HttpPost]
+        public IActionResult Delete(string Appid)
         {
-            return View();
+            Receptionist receptionist= ReceptionistRepository.GetById(Appid);
+            return PartialView("Delete", receptionist);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete(Receptionist Receptionist)
+        //[ValidateAntiForgeryToken]
+        public IActionResult FinalDelete(Receptionist Receptionist)
         {
             ReceptionistRepository.DeleteAsync(Receptionist.AppId);
             return RedirectToAction("GetAllReceptionists");

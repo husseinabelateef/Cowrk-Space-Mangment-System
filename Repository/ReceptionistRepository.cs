@@ -63,8 +63,11 @@ namespace Cowrk_Space_Mangment_System.Repository
                 Old_Receptionist.SalaryPerHour =
                     Receptionist.SalaryPerHour;
                 Old_Receptionist.TotalHours = Receptionist.TotalHours;
-
+                Entities.Entry(Old_Receptionist).State = EntityState.Modified;
+                Entities.SaveChanges();
+                //Entities.Receptionist.Update(Old_Receptionist);
                 await userManager.UpdateAsync(Old_Receptionist.Applicationuser);
+                
                 return Entities.SaveChanges();
             }
             return 0;
