@@ -34,7 +34,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 List<ProductsDetailsCartViewModel> det = new List<ProductsDetailsCartViewModel>();
                 ProductsDetailsCartViewModel ite = new ProductsDetailsCartViewModel();
                 ite.Name = "Manga";
-                ite.BarCode = "45";
+                ite.guid = Guid.NewGuid();
                 ite.price = 10;
                 ite.Quantity = 5;
                 //det.Add(ite);
@@ -53,7 +53,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             foreach (var item in productsSet)
             {
                 ProductsDetailsCartViewModel ite = new ProductsDetailsCartViewModel();
-                ite.BarCode = item.BarCode;
+                ite.guid = item.Id;
                 ite.price = item.SellingPrice;
                 ite.Quantity = products.FindAll(x => x.Id == item.Id).Count;
                 ite.Name = item.Name;
@@ -62,10 +62,11 @@ namespace Cowrk_Space_Mangment_System.Controllers
             return result;
         }
         //[HttpPost]
-        public IActionResult decrease (string BarCode, int CartId)
+        public IActionResult decrease (string guid, int CartId)
         {
             bool status;
-            var res = decreeasing(BarCode, CartId, out status);
+            Guid guidd = Guid.Parse(guid);
+            var res = decreeasing(guidd, CartId, out status);
             ViewData["status"] = status;
             if (status) { //مبدئيا                
                 return Json(res);
@@ -75,19 +76,19 @@ namespace Cowrk_Space_Mangment_System.Controllers
             dataa.Quantity = 7;
             dataa.price = 4;
             dataa.Name = "Hussein";
-            dataa.BarCode = "45";
+            dataa.guid = guidd;
             return Json(dataa);
             
         }
-        private ProductsDetailsCartViewModel decreeasing(string BarCode, int CartId , out bool status)
+        private ProductsDetailsCartViewModel decreeasing(Guid guid, int CartId , out bool status)
         {
             Cart cart = cartRepository.GetById(CartId);
             if (cart != null)
             {
                 List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
-                var produt = cart.Products.FirstOrDefault(x => x.BarCode == BarCode);
+                var produt = cart.Products.FirstOrDefault(x => x.Id == guid);
                 produt.ActualAmount++;
-                var data = res.FirstOrDefault(x => x.BarCode == BarCode);
+                var data = res.FirstOrDefault(x => x.guid == guid);
                 ProductRepository.Update(produt.Id, produt);
                 data.Quantity--;
                 if(data.Quantity == 0)
@@ -104,14 +105,15 @@ namespace Cowrk_Space_Mangment_System.Controllers
             status = false;
             return null;
         }
-        private ProductsDetailsCartViewModel increasing(string BarCode, int CartId, out bool status)
+        private ProductsDetailsCartViewModel increasing(Guid guid, int CartId, out bool status)
         {
             Cart cart = cartRepository.GetById(CartId);
+            
             if (cart != null)
             {
                 List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
-                var produt = cart.Products.FirstOrDefault(x => x.BarCode == BarCode);
-                var data = res.FirstOrDefault(x => x.BarCode == BarCode);
+                var produt = cart.Products.FirstOrDefault(x => x.Id == guid);
+                var data = res.FirstOrDefault(x => x.guid == guid);
                 if (produt.ActualAmount != 0)
                 {
                     produt.ActualAmount--;
@@ -129,10 +131,11 @@ namespace Cowrk_Space_Mangment_System.Controllers
             status = false;
             return null;
         }
-        public IActionResult Increase(string BarCode, int CartId)
+        public IActionResult Increase(string guid, int CartId)
         {
             bool status;
-            var res = increasing(BarCode, CartId, out status);
+            Guid guidd = Guid.Parse(guid);
+            var res = increasing(guidd, CartId, out status);
             ViewData["status"] = status;
             if (status) //مبدئيا 
             {
@@ -143,19 +146,25 @@ namespace Cowrk_Space_Mangment_System.Controllers
             dataa.Quantity = 6;
             dataa.price = 4;
             dataa.Name = "Hussein";
-            dataa.BarCode = "45";
+            dataa.guid = guidd;
             return Json(dataa);
         }
-        public IActionResult delete(string BarCode, int CartId)
+        public IActionResult delete(string guid, int CartId)
         {
+            Guid guidd = Guid.Parse(guid);
             var cart = cartRepository.GetById(CartId);
-            var product = cart.Products.FirstOrDefault(p => p.BarCode == BarCode);
+            var product = cart.Products.FirstOrDefault(p => p.Id == guidd);
            int result =  cartRepository.RemoveAllProductWithId(CartId, product.Id);
             if(result == 0)
                 return Json("un SuccessFully");
             else
                 return Json("Delete SuccessFully");
         }
-    }
+        public IActionResult Pay(string cartid)
+        {
+           // cartRepository.confirmPay(int.Parse(cartid));
+            return RedirectToAction("Catring", "Home", 1);
+        }
+    } 
     
 }

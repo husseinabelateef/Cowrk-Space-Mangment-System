@@ -96,5 +96,12 @@ namespace Cowrk_Space_Mangment_System.Repository
             }
             return 0;
         }
+        public int confirmPay(int CartId)
+        {
+            Cart cart = GetById(CartId);
+            cart.IsPaid = true;
+           return  context.SaveChanges();
+
+        }
     }
 }

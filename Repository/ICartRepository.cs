@@ -14,6 +14,7 @@ namespace Cowrk_Space_Mangment_System.Repository
         public int GetAllUnpaidCountVistorsCart();
         public int GetAllUnpaidCountClientsCart();
         public int RemoveAllProductWithId(int cartId, Guid productId);
+        public int confirmPay(int CartId);
 
     }
 }

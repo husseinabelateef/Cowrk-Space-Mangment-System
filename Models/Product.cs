@@ -7,12 +7,14 @@ namespace Cowrk_Space_Mangment_System.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+
         //price from supplier
         public double ActualPrice { get; set; }
+
         //price I will sell to clients with
         public double SellingPrice { get; set; }
-        // barcode printed in every product 
 
+        // barcode printed in every product 
         public string BarCode { get; set; }
 
         //Actual Amount in place

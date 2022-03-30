@@ -10,7 +10,7 @@
 
               @{if(Model!= null)
               @foreach(var item in Model){  
-                <div id="@item.BarCode"class="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
+                <div id="@item.guid"class="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
                     <div class="mr-1">
                         <img class="rounded" src="./image/317.jpg" width="70">
                     </div>
@@ -19,15 +19,15 @@
                     </div>
 
                     <div class="d-flex flex-row align-items-center qty">
-                       <span  >  <i onclick = "decreaseProductQty('@item.BarCode')" class="fa fa-minus text-danger ms-2 me-2 p-2" ></i> </span>
+                       <span  >  <i onclick ="decreaseProductQty('@item.guid')" class="fa fa-minus text-danger ms-2 me-2 p-2" ></i> </span>
                         <h5  class="text-grey">  @item.Quantity </h5>
-                     <span>  <i onclick="increseProductQty('@item.BarCode')" class="fa fa-plus text-success ms-2 me-2 p-2"></i> </span>
+                     <span>  <i onclick="increseProductQty('@item.guid')" class="fa fa-plus text-success ms-2 me-2 p-2"></i> </span>
                     </div>
                     <div>
                         <h5 class="text-grey">$@item.price </h5>
                     </div>
                     <div class="d-flex align-items-center">
-                        <i class="fa fa-trash mb-1 text-danger" onclick="DeleteProd('@item.BarCode')"></i>
+                        <i class="fa fa-trash mb-1 text-danger" onclick="DeleteProd('@item.guid')"></i>
                     </div>
                 </div>
                 }
@@ -36,10 +36,10 @@
                 </div>
                 <div class="d-flex flex-row align-items-center justify-content-between mt-3 p-2 bg-white rounded">
                     <h5 class="text-grey"> Total Price</h5>
-                    <h5 id="totalCartPrice"class="text-grey">@ViewData["TotalPrice"]</h5>
+                    <h5 id="totalCartPrice"class="text-grey">'@ViewData["TotalPrice"]'</h5>
                 </div>
                 <div class="d-flex flex-row align-items-center justify-content-center mt-3 p-2 bg-white rounded">
-                    <button class="btn btn-warning btn-block btn-lg ml-2 pay-button" type="button">Proceed to Pay
+                    <button class="btn btn-warning btn-block btn-lg ml-2 pay-button" onclick="paid()" type="button">Proceed to Pay
                     </button>
                 </div>
             </div>
@@ -53,31 +53,54 @@
     <script>
     var VariableCartId = document.getElementById("product-Cart-Container");
     var VariableCartIdContent  = VariableCartId.getAttribute('data-CartId');
-    function update(qty, BarCode) {
-  var proCont = document.getElementById(BarCode);
+    function update(qty, guid) {
+  var proCont = document.getElementById(guid);
   var quantity = proCont.children[2];
   var QuntityValue = quantity.children[1];
-  var totPriceCart = documentGetElementById("totalCartPrice")
+  var totPriceCart = document.getElementById("totalCartPrice")   
   if (QuntityValue.textContent !== 1) {
     QuntityValue.textContent = qty;
-    totPriceCart.textContent = ViewData["TotalPrice"]
+    totPriceCart.textContent = '@ViewData["TotalPrice"]'
   } else {
     if (confirm("Are you sure you want to Delete")) {
-      Delete(BarCode);
+      Delete(guid);
     } else {
       console.log("Thing was not saved to the database.");
     }
   }
 }
-function Delete(BarCode)
+function paid()
 {
-  var proCont = document.getElementById(BarCode);
+  if (confirm("Are you sure you want to Confirm Pay")) 
+  {
+    $.ajax({
+    url: "/Catring/Pay",
+    //type: "POST",
+    data: { cartid: VariableCartIdContent },
+    contentType: "application/json; charset=utf-8",
+    success: function () {
+    },
+    error: function () {
+      alert("Error occured!!");
+    },
+  });
+  }
+  else 
+  {
+    // Do nothing!
+    console.log("Thing was not saved to the database.");
+  }
+    console.log(VariableCartIdContent)
+}
+function Delete(guid)
+{
+  var proCont = document.getElementById(guid);
   proCont.remove();
 }
-function DeleteProd(BarCode) {
+function DeleteProd(guid) {
   if (confirm("Are you sure you want to Delete")) 
   {
-    Delete(BarCode)
+    Delete(guid)
   }
   else 
   {
@@ -86,15 +109,16 @@ function DeleteProd(BarCode) {
   }
   console.log("Fatma");
 }
-function decreaseProductQty(BarCode) {
-  var proCont = document.getElementById(BarCode);
+function decreaseProductQty(guid) 
+{
+  var proCont = document.getElementById(guid);
   var quantity = proCont.children[2];
   var QuntityValue = quantity.children[1];
   if (QuntityValue.textContent !== 1) {
-   decreaseAjaxCall(BarCode) 
+   decreaseAjaxCall(guid) 
   } else {
     if (confirm("Are you sure you want to Delete")) {
-      Delete(BarCode);
+      Delete(guid);
     } else {
       console.log("Thing was not saved to the database.");
     }
@@ -102,11 +126,11 @@ function decreaseProductQty(BarCode) {
 
   console.log("Decrease");
 }
-function deleteAjaxCall(BarCode) {
+function deleteAjaxCall(guid) {
   $.ajax({
     url: "/Catring/delete",
     //type: "POST",
-    data: { BarCode: BarCode, CartId: VariableCartIdContent },
+    data: { guid: guid, CartId: VariableCartIdContent },
     contentType: "application/json; charset=utf-8",
     processData: false,
     success: function (data) {
@@ -118,16 +142,15 @@ function deleteAjaxCall(BarCode) {
     },
   });
 }
-function decreaseAjaxCall(BarCode) {
+function decreaseAjaxCall(guid) {
   $.ajax({
     url: "/Catring/decrease",
     //type: "POST",
-    data: { BarCode: BarCode, CartId: VariableCartIdContent },
+    data: { guid: guid, CartId: VariableCartIdContent },
     contentType: "application/json; charset=utf-8",
-    processData: false,
     success: function (data) {
       console.log(data);
-      update(data.quantity, data.barCode);
+      update(data.quantity, data.guid);
     },
     error: function () {
       alert("Error occured!!");
@@ -135,17 +158,13 @@ function decreaseAjaxCall(BarCode) {
   });
 }
 
-function increseProductQty(BarCode) {
+function increseProductQty(guid) {
   $.ajax({
     url: "/Catring/Increase",
-    data: { BarCode: BarCode, CartId: VariableCartIdContent },
+    data: { guid: guid, CartId: VariableCartIdContent },
     success: function (data) {
-      console.log(data.name);
-      if(View.Data["status"]){
-      update(data.quantity, data.barCode)}
-      else{
-          alert("Product Out Of Stock");
-      }
+      console.log(data);
+      update(data.quantity, data.guid)
     },
     error: function () {
       alert("Error occured!!");
