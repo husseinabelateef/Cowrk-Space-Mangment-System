@@ -47,7 +47,20 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 reservationRepository.Insert(reservation);
             }
 
-            return View("_BookReservation");
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            return View();
+        }
+
+            [HttpPost]
+        public IActionResult Delete(RoomReserve roomReserve)
+        {
+            reserveClassRepository.Delete(roomReserve.Id);       
+            return RedirectToAction("Index");
+
         }
     }
 }
