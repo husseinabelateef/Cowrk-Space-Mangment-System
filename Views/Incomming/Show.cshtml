@@ -12,17 +12,27 @@
           </div>
           <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right" data-aos-delay="100">
           <h3>Incomming Report for Shift </h3>
-    <input type="button" value="ToatalPrice" class="btn btn-success" style="background-color: #F9CB38 ; margin:20px; width:130px;border:1px solid white;"/>
-    <input type="button" value="ToatalCatring" class="btn btn-success" style="background-color: #F9CB38;margin:20px ;width:130px;border:1px solid white;"/>
-    <div>
-         <form  method="post"  id="addInf" asp-action="ToatalPrice" asp-controller="Incomming" >
+           <form  method="post"  id="addInf" asp-action="ToatalPrice" asp-controller="Incomming" >
  <div>
-        <label asp-for="AppuserID"></label>
+        <label asp-for="Id">IncommingID</label>
         <input asp-for="AppuserID" class="form-control" />
         <span asp-validation-for="AppuserID" class="text-danger"></span>
     </div>
-     <input type="submit" value="show" class="btn btn-success" style="background-color: #F9CB38; width:100px;border:1px solid white;"/>
+     <input type="submit" value="ToatalPrice" class="btn btn-success" style="background-color: #F9CB38 ; width:130px;border:1px solid white;"/>
+    
    </form>
+   
+     <form  method="post"  id="addInf" asp-action="ToatalCatring" asp-controller="Incomming" >
+ <div>
+        <label asp-for="Id">IncommingID</label>
+        <input asp-for="AppuserID" class="form-control" />
+        <span asp-validation-for="AppuserID" class="text-danger"></span>
+    </div>
+     <input type="submit" value="ToataCatring" class="btn btn-success" style="background-color: #F9CB38 ; width:130px;border:1px solid white;"/>
+    
+   </form>
+    <div>
+      
     </div>
        </div>
         </div>
