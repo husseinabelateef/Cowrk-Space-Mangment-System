@@ -3,11 +3,21 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @model Incomming
-<div>
+@*<div>
 <label> Total Price for Chift for </label>
+<input />
 <span>@Model.AppuserID : </span>
 <span>@Model.ShiftCloseReservationIncome</span>
-</div>
+</div>*@
+ <form  method="post"  id="addInf" asp-action="AddingInformation" asp-controller="Incomming" >
+ <div>
+        <label asp-for="AppuserID"></label>
+        <input asp-for="AppuserID" class="form-control" />
+          <span asp-validation-for="AppuserID" class="text-danger"></span>
+    </div>
+     <input type="submit" value="show" class="btn btn-success" style="background-color: #F9CB38; width:100px;border:1px solid white;"/>
+   </form>
+
 
 <script>
    

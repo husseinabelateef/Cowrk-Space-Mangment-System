@@ -15,6 +15,10 @@ namespace Cowrk_Space_Mangment_System.Controllers
         {
             return View();
         }
+        public IActionResult Show()
+        {
+            return View();
+        }
         public IActionResult ToatalPrice(int Id)
         {
             Incomming incomming=incommingRepository.GetById(Id);
@@ -23,7 +27,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
         public IActionResult ToatalCatring(int Id)
         {
             Incomming incomming = incommingRepository.GetById(Id);
-            return View(incomming);
+            return View("_ToatalCatringIncomming", incomming);
         }
     }
 }
