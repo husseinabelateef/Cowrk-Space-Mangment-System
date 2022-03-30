@@ -25,30 +25,32 @@ namespace Cowrk_Space_Mangment_System.Controllers
             return View();
         }
 
-        [HttpGet]
         public IActionResult creat()
         {
-            ReserveClass_ViewModel reserveClass_ViewModel = new ReserveClass_ViewModel();
-            return View("classReservation", reserveClass_ViewModel);
+           ReserveClass_ViewModel reserveClass_ViewModel = new ReserveClass_ViewModel();
+            return View();
 
         }
         [HttpPost]
-        public IActionResult creatSave([FromRoute] int id, ReserveClass_ViewModel reserveClass)
+        public IActionResult creatSave( ReserveClass_ViewModel reserveClass)
         {
-            if (reserveClass.Client_Name != null)
+            if (ModelState.IsValid == true)
             {
                 Reservation reservation = new Reservation();
                 RoomReserve roomReserve = new RoomReserve();
                 reservation.Start_Time = reserveClass.Start_Time;
                 reservation.ExpextedHours = reserveClass.ExpextedHours;
                 reservation.Date = reserveClass.Date_Reserve;
-                roomReserve.Reservation_Id = id;
                 roomReserve.Room.Name = reserveClass.type_Room;
                 reservationRepository.Insert(reservation);
+                return RedirectToAction("Index");
             }
-
             return RedirectToAction("Index");
+           // return View("creat", reserveClass);
         }
+
+
+
         [HttpGet]
         public IActionResult Delete(int id)
         {
