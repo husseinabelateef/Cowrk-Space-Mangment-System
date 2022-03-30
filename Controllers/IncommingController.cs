@@ -22,12 +22,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
         public IActionResult ToatalPrice(int Id)
         {
             Incomming incomming=incommingRepository.GetById(Id);
-            return PartialView("_ToatalPriceIncoming",incomming);
+            return View("_ToatalPriceIncoming",incomming);
         }
-        public IActionResult ToatalCatring(int Id)
-        {
-            Incomming incomming = incommingRepository.GetById(Id);
-            return View("_ToatalCatringIncomming", incomming);
-        }
+        
     }
 }

@@ -9,14 +9,39 @@
 <span>@Model.AppuserID : </span>
 <span>@Model.ShiftCloseReservationIncome</span>
 </div>*@
- <form  method="post"  id="addInf" asp-action="AddingInformation" asp-controller="Incomming" >
+
+
+
+<section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
+            <img src="~/assets/img/n3.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right" data-aos-delay="100">
+          <h3>Incomming Report for Shift </h3>
+    <input type="button" value="ToatalPrice" class="btn btn-success" style="background-color: #F9CB38 ; margin:20px; width:130px;border:1px solid white;"/>
+    <input type="button" value="ToatalCatring" class="btn btn-success" style="background-color: #F9CB38;margin:20px ;width:130px;border:1px solid white;"/>
+   
+    <div>
+         <form  method="post"  id="addInf" asp-action="ToatalPrice" asp-controller="Incomming" >
  <div>
         <label asp-for="AppuserID"></label>
         <input asp-for="AppuserID" class="form-control" />
-          <span asp-validation-for="AppuserID" class="text-danger"></span>
+        <span asp-validation-for="AppuserID" class="text-danger"></span>
     </div>
      <input type="submit" value="show" class="btn btn-success" style="background-color: #F9CB38; width:100px;border:1px solid white;"/>
    </form>
+
+    </div>
+       </div>
+        </div>
+
+      </div>
+    </section>
+
+
 
 
 <script>
