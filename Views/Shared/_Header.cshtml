@@ -1,7 +1,43 @@
-﻿<!-- ======= Header ======= -->
+﻿@using System.Security.Claims
+<!-- ======= Header ======= -->
+
+
+@if(User.IsInRole("Admin") == true){
+
+      <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center justify-content-lg-between">
+        <div>Hello, @User.Identity.Name</div>
+
+      <h1 class="logo me-auto me-lg-0"><a href="index.html">Nook</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="index.html" class="logo me-auto me-lg-0"><img src="~/assets/img/logo.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar order-last order-lg-0 m-4">
+        <ul> 
+          <li><a class="nav-link scrollto " asp-action="GetAllReceptionists" asp-controller="Receptionist">Reciptionist   </a></li>
+          <li><a class="nav-link scrollto" asp-action="GetAllProducts" asp-controller="Product">Product   </a></li>
+          <li><a class="nav-link scrollto " asp-action="Register" asp-controller="Account">Register   </a></li>
+          <li><a  class="btn btn-btn-warning bg-warning" asp-action="LogOut" asp-controller="Account">LogOut</a></li>
+      </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+    </div>
+  </header>
+  
+  <!-- End Header -->
+  @section Scripts {
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js">
+     </script>
+  }
+
+
+}
+else
+{
+        
   <header id="header" class="fixed-top ">
     <div class="container d-flex align-items-center justify-content-lg-between">
-
+         <div>Hello ,@User.Identity.Name</div>
       <h1 class="logo me-auto me-lg-0"><a href="index.html">Gp<span>.</span></a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="~/assets/img/logo.png" alt="" class="img-fluid"></a>-->
@@ -36,7 +72,7 @@
       </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-
+       <a class="btn btn-btn-warning bg-warning" asp-action="LogOut" asp-controller="Account">LogOut</a>
       <a href="#about" class="get-started-btn scrollto">Get Started</a>
 
     </div>
@@ -46,6 +82,7 @@
   @section Scripts {
  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js">
      </script>
+  }
 
   }
 

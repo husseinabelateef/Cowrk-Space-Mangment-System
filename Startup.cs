@@ -77,6 +77,7 @@ namespace Cowrk_Space_Mangment_System
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

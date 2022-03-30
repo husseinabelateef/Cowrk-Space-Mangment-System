@@ -1,10 +1,12 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
 using Cowrk_Space_Mangment_System.Repository;
 using Cowrk_Space_Mangment_System.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Cowrk_Space_Mangment_System.Controllers
@@ -16,7 +18,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
         private RoleManager<IdentityRole> roleManager;
         Context Entities;
         private ILogingRepository LogingRepository;
-        private IReceptionistRepository ReceptionistRepository; 
+        private IReceptionistRepository ReceptionistRepository;
+
         public AccountController(UserManager<ApplicationUser> _userManager
             , SignInManager<ApplicationUser> _signInManager
             , RoleManager<IdentityRole> _roleManager
@@ -32,6 +35,10 @@ namespace Cowrk_Space_Mangment_System.Controllers
             this.LogingRepository = _LogingRepository;
             this.ReceptionistRepository = _ReceptionistRepository;
         }
+
+
+        private async Task<ApplicationUser>
+               GetCurrentUserAsync() => await userManager.GetUserAsync(HttpContext.User);
 
         //[HttpGet]
         //public IActionResult AddRole()
@@ -64,6 +71,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
 
         [HttpGet]
+       // [Authorize(Roles = "Admin")]
         public IActionResult Register()
         {
             return View();
@@ -71,6 +79,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register(RegisterViewModel newUser)
         {
             if (ModelState.IsValid)
@@ -145,7 +154,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     if (roleResult.Succeeded)
                     {
                         await signInManager.SignInAsync(UserModel, false);
-                        return RedirectToAction("Login");
+                        return View("Login");
                     }
 
                 }
@@ -173,7 +182,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser UserModel =
+                var UserModel =
                     await userManager.FindByNameAsync(LoginAccount.Username);
                 if (UserModel != null)
                 {
@@ -188,7 +197,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                         loging.Login = DateTime.Now;
                         LogingRepository.Insert(loging);
                     }
-                    return Content("login success");
+                    return RedirectToAction("Index","Home");
                    
                 }
                 else
@@ -199,10 +208,12 @@ namespace Cowrk_Space_Mangment_System.Controllers
             return View(LoginAccount);
 
         }
-        public async Task<IActionResult> LogOut(string username)
+        public async Task<IActionResult> LogOut()
         {
-            ApplicationUser UserModel =
-                    await userManager.FindByNameAsync(username);
+            var UserModel = await GetCurrentUserAsync();
+            //ApplicationUser UserModel = await userManager.FindByNameAsync(User.Identity.Name);
+
+
             //Check user role to add Logging Record As Reciptionist
             if (await userManager.IsInRoleAsync(UserModel, "Reciptionist"))
             {
@@ -211,6 +222,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 loging.LogOut = DateTime.Now;
                 loging.TotalHours = (loging.LogOut - loging.Login).Hours;
                 LogingRepository.Update(loging.Id,loging);
+                receptionist.TotalHours += loging.TotalHours;
+                await ReceptionistRepository.UpdateAsync(UserModel.Id, receptionist);
             }
             await signInManager.SignOutAsync();
             return RedirectToAction("Login");
