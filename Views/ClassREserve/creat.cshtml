@@ -6,12 +6,22 @@
 
 @model ReserveClass_ViewModel 
 
-<form  method="post" asp-action="creatSave" asp-controller="ClassREserve" >
+@{
+SelectList Clients = new SelectList(@Model.clients, "ID", "Name");
+}
+<button style="background-color: #F9CB38; width:100px;border:1px solid black;color:black" id="btnclick" type="button" class="btn ms-4" data-toggle="modal" data-target="#exampleModal" onclick="show">
+  Book
+</button>
+
+<form  method="post" asp-action="creatSave" asp-controller="ClassREserve">
+    <div class="row col-6">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div>
-        <label asp-for="Client_Name"></label>
-        <input asp-for="Client_Name" class="form-control" />
-        <span asp-validation-for="Client_Name" class="text-danger"></span>
+
+         <label asp-for="ClientID"  ></label>
+        <select class="form-control" asp-for="ClientID" asp-items="Clients">
+         
+        </select>
         
     </div>
     <div>
@@ -36,15 +46,34 @@
         <span asp-validation-for="ExpextedHours" class="text-danger"></span>
     </div>
     <div>
-        v>
+        
         <label asp-for="type_Room"></label>
-        <input asp-for="type_Room" class="form-control" />
+       
+        <select  asp-for="type_Room" class="form-control">
+            <option>
+                Nook 1
+            </option>
+            <option>
+                Nppk 2
+            </option>
+        </select>
         <span asp-validation-for="type_Room" class="text-danger"></span>
     </div>
-    <input type="submit" value="Save" class="btn btn-success" />
+    
+    <input style="width:70px" type="submit" value="Cancel" class="btn btn-danger" />
+    <input style="width:70px" type="submit" value="Save" class="btn btn-success" />
+
+
+    </div>
 </form>
+
 @section Scripts{
     <!--JQuery-->
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+   
+
+    </script>
 }

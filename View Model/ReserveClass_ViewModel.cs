@@ -15,9 +15,12 @@ namespace Cowrk_Space_Mangment_System.View_Model
         public DateTime Start_Time { get; set; }
 
         public int ExpextedHours { get; set; }
-        [DataType(DataType.DateTime)]
+      
         public string type_Room { get; set; }
 
-      }
+        public int ClientID { get; set; }
+        public List<Client> clients { get; set; }
+
+    }
     }
 

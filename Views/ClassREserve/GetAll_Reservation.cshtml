@@ -1,0 +1,38 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<Cowrk_Space_Mangment_System.View_Model.ReserveClass_ViewModel>
+
+<table>
+   
+        <thead>
+             <tr>
+        <th>Client</th>
+        <th>Phone</th>
+        <th>Date Reserve</th>
+        <th>Start Time</th>
+        <th>Expexted Hours</th>
+        <th>Type Room</th>
+        <th>Confirm</th>
+        <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+            <tr>
+                <td> @Html.DisplayFor(modelItem => item.Client_Name)</td>
+                <td> @Html.DisplayFor(modelItem => item.phone)</td>
+                <td> @Html.DisplayFor(modelItem => item.Date_Reserve)</td>
+                <td> @Html.DisplayFor(modelItem => item.Start_Time)</td>
+                <td> @Html.DisplayFor(modelItem => item.ExpextedHours)</td>
+                <td> @Html.DisplayFor(modelItem => item.type_Room)</td>
+                
+            </tr>
+            }
+        </tbody>
+   
+    foreach()
+    <tr></tr>
+</table>
