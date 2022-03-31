@@ -9,15 +9,15 @@ namespace Cowrk_Space_Mangment_System.Controllers
     public class MarketController : Controller
     {
         private ICartRepository cartRepository;
-        private   IProductRepository productRepository;
+        private IProductRepository productRepository;
         private IClientCart clientCart;
         private IClientRepository clientRepository;
         private readonly ICartProductsRepository cartProductsRepository;
         private IReservationRepository reservationRepository;
 
-        public MarketController(IProductRepository productRepository  , 
-            IClientCart clientCart ,ICartRepository CartRepository ,
-            IReservationRepository reservationRepository,IClientRepository clientRepo
+        public MarketController(IProductRepository productRepository,
+            IClientCart clientCart, ICartRepository CartRepository,
+            IReservationRepository reservationRepository, IClientRepository clientRepo
             , ICartProductsRepository cartProductsRepository)
         {
             this.cartRepository = CartRepository;
@@ -46,25 +46,27 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 cart.Date = DateTime.Now;
                 cartRepository.Insert(cart);
             }
-            else {
+            else
+            {
 
                 cart = reservationRepository.GetLastCartForUser(int.Parse(userId));
             }
-           
+
             return PartialView(cart);
         }
-        public IActionResult AddingToCart(string productId , string CartId , string quntity)
+        public IActionResult AddingToCart(string productId, string CartId, string quntity)
         {
 
             Product product = productRepository.GetByBarCode(productId);
             bool flag = false;
             string msg = "Successfully";
-            if (product != null) {
+            if (product != null)
+            {
                 Guid IDd = product.Id;
                 var flagavail = productRepository.AvailabiltyStock(IDd, int.Parse(quntity));
                 Cart cart = cartRepository.GetById(int.Parse(CartId));
                 int finalQuentity = 0;
-               
+
                 if (cart != null)
                 {
                     if (flagavail)
@@ -87,17 +89,24 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 {
                     msg = "Cart Not Exist";
                 }
-                return Json(new { message = msg, quentity = finalQuentity, productID = productId,
-                    price = product.SellingPrice , status = flag , name = product.Name});
+                return Json(new
+                {
+                    message = msg,
+                    quentity = finalQuentity,
+                    productID = productId,
+                    price = product.SellingPrice,
+                    status = flag,
+                    name = product.Name
+                });
             }
             msg = "Product NotFound";
-            return Json(new { message = msg , status =flag});
+            return Json(new { message = msg, status = flag });
 
-        } 
+        }
         public IActionResult update(string productId, string CartId, string quntity)
         {
             var msg = "Suceesfully";
-            int newQun = 0 , newCartID = 0;
+            int newQun = 0, newCartID = 0;
             Guid ParseId = Guid.Parse(productId);
             int.TryParse(quntity, out newQun);
             int.TryParse(CartId, out newCartID);
@@ -119,7 +128,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             {
                 msg = "Product Not Exist";
             }
-            return Json(new { message = msg , status = status });
+            return Json(new { message = msg, status = status });
         }
     }
 }
