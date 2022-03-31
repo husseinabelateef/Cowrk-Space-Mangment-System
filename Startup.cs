@@ -58,7 +58,6 @@ namespace Cowrk_Space_Mangment_System
             //services.AddIdentity<ApplicationUser, IdentityRole>();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Context>();
         }
-
         //option => {
         //    option.Password.RequireUppercase = false;
         //    option.Password.RequiredLength = 4;
@@ -80,6 +79,7 @@ namespace Cowrk_Space_Mangment_System
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

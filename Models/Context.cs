@@ -1,4 +1,5 @@
 ﻿using System.Runtime.ConstrainedExecution;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ namespace Cowrk_Space_Mangment_System.Models
         {
 
         }
+
         public Context(DbContextOptions options ) : base(options)
         {
 
@@ -54,6 +56,9 @@ namespace Cowrk_Space_Mangment_System.Models
             modelBuilder.Entity<CartProducts>()
                 .HasKey(b => new { b.Cart_Id, b.ProductId});
             base.OnModelCreating(modelBuilder);
+            
         }
+      
+
     }
 }

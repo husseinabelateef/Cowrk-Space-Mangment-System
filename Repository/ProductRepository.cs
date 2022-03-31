@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cowrk_Space_Mangment_System.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cowrk_Space_Mangment_System.Repository
 {
@@ -29,7 +30,7 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public List<Product> ExpiredProduct()
         {
-            return context.Product.Where(d => d.ExpireDate > DateTime.Now).ToList();
+            return context.Product.Where(d => d.ExpireDate < DateTime.Now).ToList();
         }
 
         public List<Product> GetAll()
@@ -63,7 +64,9 @@ namespace Cowrk_Space_Mangment_System.Repository
                 p.ActualAmount = item.ActualAmount;
                 p.ActualPrice = item.ActualPrice;
                 p.SellingPrice = item.SellingPrice;
-                context.Update(p);
+                context.Entry(p).State = EntityState.Modified;
+                context.Product.Update(p);
+                //context.Update(p);
             }
             return context.SaveChanges();
         }
