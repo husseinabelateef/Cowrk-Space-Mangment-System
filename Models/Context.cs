@@ -1,4 +1,5 @@
 ﻿using System.Runtime.ConstrainedExecution;
+using Cowrk_Space_Mangment_System.View_Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,12 +32,11 @@ namespace Cowrk_Space_Mangment_System.Models
         public DbSet<Package> Package { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<RawProduct> RawProduct { get; set; }
-        public DbSet<Receptionist> Receptionist { get; set; }
+        public DbSet<Receptionist> Receptionist { get; set;}
         public DbSet<Reservation> Reservation { get; set; }
         public DbSet<Room> Room { get; set; }
         public DbSet<RoomReserve> RoomReserve { get; set; }
         
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             
