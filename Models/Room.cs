@@ -8,7 +8,7 @@ namespace Cowrk_Space_Mangment_System.Models
         public int ID { get; set; }
        
         public string Name { get; set; }
-
+        public bool  IsAvailable { get; set; }
         public virtual ICollection<Chair> Chairs { get; set; }
         public ICollection<RoomReserve> RoomReserve { get; set; }
 

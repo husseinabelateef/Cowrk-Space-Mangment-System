@@ -7,7 +7,8 @@ namespace Cowrk_Space_Mangment_System.Repository
     public class ReservationRepository : IReservationRepository
     {
         Context context;
-        public ReservationRepository(Context _context)
+        
+        public ReservationRepository(Context _context )
         {
             context = _context;
         }
@@ -50,6 +51,17 @@ namespace Cowrk_Space_Mangment_System.Repository
             Reservation oldReservation = GetById(id);
             context.Reservation.Remove(oldReservation);
             return context.SaveChanges();
+        }
+        public int GetReservationIdForUser(int ClientId)
+        {
+          return  context.Reservation.Where(x => x.Client_ID == ClientId).Select(x => x.ID).Last();
+            
+        }
+
+        public Cart GetLastCartForUser(int ClientId)
+        {
+           Reservation reservation = context.Reservation.LastOrDefault(x => x.Client_ID == ClientId);
+            return reservation == null ? null : context.Cart.FirstOrDefault(x => x.ID == reservation.ClientCart_ID);
         }
     }
 }

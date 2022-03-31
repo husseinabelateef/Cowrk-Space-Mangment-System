@@ -11,21 +11,30 @@ namespace Cowrk_Space_Mangment_System.Controllers
     public class CatringController : Controller
     {
         ICartRepository cartRepository;
-         IProductRepository ProductRepository { get; }
+        IProductRepository ProductRepository;
+        ICartProductsRepository cartProductsRepository;
 
-        public CatringController(ICartRepository cartRepository , IProductRepository productRepository)
+        public CatringController(ICartRepository cartRepository , 
+           ICartProductsRepository cartProductsRepository, IProductRepository productRepository)
         {
             this.cartRepository = cartRepository;
             ProductRepository = productRepository;
+            this.cartProductsRepository = cartProductsRepository;
         }
         //[HttpPost]
         public IActionResult Index(int id) // Cart Id
         {
-            Cart cart = cartRepository.GetById(id);
+            var cart = cartProductsRepository.GetAllProductOfCategory(id);
+            var total = cartRepository.GetById(id).TotalPrice;
+            var lisPro = new List<Product>();
+            foreach (var item in cart)
+            {
+                lisPro.Add(ProductRepository.GetById(item.ProductId));
+            }
             if (cart != null)
             {
-                var ProductsDetails = productDetail(cart.Products);
-                ViewData["TotalPrice"] = cart.TotalPrice;
+                var ProductsDetails = productDetail(lisPro);
+                ViewData["TotalPrice"] = total;
                 ViewData["CartId"] = 12;//cart.ID;
                 return View(ProductsDetails);
             }
@@ -65,7 +74,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
         public IActionResult decrease (string guid, int CartId)
         {
             bool status;
-            Guid guidd = Guid.Parse(guid);
+            Guid guidd;
+            Guid.TryParse(guid , out guidd);
             var res = decreeasing(guidd, CartId, out status);
             ViewData["status"] = status;
             if (status) { //مبدئيا                
@@ -82,83 +92,129 @@ namespace Cowrk_Space_Mangment_System.Controllers
         }
         private ProductsDetailsCartViewModel decreeasing(Guid guid, int CartId , out bool status)
         {
-            Cart cart = cartRepository.GetById(CartId);
-            if (cart != null)
+            try
             {
-                List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
-                var produt = cart.Products.FirstOrDefault(x => x.Id == guid);
-                produt.ActualAmount++;
-                var data = res.FirstOrDefault(x => x.guid == guid);
-                ProductRepository.Update(produt.Id, produt);
-                data.Quantity--;
-                if(data.Quantity == 0)
+                var cart = cartProductsRepository.GetAllProductOfCategory(CartId);
+                var lisPro = new List<Product>();
+                foreach (var item in cart)
                 {
-                    cartRepository.RemoveProductInCart(CartId, produt.Id);
+                    lisPro.Add(ProductRepository.GetById(item.ProductId));
                 }
-                cart.TotalPrice -= data.price;
-               
-                ViewData["TotalPrice"] = cart.TotalPrice;
-                cartRepository.Update(cart.ID, cart);
-                status = true;
-                return data;
-            }
-            status = false;
-            return null;
-        }
-        private ProductsDetailsCartViewModel increasing(Guid guid, int CartId, out bool status)
-        {
-            Cart cart = cartRepository.GetById(CartId);
-            
-            if (cart != null)
-            {
-                List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
-                var produt = cart.Products.FirstOrDefault(x => x.Id == guid);
-                var data = res.FirstOrDefault(x => x.guid == guid);
-                if (produt.ActualAmount != 0)
+                if (cart != null)
                 {
-                    produt.ActualAmount--;
-                    data.Quantity++;
+                    List<ProductsDetailsCartViewModel> res = productDetail(lisPro);
+                    var produt = lisPro.FirstOrDefault(x => x.Id == guid);
+                    produt.ActualAmount++;
+                    var data = res.FirstOrDefault(x => x.guid == guid);
                     ProductRepository.Update(produt.Id, produt);
-                    cart.TotalPrice += data.price;
-                    ViewData["TotalPrice"] = cart.TotalPrice;
-                    cartRepository.Update(cart.ID, cart);
+                    data.Quantity--;
+                    if (data.Quantity == 0)
+                    {
+                        var it = cartProductsRepository.getAnItem(CartId, produt.Id);
+                        cartProductsRepository.RemoveItem(it);
+                    }
+                    cartRepository.GetById(cart.FirstOrDefault().Cart_Id).TotalPrice -= data.price;
+
+                    ViewData["TotalPrice"] = cartRepository.GetById(cart.FirstOrDefault().Cart_Id).TotalPrice;
+                    cartRepository.Update(CartId, cartRepository.GetById(cart.FirstOrDefault().Cart_Id));
                     status = true;
                     return data;
                 }
                 status = false;
-                return data;
+                return null;
             }
-            status = false;
-            return null;
+            catch(Exception ex)
+            {
+                status = false;
+                return null;
+            }
+        }
+        private ProductsDetailsCartViewModel increasing(Guid guid, int CartId, out bool status)
+        {
+            try
+            {
+                Cart cart = cartRepository.GetById(CartId);
+                var cartt = cartProductsRepository.GetAllProductOfCategory(CartId);
+                var lisPro = new List<Product>();
+                foreach (var item in cartt)
+                {
+                    lisPro.Add(ProductRepository.GetById(item.ProductId));
+                }
+                if (cart != null)
+                {
+                    List<ProductsDetailsCartViewModel> res = productDetail(lisPro);
+                    var produt = lisPro.FirstOrDefault(x => x.Id == guid);
+                    var data = res.FirstOrDefault(x => x.guid == guid);
+                    if (produt.ActualAmount != 0)
+                    {
+                        produt.ActualAmount--;
+                        data.Quantity++;
+                        ProductRepository.Update(produt.Id, produt);
+                        cart.TotalPrice += data.price;
+                        ViewData["TotalPrice"] = cart.TotalPrice;
+                        cartRepository.Update(cart.ID, cart);
+                        status = true;
+                        return data;
+                    }
+                    status = false;
+                    return data;
+                }
+                status = false;
+                return null;
+            }
+            catch (Exception ex)
+            {
+                status = false;
+                return null;
+            }
         }
         public IActionResult Increase(string guid, int CartId)
         {
-            bool status;
-            Guid guidd = Guid.Parse(guid);
-            var res = increasing(guidd, CartId, out status);
-            ViewData["status"] = status;
-            if (status) //مبدئيا 
+            try
             {
-                return Json(res);
-            }
+                bool status;
+                Guid guidd = Guid.Parse(guid);
+                var res = increasing(guidd, CartId, out status);
+                ViewData["status"] = status;
+                if (status) //مبدئيا 
+                {
+                    return Json(res);
+                }
 
-            ProductsDetailsCartViewModel dataa = new ProductsDetailsCartViewModel();
-            dataa.Quantity = 6;
-            dataa.price = 4;
-            dataa.Name = "Hussein";
-            dataa.guid = guidd;
-            return Json(dataa);
-        }
+                ProductsDetailsCartViewModel dataa = new ProductsDetailsCartViewModel();
+                dataa.Quantity = 6;
+                dataa.price = 4;
+                dataa.Name = "Hussein";
+                dataa.guid = guidd;
+                return Json(dataa);
+            }
+            catch(Exception ex) {  return Json(new ProductsDetailsCartViewModel()); }
+            }
         public IActionResult delete(string guid, int CartId)
         {
-            Guid guidd = Guid.Parse(guid);
-            var cart = cartRepository.GetById(CartId);
-            var product = cart.Products.FirstOrDefault(p => p.Id == guidd);
-           int result =  cartRepository.RemoveAllProductWithId(CartId, product.Id);
-            if(result == 0)
+            try
+            {
+                Guid guidd = Guid.Parse(guid);
+                var cartt = cartProductsRepository.GetAllProductOfCategory(CartId);
+                var lisPro = new List<Product>();
+                foreach (var item in cartt)
+                {
+                    lisPro.Add(ProductRepository.GetById(item.ProductId));
+                }
+                var cart = cartRepository.GetById(CartId);
+                var product = lisPro.FirstOrDefault(p => p.Id == guidd);
+                var it = cartProductsRepository.getAnItem(CartId, product.Id);
+                int result = cartProductsRepository.RemoveItem(it);
+
+                if (result == 0)
+                    return Json("un SuccessFully");
+                else
+                    return Json("Delete SuccessFully");
+            }
+            catch(Exception ex)
+            {
                 return Json("un SuccessFully");
-            else
-                return Json("Delete SuccessFully");
+            }
         }
         public IActionResult Pay(string cartid)
         {

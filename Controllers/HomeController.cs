@@ -15,13 +15,18 @@ namespace Cowrk_Space_Mangment_System.Controllers
     { 
         private readonly ILogger<HomeController> _logger;
         private readonly IClientCart clientCartRepo;
-
-        public ICartRepository CartRepository { get; }
+        ICartProductsRepository cartProductsRepository;
+        private readonly IProductRepository productRepository;
+        public ICartRepository CartRepository;
 
         public HomeController(ILogger<HomeController> logger , ICartRepository cartRepository ,
-            IClientCart clientCartRepo)
+            IClientCart clientCartRepo , ICartProductsRepository cartProductsRepository
+            ,IProductRepository ProductRepository)
         {
             _logger = logger;
+
+            this.cartProductsRepository = cartProductsRepository;
+            productRepository = ProductRepository;
             CartRepository = cartRepository;
             this.clientCartRepo = clientCartRepo;
         }
@@ -60,6 +65,12 @@ namespace Cowrk_Space_Mangment_System.Controllers
             foreach (Cart c in carts)
             {
                 CartViewModel asd = new CartViewModel();
+                var cart = cartProductsRepository.GetAllProductOfCategory(c.ID);
+                var lisPro = new List<Product>();
+                foreach (var item in cart)
+                {
+                    lisPro.Add(productRepository.GetById(item.ProductId));
+                }
                 if (clientCartRepo.GetById(c.ID) != null)
                 {
                     asd.ClientName = clientCartRepo.clientName(c.ID);
@@ -68,7 +79,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 {
                     asd.ClientName = "Visitor";
                     asd.CartId = c.ID;
-                    asd.Products = c.Products;
+                    asd.Products = lisPro;
                 }
                 cartViewModels.Add(asd);
             }

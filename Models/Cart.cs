@@ -18,6 +18,5 @@ namespace Cowrk_Space_Mangment_System.Models
         // Paid or not
         public bool IsPaid { get; set; }
 
-        public virtual List<Product> Products { get; set; }
     }
 }

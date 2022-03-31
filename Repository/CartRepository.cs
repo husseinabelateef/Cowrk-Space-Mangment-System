@@ -20,7 +20,7 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public Cart GetById(int id)
         {
-            return context.Cart.Include(x=>x.Products).FirstOrDefault(Cart => Cart.ID == id);
+            return context.Cart.FirstOrDefault(Cart => Cart.ID == id);
         }
 
         public int Insert(Cart Cart)
@@ -51,17 +51,17 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public List<Cart> GetAllUnpaidCart()
         {
-            return context.Cart.Include(x=>x.Products).Where(x => x.IsPaid == false).ToList();
+            return context.Cart.Where(x => x.IsPaid == false).ToList();
         }
 
         public List<Cart> GetAllUnpaidVistorsCart()
         {
-            return context.Cart.Include(x => x.Products).Where(x => !x.IsClient && !x.IsPaid).ToList();
+            return context.Cart.Where(x => !x.IsClient && !x.IsPaid).ToList();
         }
 
         public List<Cart> GetAllUnpaidClientsCart()
         {
-            return context.Cart.Include(x => x.Products).Where(x => x.IsClient && x.IsPaid).ToList();
+            return context.Cart.Where(x => x.IsClient && x.IsPaid).ToList();
         }
 
         public int GetUnpaidCount()
@@ -77,25 +77,7 @@ namespace Cowrk_Space_Mangment_System.Repository
         public int GetAllUnpaidCountClientsCart()
         {
             return GetAllUnpaidVistorsCart().Count;
-        }
-
-        public int RemoveProductInCart(int cartId , Guid productId)
-        {
-            var cart = GetById(cartId);
-            cart.Products.Remove(cart.Products.FirstOrDefault(x => x.Id == productId));
-            return context.SaveChanges();
-        }
-
-        public int RemoveAllProductWithId(int cartId, Guid productId)
-        {
-            Cart cart = GetById(cartId);
-            if (cart != null)
-            {
-                cart.Products.RemoveAll(x=>x.Id == productId);
-                return context.SaveChanges();
-            }
-            return 0;
-        }
+        } 
         public int confirmPay(int CartId)
         {
             Cart cart = GetById(CartId);

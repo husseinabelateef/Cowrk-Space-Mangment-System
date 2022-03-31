@@ -9,5 +9,7 @@ namespace Cowrk_Space_Mangment_System.Repository
     {
         //List of Expired Product
         public List<Product> ExpiredProduct();
+        public bool AvailabiltyStock(Guid id , int quentity);
+        public Product GetByBarCode(string BarCode);
     }
 }

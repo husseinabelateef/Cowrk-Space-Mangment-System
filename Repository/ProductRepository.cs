@@ -12,6 +12,15 @@ namespace Cowrk_Space_Mangment_System.Repository
         {
             this.context = context;
         }
+
+        public bool AvailabiltyStock(Guid id, int quentity)
+        {
+            var product = GetById(id);
+            if ((product.ActualAmount - quentity) > 0)
+                return true;
+            return false;
+        }
+
         public int Delete(Guid id)
         {
             context.Product.Remove(GetById(id));
@@ -26,6 +35,11 @@ namespace Cowrk_Space_Mangment_System.Repository
         public List<Product> GetAll()
         {
             return context.Product.ToList();
+        }
+
+        public Product GetByBarCode(string BarCode)
+        {
+          return  context.Product.FirstOrDefault(x => x.BarCode == BarCode);
         }
 
         public Product GetById(Guid id)

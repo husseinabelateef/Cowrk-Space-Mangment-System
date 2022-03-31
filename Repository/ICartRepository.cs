@@ -8,12 +8,10 @@ namespace Cowrk_Space_Mangment_System.Repository
     {
         public List<Cart> GetAllUnpaidCart();
         public List<Cart> GetAllUnpaidVistorsCart();
-        public List<Cart> GetAllUnpaidClientsCart();
-        public int RemoveProductInCart(int cartId , Guid productId);
+        public List<Cart> GetAllUnpaidClientsCart();  
         public int GetUnpaidCount();
         public int GetAllUnpaidCountVistorsCart();
         public int GetAllUnpaidCountClientsCart();
-        public int RemoveAllProductWithId(int cartId, Guid productId);
         public int confirmPay(int CartId);
 
     }
