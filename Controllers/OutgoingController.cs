@@ -15,14 +15,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             outgoingRepository=outgoing;
            
         }
-        public IActionResult GetAllOutgoing()
-        {
-            List<Outgoing> OutgoingList = outgoingRepository.GetAll();
-        
-            ViewData["Outgoings"] = OutgoingList;
-           
-            return View("_GetAllOutgoing" ,OutgoingList);
-        }
+
         [HttpGet]
         public IActionResult AddingInfo([FromRoute] int id, Outgoing NewOut)
         {
@@ -31,7 +24,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
                 outgoingRepository.Insert(NewOut);
 
-                return RedirectToAction("GetAllOutgoing");
+                return RedirectToAction("AddingInfo");
             }
             List<Outgoing> OutgoingList = outgoingRepository.GetAll();
             ViewData["Outgoings"] = OutgoingList;
@@ -47,11 +40,11 @@ namespace Cowrk_Space_Mangment_System.Controllers
               
                 outgoingRepository.Insert(NewOut);
                 
-                return RedirectToAction("GetAllOutgoing");
+                return RedirectToAction("AddingInfo");
             }
             List<Outgoing> OutgoingList = outgoingRepository.GetAll();
             ViewData["Outgoings"] = OutgoingList;
-            return View("_GetAllOutgoing", NewOut);
+            return View("_AddingInformationOutgoing", NewOut);
         }
 
 
