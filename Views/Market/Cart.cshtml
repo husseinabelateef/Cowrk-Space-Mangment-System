@@ -109,8 +109,7 @@ integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxV
     function  addProduct(){
        var ProBarQ = document.getElementById("Scanning").value;
        var Qty =  document.getElementById("qty").textContent
-       if(Qty === "0")
-       {
+       
            if (confirm("add Quentity"))
            {
             AddingAjaxCall(ProBarQ , Qty)
@@ -119,7 +118,7 @@ integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxV
            else{
                AddingAjaxCall(ProBarQ , Qty) ; 
            }
-       }
+       
     }
     function IncreaseQun()
     {
@@ -137,17 +136,19 @@ function AddingAjaxCall(guid , qty) {
   $.ajax({
     url: "/Market/AddingToCart",
     //type: "POST",
-    data: { productId: "1", CartId: VariableCartIdContent , quntity: "2"},
+    data: { productId: guid, CartId: VariableCartIdContent , quntity: qty},
     contentType: "application/json; charset=utf-8",
     success: function (data) {
       console.log(data);
+      alert(data.message)
       if(!data.status)
       {
            alert(data.message)
-           CreateProduct("15" ," 1 ","1" , "hussein")
+          
       }
       else {
-
+           
+           CreateProduct(data.productID , data.quentity ,data.price , data.name)
       }
     },
     error: function () {
@@ -155,14 +156,15 @@ function AddingAjaxCall(guid , qty) {
     },
   });
 }
-  function update(qty, guid) {
-  var proCont = document.getElementById(guid);
+  function update(qty , barCode ) {
+  var proCont = document.getElementById(barCode);
   var quantity = proCont.children[2];
   var QuntityValue = quantity.children[1];
+  quantity.children[1].textContent = qty
   var totPriceCart = document.getElementById("totalCartPrice")   
   if (QuntityValue.textContent !== 1) {
     QuntityValue.textContent = qty;
-    totPriceCart.textContent = '@ViewData["TotalPrice"]'
+    totPriceCart.textContent = totalPric
   } else {
     if (confirm("Are you sure you want to Delete")) {
       Delete(guid);
@@ -188,16 +190,18 @@ function DeleteProd(guid) {
   }
   console.log("Fatma");
 }
-function decreaseProductQty(guid) 
+function decreaseProductQty(id) 
 {
-  var proCont = document.getElementById(guid);
-  var quantity = proCont.children[2];
-  var QuntityValue = quantity.children[1];
-  if (QuntityValue.textContent !== 1) {
-   decreaseAjaxCall(guid) 
+    console.log(id)
+ var proConttt = document.getElementById(id);
+  var quantityyy = proConttt.children[2];
+  var QuntityValueee = quantityyy.children[1];
+  var val = parseInt(QuntityValueee.textContent)
+  if (val !== 1) {
+   decreaseAjaxCall(id) 
   } else {
     if (confirm("Are you sure you want to Delete")) {
-      Delete(guid);
+      Delete(id);
     } else {
       console.log("Thing was not saved to the database.");
     }
@@ -205,13 +209,12 @@ function decreaseProductQty(guid)
 
   console.log("Decrease");
 }
-function deleteAjaxCall(guid) {
+function deleteAjaxCall(id) {
   $.ajax({
     url: "/Catring/delete",
     //type: "POST",
-    data: { guid: guid, CartId: VariableCartIdContent },
+    data: { guid: id, CartId: VariableCartIdContent },
     contentType: "application/json; charset=utf-8",
-    processData: false,
     success: function (data) {
       console.log(data);
       alert(data)
@@ -221,15 +224,26 @@ function deleteAjaxCall(guid) {
     },
   });
 }
-function decreaseAjaxCall(guid) {
+function decreaseAjaxCall(id) {
+  console.log(id)
+  var proConttt = document.getElementById(id);
+  var quantityyy = proConttt.children[2];
+  var QuntityValueee = quantityyy.children[1];
+  var val = parseInt(QuntityValueee.textContent)
+  val=val-1;
   $.ajax({
-    url: "/Catring/decrease",
+    url: "/Market/update",
     //type: "POST",
-    data: { guid: guid, CartId: VariableCartIdContent },
+    data: { productId: id, CartId: VariableCartIdContent , quntity: val },
     contentType: "application/json; charset=utf-8",
     success: function (data) {
       console.log(data);
+      if(data.status){
       update(data.quantity, data.guid);
+      }
+      else{
+          alert(data.message)
+      }
     },
     error: function () {
       alert("Error occured!!");
@@ -237,20 +251,25 @@ function decreaseAjaxCall(guid) {
   });
 }
 
-function increseProductQty(guid) 
+function increseProductQty(id) 
 {
-  var proContt = document.getElementById(guid);
-  var quantityy = proCont.children[2];
-  var QuntityValuee = quantityy.children[1];
-  var val = parseInt(QuntityValuee)
+    console.log(id)
+  var proConttt = document.getElementById(id);
+  var quantityyy = proConttt.children[2];
+  var QuntityValueee = quantityyy.children[1];
+  var val = parseInt(QuntityValueee.textContent)
   val=val+1;
   $.ajax({
     url: "/Market/update",
-    data: { guid: guid, CartId: VariableCartIdContent , quntity: val },
+    data: { productId: id, CartId: VariableCartIdContent , quntity: val },
     success: function (data) {
-      console.log(data);
-      
-      
+    console.log(data);
+      if(data.status){
+      update(data.quantity, data.guid);
+      }
+      else{
+          alert(data.message)
+      }
     },
     error: function () {
       alert("Error occured!!");
@@ -260,6 +279,8 @@ function increseProductQty(guid)
 }
 function CreateProduct(Id , quentity ,price , Name)
 {
+    var test = document.getElementById(Id)
+    if(test === null){
    var pro = `<div id="${Id}" class="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
                     <div class="mr-1">
                         <img class="rounded" src="./image/317.jpg" width="70">
@@ -269,18 +290,25 @@ function CreateProduct(Id , quentity ,price , Name)
                     </div>
 
                     <div class="d-flex flex-row align-items-center qty">
-                       <span  >  <i onclick ="decreaseProductQty(${Id})" class="fa fa-minus text-danger ms-2 me-2 p-2" ></i> </span>
+                       <span  >  <i onclick ="decreaseProductQty('${Id}')" class="fa fa-minus text-danger ms-2 me-2 p-2" ></i> </span>
                         <h5  class="text-grey"> ${quentity}</h5>
-                     <span>  <i onclick="increseProductQty(${Id})" class="fa fa-plus text-success ms-2 me-2 p-2"></i> </span>
+                     <span>  <i onclick="increseProductQty('${Id}')" class="fa fa-plus text-success ms-2 me-2 p-2"></i> </span>
                     </div>
                     <div>
                         <h5 class="text-grey">${price} </h5>
                     </div>
                     <div class="d-flex align-items-center">
-                        <i class="fa fa-trash mb-1 text-danger" onclick="DeleteProd(${Id})"></i>
+                        <i class="fa fa-trash mb-1 text-danger" onclick="DeleteProd('${Id}')"></i>
                     </div>
                 </div>`
                 VariableCartId.innerHTML += pro;
+                }
+                else {
+                    var asd = document.getElementById(Id);
+                    var qq = asd.children[2];
+                    var ww = qq.children[1];
+                    qq.children[1].textContent = quentity;
+                }
 }
     </script>
         <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">

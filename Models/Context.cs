@@ -16,6 +16,7 @@ namespace Cowrk_Space_Mangment_System.Models
         {
 
         }
+        public DbSet<CartProducts>CartProducts { get; set; }
         public DbSet<RawProductMovments> RawProductMovments { get; set; }
         public DbSet<ProductMovments> ProductMovments { get; set; }
         public DbSet<AssignDeals> AssignDeals { get; set; }
@@ -52,6 +53,8 @@ namespace Cowrk_Space_Mangment_System.Models
               .HasKey(b => new { b.ProductID, b.OutgoingID });
             modelBuilder.Entity<Receptionist>()
               .HasKey(b => b.AppId);
+            modelBuilder.Entity<CartProducts>()
+             .HasKey(b => new {b.Cart_Id , b.ProductId} );
             base.OnModelCreating(modelBuilder);
             
         }

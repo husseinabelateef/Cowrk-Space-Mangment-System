@@ -6,12 +6,15 @@ using System.Linq;
 
 namespace Cowrk_Space_Mangment_System.Repository
 {
-    public class CartRepository: ICartRepository
+    public class CartRepository : ICartRepository
     {
         Context context;
-        public CartRepository(Context _context)
+        private readonly IIncommingRepository incommingRepository;
+
+        public CartRepository(Context _context , IIncommingRepository incommingRepository)
         {
             context = _context;
+            this.incommingRepository = incommingRepository;
         }
         public List<Cart> GetAll()
         {
@@ -20,7 +23,7 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public Cart GetById(int id)
         {
-            return context.Cart.Include(x=>x.Products).FirstOrDefault(Cart => Cart.ID == id);
+            return context.Cart.FirstOrDefault(Cart => Cart.ID == id);
         }
 
         public int Insert(Cart Cart)
@@ -51,17 +54,17 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public List<Cart> GetAllUnpaidCart()
         {
-            return context.Cart.Include(x=>x.Products).Where(x => x.IsPaid == false).ToList();
+            return context.Cart.Where(x => !x.IsPaid).ToList();
         }
 
         public List<Cart> GetAllUnpaidVistorsCart()
         {
-            return context.Cart.Include(x => x.Products).Where(x => !x.IsClient && !x.IsPaid).ToList();
+            return context.Cart.Where(x => !x.IsClient && !x.IsPaid).ToList();
         }
 
         public List<Cart> GetAllUnpaidClientsCart()
         {
-            return context.Cart.Include(x => x.Products).Where(x => x.IsClient && x.IsPaid).ToList();
+            return context.Cart.Where(x => x.IsClient && !x.IsPaid).ToList();
         }
 
         public int GetUnpaidCount()
@@ -78,30 +81,26 @@ namespace Cowrk_Space_Mangment_System.Repository
         {
             return GetAllUnpaidVistorsCart().Count;
         }
-
-        public int RemoveProductInCart(int cartId , Guid productId)
-        {
-            var cart = GetById(cartId);
-            cart.Products.Remove(cart.Products.FirstOrDefault(x => x.Id == productId));
-            return context.SaveChanges();
-        }
-
-        public int RemoveAllProductWithId(int cartId, Guid productId)
-        {
-            Cart cart = GetById(cartId);
-            if (cart != null)
-            {
-                cart.Products.RemoveAll(x=>x.Id == productId);
-                return context.SaveChanges();
-            }
-            return 0;
-        }
         public int confirmPay(int CartId)
         {
             Cart cart = GetById(CartId);
+            cart.TotalPrice = 
+                context.CartProducts.Where(x => x.Cart_Id == cart.ID).Include(x => x.Product).
+                Select(x => x.Quentaty * x.Product.SellingPrice ).Sum();
             cart.IsPaid = true;
-           return  context.SaveChanges();
+            try
+            {
+                var income = context.Incomming.Last();
+                income.ShiftCloseCateringIncome += cart.TotalPrice;
+            }
+            catch (Exception ex)
+            {
+                return context.SaveChanges();
+            }
+            return context.SaveChanges();
 
         }
-    }
+
+
+        }
 }

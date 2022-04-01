@@ -11,10 +11,13 @@ namespace Cowrk_Space_Mangment_System.Repository
         Context context;
         IProductRepository
             productRepository;
-        public CartProductsRepository(Context context , IProductRepository productRepository)
+        ICartRepository cartRepository1;
+        public CartProductsRepository(Context context , 
+            ICartRepository  cartRepository, IProductRepository productRepository)
         {
             this.context = context;
             this.productRepository = productRepository;
+            this.cartRepository1 = cartRepository;  
         }
         public int Delete(int id)
         {
@@ -69,6 +72,17 @@ namespace Cowrk_Space_Mangment_System.Repository
                     var tes = productRepository.GetById(item.ProductId);
                     tes.ActualAmount += cart.Quentaty;
                     tes.ActualAmount -= item.Quentaty;
+                    if (cart.Quentaty > item.Quentaty)
+                    {
+                        var cart1 = cartRepository1.GetById(cart.Cart_Id);
+                        cart1.TotalPrice -= (cart.Quentaty - item.Quentaty) * tes.SellingPrice;
+                    }
+                    else
+                    {
+                        var cart1 = cartRepository1.GetById(cart.Cart_Id);
+                        cart1.TotalPrice += (cart.Quentaty - item.Quentaty) * tes.SellingPrice;
+                    }
+                    
                     productRepository.Update(tes.Id, tes);
                 }
                 cart.Quentaty = item.Quentaty;
@@ -86,6 +100,9 @@ namespace Cowrk_Space_Mangment_System.Repository
             var product = productRepository.GetById(item.ProductId);
             product.ActualAmount += item.Quentaty;
             context.CartProducts.Remove(item);
+            //update cart 
+            var cart = cartRepository1.GetById(item.Cart_Id);
+            cart.TotalPrice -= (item.Quentaty * product.SellingPrice); 
             productRepository.Update(item.ProductId , product);
             return context.SaveChanges();
         }
