@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Cowrk_Space_Mangment_System.Models.Reservation>
+
+@{
+    ViewData["Title"] = "GetAllReservations";
+}
+
+<h1>GetAllReservations</h1>
+@*Reservation/NewReservation*@
+<p>
+    <a asp-action="NewReservation" asp-controller="Reservation">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Start_Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpextedHours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppuserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Client_ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart_ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hours_Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPrice)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Start_Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpextedHours)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppuserID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client_ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cart_ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hours_Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

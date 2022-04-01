@@ -1,0 +1,14 @@
+﻿@using (Html.BeginForm("GenerateQRcode","Client", FormMethod.Post)){
+
+
+
+    <input  type="text" name="qrcode"/>
+    <input  type="submit" name="" value="Create QRCode"/>
+
+    @if(ViewBag.QRCodeImage != null)
+    {
+        <img src="@ViewBag.QRCodeImage" style="width:300px;height:300px" >
+    }
+
+
+}

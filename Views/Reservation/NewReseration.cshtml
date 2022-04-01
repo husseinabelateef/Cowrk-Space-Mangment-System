@@ -1,0 +1,35 @@
+﻿@*@model Reservation
+
+<h1>Make New Reservation</h1>
+
+
+<form action="/Reservation/SaveNewReseration" method="post">
+     <div>
+        <label for="Client_ID">Client Code</label>
+        <input type="password" name="Client_ID" id="Client_ID" value="@Model.Client_ID" class="form-control"/>
+    </div>
+    <div>
+        <label for="Start_Time">Start Time</label>
+        <input type="time" name="Start_Time" id="Start_Time" value="@Model.Start_Time" class="form-group"/>
+    </div>
+      <div>
+        <label for="ExpextedHours">Expexted Hours</label>
+        <input type="text" name="ExpextedHours" id="ExpextedHours" value="@Model.ExpextedHours" class="form-group"/>
+    </div>
+     <div>
+        <label for="Hours_Price">Hours Price</label>
+        <input type="text" name="Hours_Price" id="Hours_Price" value="@Model.Hours_Price" class="form-group"/>
+    </div>*@
+   @*
+
+   @{
+      //  @Model.Date= DateTime.Now;
+      //   @Model.AppuserID=
+     // @Model.TotalPrice=
+    }
+    <input type="submit" class="btn btn-success" value="Confirm" />
+
+</form>
+   *@
+    
+

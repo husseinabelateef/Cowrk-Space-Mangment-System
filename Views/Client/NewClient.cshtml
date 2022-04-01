@@ -1,0 +1,25 @@
+﻿@model Client
+
+<h1>NewClient</h1>
+<form action="/Client/SaveNewClient" method="post">
+
+    <div>
+        <label for="Name">Name</label>
+        <input  name="Name" id="Name" type="text" class = "form-control" value="@Model.Name" />
+    </div>
+     <div>
+        <label for="Profession">Profession</label>
+        <input name="Profession" id="Profession" type = "text" class = "form-control" value="@Model.Profession" >
+
+    </div>
+     <div>
+        <label for="phone">Phone</label>
+        <input name="phone" id="phone" type="tel" class = "form-control" value="@Model.phone" />
+    </div>
+     <div>
+        <label for="Faculty">Faculty</label>
+        <input name="Faculty" id="Faculty" type="text" class = "form-control" value="@Model.Faculty" />
+    </div>
+      <input type="submit" class="btn btn-success" value="Create" />
+     
+</form>

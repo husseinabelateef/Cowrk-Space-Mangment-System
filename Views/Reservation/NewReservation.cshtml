@@ -1,0 +1,94 @@
+﻿@model Cowrk_Space_Mangment_System.View_Model.ReserveClass_ViewModel 
+
+<h1>Add New Reservation</h1>
+
+@{ 
+    SelectList clients = new SelectList(@Model.clients, "ID", "Name"); 
+    SelectList chairs = new SelectList(@Model.chairs, "Id","Id");
+}
+
+<form method="post" asp-action="SaveNewReservation" asp-controller="Reservation">
+  <div>
+    <label asp-for="Client_ID"></label>
+    <input  type="text" asp-for="Client_ID" class="form-control" />
+  </div>
+  <div>
+    <label asp-for="Date_Reserve"></label>
+    <input type="date" asp-for="Date_Reserve" class="form-control" />
+  </div>
+  <div>
+    <label asp-for="Start_Time"></label>
+    <input type="time" asp-for="Start_Time" class="form-control" />
+  </div>
+  <div>
+    <label asp-for="ExpextedHours"></label>
+    <input asp-for="ExpextedHours" class="form-control" />
+  </div>
+
+  <div>
+    <label asp-for="Client_ID"></label>
+
+    <select
+      class="form-control"
+      asp-for="Client_ID" asp-Items="clients">
+       <option value="0">-- Select Client --</option>
+    </select>
+  </div>
+  <div>
+
+
+  <div>
+    <label asp-for="type_Room"></label>
+
+    <select
+      class="form-control"
+      asp-for="type_Room"
+      onchange="ShowAvailableChairs()">
+       <option value="0">-- Select Room --</option>
+      <option value="Nook1">Nook1</option>
+       <option value="Nook2">Nook2</option>
+         <option value="Shared">Shared</option>
+           <option value="Individual">Individual</option>
+       
+    </select>
+ 
+    <div>
+    <label asp-for="NO_Available_Chair"></label>
+    <input  type="text" asp-for="NO_Available_Chair" class="form-control" />
+  </div>
+
+  <input type="submit" value="Save" class="btn btn-success" />
+</form>
+@section Scripts {
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+<link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script>
+  function ShowAvailableChairs() {
+   
+    var room_Type = document.getElementById("type_Room").value;
+    console.log(room_Type);
+   
+    
+   
+      $.ajax({
+        url: "/Reservation/GetAvailableChairs",
+        data: { "RoomType": room_Type  },
+        datatype: "jSON",
+        success: function (result) {          
+          console.log(result);
+        
+            $("#NO_Available_Chair").val(result);
+
+        },
+        error: function () {
+               alert('Error - LoadListItemsHelper');
+        }
+
+
+      });
+    
+    }
+  
+</script>
+}
