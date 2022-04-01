@@ -1,4 +1,5 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,6 +51,11 @@ namespace Cowrk_Space_Mangment_System.Repository
             Reservation oldReservation = GetById(id);
             context.Reservation.Remove(oldReservation);
             return context.SaveChanges();
+        }
+
+        public Reservation where(Func<object, object> p)
+        {
+            throw new NotImplementedException();
         }
     }
 }

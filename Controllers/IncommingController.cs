@@ -7,10 +7,16 @@ namespace Cowrk_Space_Mangment_System.Controllers
     public class IncommingController : Controller
     {
         IIncommingRepository incommingRepository;
-       
-        public IncommingController(IIncommingRepository incomming)
+        ICartRepository cartRepository;
+        IReservationRepository reservationRepository;
+
+        public IncommingController(IIncommingRepository incomming , ICartRepository cart, IReservationRepository reserv)
         {
-           
+            incommingRepository = incomming;
+            cartRepository = cart;
+            reservationRepository = reserv;
+
+
         }
         public IActionResult Index()
         {

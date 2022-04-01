@@ -4,6 +4,10 @@
     {
         public int Client_ID { get; set; }
         public string ReservationType { get; set; }
+        public int  TotalHoure { get; set; }
+        public double TotalPriceReserv { get; set; }
+        public double TotalPriceCatring { get; set; }
+        public double TotalForAll { get; set; }
 
 
     }
