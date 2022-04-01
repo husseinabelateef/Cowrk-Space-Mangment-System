@@ -50,9 +50,9 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public IActionResult FinalDelete(Receptionist Receptionist)
+        public IActionResult FinalDelete(string id)//Receptionist Receptionist)
         {
-            ReceptionistRepository.DeleteAsync(Receptionist.AppId);
+            ReceptionistRepository.DeleteAsync(id);//Receptionist.AppId);
             return RedirectToAction("GetAllReceptionists");
         }
         

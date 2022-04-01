@@ -54,9 +54,9 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public IActionResult FinalDelete(Product Product)
+        public IActionResult FinalDelete(Guid id)
         {
-            ProductRepository.Delete(Product.Id);
+            ProductRepository.Delete(id);
             return RedirectToAction("GetAllProducts");
         }
 

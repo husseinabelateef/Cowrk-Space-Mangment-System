@@ -56,7 +56,7 @@
         </dd>
 
     </dl>
-    <form asp-action="FinalDelete">
+    <form asp-action="FinalDelete" asp-route-id="@Model.AppId">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="GetAllReceptionists">Back to List</a>
     </form>
