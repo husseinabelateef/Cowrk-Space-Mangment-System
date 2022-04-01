@@ -11,160 +11,146 @@ namespace Cowrk_Space_Mangment_System.Controllers
     public class CatringController : Controller
     {
         ICartRepository cartRepository;
-         IProductRepository ProductRepository { get; }
+        IProductRepository ProductRepository;
+        ICartProductsRepository cartProductsRepository;
 
-        public CatringController(ICartRepository cartRepository , IProductRepository productRepository)
+        public CatringController(ICartRepository cartRepository,
+           ICartProductsRepository cartProductsRepository, IProductRepository productRepository)
         {
             this.cartRepository = cartRepository;
             ProductRepository = productRepository;
+            this.cartProductsRepository = cartProductsRepository;
         }
         //[HttpPost]
         public IActionResult Index(int id) // Cart Id
         {
-            Cart cart = cartRepository.GetById(id);
-            if (cart != null)
+            try
             {
-                var ProductsDetails = productDetail(cart.Products);
-                ViewData["TotalPrice"] = cart.TotalPrice;
-                ViewData["CartId"] = 12;//cart.ID;
-                return View(ProductsDetails);
-            }
-            else
-            {
+                var cart = cartProductsRepository.GetAllProductOfCategory(id);
+                var cart1 = cartRepository.GetById(id);
+                var total = cart1.TotalPrice;
                 List<ProductsDetailsCartViewModel> det = new List<ProductsDetailsCartViewModel>();
-                ProductsDetailsCartViewModel ite = new ProductsDetailsCartViewModel();
-                ite.Name = "Manga";
-                ite.guid = Guid.NewGuid();
-                ite.price = 10;
-                ite.Quantity = 5;
-                //det.Add(ite);
-                //det.Add(ite);
-                //ite.ProductId = Guid.NewGuid() ;
-
-                ViewData["CartId"] = 12;
-                det.Add(ite);
+                foreach (var item in cart)
+                {
+                    ProductsDetailsCartViewModel ite = new ProductsDetailsCartViewModel();
+                    var pro = ProductRepository.GetById(item.ProductId);
+                    ite.guid = item.ProductId;
+                    ite.price = pro.SellingPrice;
+                    ite.Quantity = item.Quentaty;
+                    ite.Name = pro.Name;
+                    det.Add(ite);
+                }
+                ViewData["CartId"] = cart1.ID;
                 return View(det);
             }
-            }
-        private List<ProductsDetailsCartViewModel> productDetail(List<Product> products)
-        {
-            HashSet<Product> productsSet = new HashSet<Product>(products);
-            List<ProductsDetailsCartViewModel> result = new List<ProductsDetailsCartViewModel>();
-            foreach (var item in productsSet)
+            catch (Exception ex)
             {
-                ProductsDetailsCartViewModel ite = new ProductsDetailsCartViewModel();
-                ite.guid = item.Id;
-                ite.price = item.SellingPrice;
-                ite.Quantity = products.FindAll(x => x.Id == item.Id).Count;
-                ite.Name = item.Name;
-                result.Add(ite);
+                return View(new List<ProductsDetailsCartViewModel> ());
             }
-            return result;
+            
         }
         //[HttpPost]
-        public IActionResult decrease (string guid, int CartId)
+        public IActionResult decrease(string guid, int CartId)
         {
-            bool status;
-            Guid guidd = Guid.Parse(guid);
-            var res = decreeasing(guidd, CartId, out status);
-            ViewData["status"] = status;
-            if (status) { //مبدئيا                
-                return Json(res);
-            }
-            
-            ProductsDetailsCartViewModel dataa = new ProductsDetailsCartViewModel();
-            dataa.Quantity = 7;
-            dataa.price = 4;
-            dataa.Name = "Hussein";
-            dataa.guid = guidd;
-            return Json(dataa);
-            
-        }
-        private ProductsDetailsCartViewModel decreeasing(Guid guid, int CartId , out bool status)
-        {
-            Cart cart = cartRepository.GetById(CartId);
-            if (cart != null)
+            string message = "SucessFully ";
+            CartProducts cartProd = null;
+            Product product = null;
+            bool status = true;
+            try
             {
-                List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
-                var produt = cart.Products.FirstOrDefault(x => x.Id == guid);
-                produt.ActualAmount++;
-                var data = res.FirstOrDefault(x => x.guid == guid);
-                ProductRepository.Update(produt.Id, produt);
-                data.Quantity--;
-                if(data.Quantity == 0)
+
+                Guid guidd = Guid.Parse(guid);
+                ProductsDetailsCartViewModel dataa = new ProductsDetailsCartViewModel();
+                cartProd = cartProductsRepository.getAnItem(CartId, guidd);
+                product = this.ProductRepository.GetById(guidd);
+                if (cartProd != null && this.ProductRepository.AvailabiltyStock(guidd, cartProd.Quentaty - 1))
                 {
-                    cartRepository.RemoveProductInCart(CartId, produt.Id);
+                    cartProd.Quentaty -= 1;
+                    cartProductsRepository.Update(CartId, cartProd);
                 }
-                cart.TotalPrice -= data.price;
-               
-                ViewData["TotalPrice"] = cart.TotalPrice;
-                cartRepository.Update(cart.ID, cart);
-                status = true;
-                return data;
+                else
+                {
+                    message = "out Of Stock";
+                    status = false;
+                }
+                return Json(new
+                {
+                    status = status,
+                    Message = message,
+                    quentity = cartProd.Quentaty,
+                    Name = product.Name,
+                    price = product.SellingPrice,
+                    guid = product.Id
+                });
             }
-            status = false;
-            return null;
-        }
-        private ProductsDetailsCartViewModel increasing(Guid guid, int CartId, out bool status)
-        {
-            Cart cart = cartRepository.GetById(CartId);
-            
-            if (cart != null)
+            catch (Exception ex)
             {
-                List<ProductsDetailsCartViewModel> res = productDetail(cart.Products);
-                var produt = cart.Products.FirstOrDefault(x => x.Id == guid);
-                var data = res.FirstOrDefault(x => x.guid == guid);
-                if (produt.ActualAmount != 0)
-                {
-                    produt.ActualAmount--;
-                    data.Quantity++;
-                    ProductRepository.Update(produt.Id, produt);
-                    cart.TotalPrice += data.price;
-                    ViewData["TotalPrice"] = cart.TotalPrice;
-                    cartRepository.Update(cart.ID, cart);
-                    status = true;
-                    return data;
-                }
-                status = false;
-                return data;
+                return Json(new { status = status, Message = message });
             }
-            status = false;
-            return null;
         }
         public IActionResult Increase(string guid, int CartId)
         {
-            bool status;
-            Guid guidd = Guid.Parse(guid);
-            var res = increasing(guidd, CartId, out status);
-            ViewData["status"] = status;
-            if (status) //مبدئيا 
+            string message = "SucessFully added";
+            CartProducts cartProd = null;
+            Product product = null;
+            bool status = true;
+            try
             {
-                return Json(res);
+                
+                Guid guidd = Guid.Parse(guid);
+                ProductsDetailsCartViewModel dataa = new ProductsDetailsCartViewModel();
+                 cartProd = cartProductsRepository.getAnItem(CartId, guidd);
+                product = this.ProductRepository.GetById(guidd);
+                if (cartProd != null && this.ProductRepository.AvailabiltyStock(guidd , cartProd.Quentaty+1))
+                {
+                    cartProd.Quentaty += 1;
+                    cartProductsRepository.Update(CartId, cartProd);
+                }
+                else
+                {
+                    message = "out Of Stock";
+                    status = false;
+                }
+                return Json(new {status = status , Message =message , 
+                    quentity = cartProd.Quentaty , Name = product.Name ,price = product.SellingPrice ,
+                    guid = product.Id
+                });
             }
-
-            ProductsDetailsCartViewModel dataa = new ProductsDetailsCartViewModel();
-            dataa.Quantity = 6;
-            dataa.price = 4;
-            dataa.Name = "Hussein";
-            dataa.guid = guidd;
-            return Json(dataa);
+            catch (Exception ex) { 
+                return Json(new { status = status, Message = message });
+            }
         }
         public IActionResult delete(string guid, int CartId)
         {
-            Guid guidd = Guid.Parse(guid);
-            var cart = cartRepository.GetById(CartId);
-            var product = cart.Products.FirstOrDefault(p => p.Id == guidd);
-           int result =  cartRepository.RemoveAllProductWithId(CartId, product.Id);
-            if(result == 0)
+            try
+            {
+                Guid guidd = Guid.Parse(guid);
+                var it = cartProductsRepository.getAnItem(CartId, guidd);
+                int result = cartProductsRepository.RemoveItem(it);
+
+                if (result == 0)
+                    return Json("un SuccessFully");
+                else
+                    return Json("Delete SuccessFully");
+            }
+            catch (Exception ex)
+            {
                 return Json("un SuccessFully");
-            else
-                return Json("Delete SuccessFully");
+            }
         }
         public IActionResult Pay(string cartid)
         {
-           // cartRepository.confirmPay(int.Parse(cartid));
-            return RedirectToAction("Catring", "Home", 1);
+            if (cartRepository.confirmPay(int.Parse(cartid)) != 0)
+            {
+                return Json(new {status = true , message = "Successful"});
+
+            }
+            else
+            {
+                return Json(new { status = false, message = "un Successful" });
+            }
+
         }
-    } 
-    
+    }
+
 }

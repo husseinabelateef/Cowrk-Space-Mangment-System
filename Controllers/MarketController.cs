@@ -56,79 +56,99 @@ namespace Cowrk_Space_Mangment_System.Controllers
         }
         public IActionResult AddingToCart(string productId, string CartId, string quntity)
         {
-
-            Product product = productRepository.GetByBarCode(productId);
+            string msg;
             bool flag = false;
-            string msg = "Successfully";
-            if (product != null)
+            try
             {
-                Guid IDd = product.Id;
-                var flagavail = productRepository.AvailabiltyStock(IDd, int.Parse(quntity));
-                Cart cart = cartRepository.GetById(int.Parse(CartId));
-                int finalQuentity = 0;
-
-                if (cart != null)
+                Product product = productRepository.GetByBarCode(productId);
+               
+                 msg = "Successfully";
+                if (product != null)
                 {
-                    if (flagavail)
+                    Guid IDd = product.Id;
+                    var flagavail = productRepository.AvailabiltyStock(IDd, int.Parse(quntity));
+                    Cart cart = cartRepository.GetById(int.Parse(CartId));
+                    int finalQuentity = 0;
+
+                    if (cart != null)
                     {
-                        CartProducts cartPro = new CartProducts();
-                        cartPro.ProductId = IDd;
-                        cartPro.Cart_Id = int.Parse(CartId);
-                        cartPro.Quentaty = int.Parse(quntity);
-                        cartProductsRepository.Insert(cartPro);
-                        CartProducts test = cartProductsRepository.getAnItem(int.Parse(CartId), IDd);
-                        finalQuentity = test.Quentaty;
-                        flag = true;
+                        if (flagavail)
+                        {
+                            CartProducts cartPro = new CartProducts();
+                            cartPro.ProductId = IDd;
+                            cartPro.Cart_Id = int.Parse(CartId);
+                            cartPro.Quentaty = int.Parse(quntity);
+                            cartProductsRepository.Insert(cartPro);
+                            CartProducts test = cartProductsRepository.getAnItem(int.Parse(CartId), IDd);
+                            finalQuentity = test.Quentaty;
+                            flag = true;
+                        }
+                        else
+                        {
+                            msg = "Out Of Stock";
+                        }
                     }
                     else
                     {
-                        msg = "Out Of Stock";
+                        msg = "Cart Not Exist";
+                    }
+                    return Json(new
+                    {
+                        message = msg,
+                        quentity = finalQuentity,
+                        productID = productId,
+                        price = product.SellingPrice,
+                        status = flag,
+                        name = product.Name
+                    });
+                }
+                msg = "Product NotFound";
+                return Json(new { message = msg, status = flag });
+            }
+            catch (Exception ex)
+            {
+                msg = "Product NotFound";
+                return Json(new { message = msg, status = flag });
+            }
+
+            }
+        public IActionResult update(string productId, string CartId, string quntity)
+        {
+            var msg = "Suceesfully";
+            bool status = false;
+            try
+            {
+                
+                int newQun = 0, newCartID = 0;
+               Product product =  productRepository.GetByBarCode(productId);
+                int.TryParse(quntity, out newQun);
+                int.TryParse(CartId, out newCartID);
+                bool ava = productRepository.AvailabiltyStock(product.Id, newQun);
+                var cartItem = cartProductsRepository.getAnItem(newCartID, product.Id);
+                if (productId != null && cartItem != null)
+                {
+                    if (ava)
+                    {
+                        cartItem.Quentaty = newQun;
+                        cartProductsRepository.Update(newCartID, cartItem);
+                        status = true;
+                    }
+                    else
+                    {
+                        msg = "OutOfStock";
                     }
                 }
                 else
                 {
-                    msg = "Cart Not Exist";
+                    msg = "Product Not Exist";
                 }
-                return Json(new
-                {
-                    message = msg,
-                    quentity = finalQuentity,
-                    productID = productId,
-                    price = product.SellingPrice,
-                    status = flag,
-                    name = product.Name
-                });
+               
+             return Json(new { message = msg, guid = productId,quantity = cartItem.Quentaty, status = status });
             }
-            msg = "Product NotFound";
-            return Json(new { message = msg, status = flag });
-
-        }
-        public IActionResult update(string productId, string CartId, string quntity)
-        {
-            var msg = "Suceesfully";
-            int newQun = 0, newCartID = 0;
-            Guid ParseId = Guid.Parse(productId);
-            int.TryParse(quntity, out newQun);
-            int.TryParse(CartId, out newCartID);
-            bool ava = productRepository.AvailabiltyStock(ParseId, newQun), status = false;
-            var cartItem = cartProductsRepository.getAnItem(newCartID, ParseId);
-            if (productId != null && cartItem != null)
+            catch (Exception ex)
             {
-                if (ava)
-                {
-                    cartItem.Quentaty = newQun;
-                    cartProductsRepository.Update(newCartID, cartItem);
-                }
-                else
-                {
-                    msg = "OutOfStock";
-                }
+                return Json(new { message = msg, status = status });
             }
-            else
-            {
-                msg = "Product Not Exist";
             }
-            return Json(new { message = msg, status = status });
-        }
     }
 }

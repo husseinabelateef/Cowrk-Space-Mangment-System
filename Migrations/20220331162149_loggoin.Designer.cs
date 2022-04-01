@@ -4,14 +4,16 @@ using Cowrk_Space_Mangment_System.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cowrk_Space_Mangment_System.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220331162149_loggoin")]
+    partial class loggoin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -469,6 +471,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<string>("BarCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CartID")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
 
@@ -479,6 +484,8 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CartID");
 
                     b.ToTable("Product");
                 });
@@ -937,6 +944,13 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Navigation("Applicationuser");
                 });
 
+            modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Product", b =>
+                {
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.Cart", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CartID");
+                });
+
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.ProductMovments", b =>
                 {
                     b.HasOne("Cowrk_Space_Mangment_System.Models.Outgoing", "Outgoing")
@@ -1079,6 +1093,11 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Cart", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.Chair", b =>

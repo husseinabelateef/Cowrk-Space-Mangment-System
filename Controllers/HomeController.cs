@@ -12,16 +12,21 @@ using Microsoft.Extensions.Logging;
 namespace Cowrk_Space_Mangment_System.Controllers
 {
     public class HomeController : Controller
-    { 
+    {
         private readonly ILogger<HomeController> _logger;
         private readonly IClientCart clientCartRepo;
+        ICartProductsRepository cartProductsRepository;
+        private readonly IProductRepository productRepository;
+        public ICartRepository CartRepository;
 
-        public ICartRepository CartRepository { get; }
-
-        public HomeController(ILogger<HomeController> logger , ICartRepository cartRepository ,
-            IClientCart clientCartRepo)
+        public HomeController(ILogger<HomeController> logger, ICartRepository cartRepository,
+            IClientCart clientCartRepo, ICartProductsRepository cartProductsRepository
+            , IProductRepository ProductRepository)
         {
             _logger = logger;
+
+            this.cartProductsRepository = cartProductsRepository;
+            productRepository = ProductRepository;
             CartRepository = cartRepository;
             this.clientCartRepo = clientCartRepo;
         }
@@ -43,7 +48,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             {
                 carts = CartRepository.GetAllUnpaidCart();
             }
-            else if(id == 2) // Get All Clients Cart
+            else if (id == 2) // Get All Clients Cart
             {
                 carts = CartRepository.GetAllUnpaidClientsCart();
             }
@@ -51,7 +56,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             {
                 carts = CartRepository.GetAllUnpaidVistorsCart();
             }
-            cartViewModels =  cartViewModelsHelp(carts);
+            cartViewModels = cartViewModelsHelp(carts);
             return View(cartViewModels);
         }
         public List<CartViewModel> cartViewModelsHelp(List<Cart> carts)
@@ -60,6 +65,12 @@ namespace Cowrk_Space_Mangment_System.Controllers
             foreach (Cart c in carts)
             {
                 CartViewModel asd = new CartViewModel();
+                var cart = cartProductsRepository.GetAllProductOfCategory(c.ID);
+                var lisPro = new List<Product>();
+                foreach (var item in cart)
+                {
+                    lisPro.Add(productRepository.GetById(item.ProductId));
+                }
                 if (clientCartRepo.GetById(c.ID) != null)
                 {
                     asd.ClientName = clientCartRepo.clientName(c.ID);
@@ -68,7 +79,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 {
                     asd.ClientName = "Visitor";
                     asd.CartId = c.ID;
-                    asd.Products = c.Products;
+                    asd.Products = lisPro;
                 }
                 cartViewModels.Add(asd);
             }
