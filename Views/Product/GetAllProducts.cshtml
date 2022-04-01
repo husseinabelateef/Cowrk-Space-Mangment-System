@@ -9,6 +9,10 @@
 @model IEnumerable<Cowrk_Space_Mangment_System.Models.Product>
 
     <h4>Products</h4>
+     <a asp-action="Add" class="details btn btn-btn-warning bg-warning m-2">Add New Product</a>
+
+   @* <a onclick="AddProduct()" class="adding btn btn-btn-warning bg-warning m-2">Add New Product</a>*@
+
     <hr/>
     <table class="table table-hover table-bordered" id="ProductGrid">
         <thead>
