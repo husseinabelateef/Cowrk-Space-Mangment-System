@@ -48,6 +48,9 @@ namespace Cowrk_Space_Mangment_System.Repository
             return context.SaveChanges();
         }
 
-
+        public Client getByQrco(string Qr)
+        {
+            return context.Client.FirstOrDefault(x => x.QR_Code == Qr);
+        }
     }
 }

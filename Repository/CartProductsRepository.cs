@@ -48,6 +48,7 @@ namespace Cowrk_Space_Mangment_System.Repository
         {
             var test = context.CartProducts.FirstOrDefault(x => x.Cart_Id == item.Cart_Id &&
             x.ProductId == item.ProductId);
+           
             Product prod = productRepository.GetById(item.ProductId);
             if (test == null)
             {
@@ -58,6 +59,9 @@ namespace Cowrk_Space_Mangment_System.Repository
                  test.Quentaty += item.Quentaty;
             }
             prod.ActualAmount -= item.Quentaty;
+            Cart cart = cartRepository1.GetById(item.Cart_Id);
+            cart.TotalPrice += item.Quentaty * prod.SellingPrice;
+            cartRepository1.Update(item.Cart_Id , cart);
             productRepository.Update(prod.Id, prod);
             return context.SaveChanges();
         }
@@ -65,7 +69,8 @@ namespace Cowrk_Space_Mangment_System.Repository
         public int Update(int id, CartProducts item)
         {
             CartProducts cart =  context.CartProducts.FirstOrDefault(x => x.ProductId == item.ProductId && x.Cart_Id == item.Cart_Id);
-            if(cart != null)
+            Cart cart1 = null;
+            if (cart != null)
             {
                 if (cart.Quentaty != item.Quentaty)
                 {
@@ -74,15 +79,15 @@ namespace Cowrk_Space_Mangment_System.Repository
                     tes.ActualAmount -= item.Quentaty;
                     if (cart.Quentaty > item.Quentaty)
                     {
-                        var cart1 = cartRepository1.GetById(cart.Cart_Id);
+                        cart1 = cartRepository1.GetById(cart.Cart_Id);
                         cart1.TotalPrice -= (cart.Quentaty - item.Quentaty) * tes.SellingPrice;
                     }
                     else
                     {
-                        var cart1 = cartRepository1.GetById(cart.Cart_Id);
+                        cart1 = cartRepository1.GetById(cart.Cart_Id);
                         cart1.TotalPrice += (cart.Quentaty - item.Quentaty) * tes.SellingPrice;
                     }
-                    
+                    cartRepository1.Update(item.Cart_Id, cart1);
                     productRepository.Update(tes.Id, tes);
                 }
                 cart.Quentaty = item.Quentaty;

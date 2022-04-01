@@ -102,5 +102,22 @@ namespace Cowrk_Space_Mangment_System.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public IActionResult updateNotify(string type)
+        {
+            try
+            {
+                int all = 0, visit = 0, client = 0;
+                all = this.CartRepository.GetUnpaidCount();
+                visit = this.CartRepository.GetAllUnpaidCountVistorsCart();
+                client = this.CartRepository.GetAllUnpaidCountClientsCart();
+                //data.all , data.visit , data.client status
+                return Json(new { all = all, visit = visit, client = client, status = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = false });
+            }
+
+        }
     }
 }

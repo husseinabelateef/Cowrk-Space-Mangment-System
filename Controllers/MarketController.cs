@@ -13,18 +13,20 @@ namespace Cowrk_Space_Mangment_System.Controllers
         private IClientCart clientCart;
         private IClientRepository clientRepository;
         private readonly ICartProductsRepository cartProductsRepository;
+        private readonly IClientRepository clientRepository1;
         private IReservationRepository reservationRepository;
 
         public MarketController(IProductRepository productRepository,
             IClientCart clientCart, ICartRepository CartRepository,
             IReservationRepository reservationRepository, IClientRepository clientRepo
-            , ICartProductsRepository cartProductsRepository)
+            , ICartProductsRepository cartProductsRepository , IClientRepository clientRepository)
         {
             this.cartRepository = CartRepository;
             this.productRepository = productRepository;
             this.clientCart = clientCart;
             this.clientRepository = clientRepo;
             this.cartProductsRepository = cartProductsRepository;
+            clientRepository1 = clientRepository;
             this.reservationRepository = reservationRepository;
         }
         public IActionResult Index()
@@ -37,25 +39,32 @@ namespace Cowrk_Space_Mangment_System.Controllers
         }
         public IActionResult Cart(string userId = "Visitor")
         {
-            Cart cart;
-            if (userId == "Visitor")
+            try
             {
-                cart = new();
-                cart.IsClient = false;
-                cart.IsPaid = false;
-                cart.Date = DateTime.Now;
-                cartRepository.Insert(cart);
+                Cart cart;
+                if (userId == "Visitor")
+                {
+                    cart = new();
+                    cart.IsClient = false;
+                    cart.IsPaid = false;
+                    cart.Date = DateTime.Now;
+                    cartRepository.Insert(cart);
+                }
+                else
+                {
+
+                    cart = reservationRepository.GetLastCartForUser(int.Parse(userId));
+                    
+                }
+                return PartialView(cart);
             }
-            else
+            catch (Exception ex)
             {
-
-                cart = reservationRepository.GetLastCartForUser(int.Parse(userId));
+                return PartialView(new Cart());
             }
-
-            return PartialView(cart);
-        }
-        public IActionResult AddingToCart(string productId, string CartId, string quntity)
-        {
+            }
+            public IActionResult AddingToCart(string productId, string CartId, string quntity)
+            {
             string msg;
             bool flag = false;
             try
@@ -98,6 +107,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                         quentity = finalQuentity,
                         productID = productId,
                         price = product.SellingPrice,
+                        totalprice = cart.TotalPrice,
                         status = flag,
                         name = product.Name
                     });
@@ -116,6 +126,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
         {
             var msg = "Suceesfully";
             bool status = false;
+            Cart cart= null ;
             try
             {
                 
@@ -131,6 +142,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     {
                         cartItem.Quentaty = newQun;
                         cartProductsRepository.Update(newCartID, cartItem);
+                        cart = cartRepository.GetById(int.Parse(CartId));
                         status = true;
                     }
                     else
@@ -143,12 +155,24 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     msg = "Product Not Exist";
                 }
                
-             return Json(new { message = msg, guid = productId,quantity = cartItem.Quentaty, status = status });
+             return Json(new { message = msg, guid = productId,
+                 totalprice = cart.TotalPrice,
+                 quantity = cartItem.Quentaty, status = status });
             }
             catch (Exception ex)
             {
                 return Json(new { message = msg, status = status });
             }
             }
+        public IActionResult checkClient(string barcode)
+        {
+            Client client = clientRepository1.getByQrco(barcode);
+
+            if (client == null)
+            {
+                return Json(new { status = false, userId = "Ahmed" });
+            }
+            return Json(new { status = true, userId = client.ID });
+        }
     }
 }

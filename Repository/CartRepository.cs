@@ -79,7 +79,7 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public int GetAllUnpaidCountClientsCart()
         {
-            return GetAllUnpaidVistorsCart().Count;
+            return GetAllUnpaidClientsCart().Count;
         }
         public int confirmPay(int CartId)
         {

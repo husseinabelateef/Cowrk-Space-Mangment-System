@@ -25,11 +25,31 @@
   </header>
   
   <!-- End Header -->
-  @section Scripts {
+
+  
+@section Scripts
+{
  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js">
      </script>
-  }
-
+        
+        <script>
+             var hubConnection=
+           new signalR.HubConnectionBuilder().withUrl("/Chat").build();
+    //handle request come from server
+   hubConnection.on("ClientNotify",function(){
+   
+   });
+    hubConnection.on("VisitorsNotify",function(obj){
+      
+   
+   });
+    //Start
+    hubConnection.start().then(function(){
+        console.log("Connect Success");
+    });
+    
+        </script>
+}
 
 }
 else
@@ -65,11 +85,10 @@ else
   </header>
   
   <!-- End Header -->
-  @section Scripts {
- <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js">
-     </script>
+ 
+ 
   }
 
-  }
+  
 
   
