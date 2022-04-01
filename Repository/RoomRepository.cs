@@ -20,7 +20,10 @@ namespace Cowrk_Space_Mangment_System.Repository
         {
             return context.Room.FirstOrDefault(room => room.ID == id);
         }
-
+        public Room GetByName(string Name)
+        {
+            return context.Room.FirstOrDefault(R=>R.Name==Name);
+        }
         public int Insert(Room room)
         {
             context.Room.Add(room);

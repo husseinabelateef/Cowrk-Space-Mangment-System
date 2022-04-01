@@ -47,7 +47,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
             context = _context;
         }
 
-        public IActionResult GetAllClients() {
+        public IActionResult GetAllClients()
+        {
 
             List<Client> clients = clientRepository.GetAll();
             return View(clients);
@@ -82,9 +83,10 @@ namespace Cowrk_Space_Mangment_System.Controllers
             cartRepository.Insert(cart);
             return View("NewReservation", cart);
         }
-        public IActionResult NewReservation() {
+        public IActionResult NewReservation()
+        {
 
-            ReserveClass_ViewModel Reservation = new ReserveClass_ViewModel();
+            ReservationViewModel Reservation = new ReservationViewModel();
             Reservation.clients = clientRepository.GetAll();
             Reservation.chairs = new List<Chair>();
 
@@ -103,7 +105,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveNewReservation(ReserveClass_ViewModel reservation)
+        public ActionResult SaveNewReservation(ReservationViewModel reservation)
         {
             if (ModelState.IsValid == true)
             {
@@ -115,7 +117,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 reservation.Reservation = new Reservation();
                 reservation.Reservation.Cart = cart;
 
-               
+
 
                 reservation.Reservation.Date = reservation.Date_Reserve;
 
@@ -151,6 +153,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                             }
                         }
                         reservationRepository.Insert(reservation.Reservation);
+                        chairReserveRepository.Insert(reservation.Reservation.ChairReserves);
                         ClientCart clientCart = new ClientCart();
                         clientCart.Reservation_ID = reservation.Reservation.ID;
                         clientCart.Cart_Id = reservation.Reservation.Cart_ID;
@@ -194,12 +197,12 @@ namespace Cowrk_Space_Mangment_System.Controllers
         }
 
 
-    
+
 
         // GET: ReservationController/Edit/5
         public ActionResult EditReservation(int id)
         {
-            Reservation reservation = reservationRepository.GetById(id);           
+            Reservation reservation = reservationRepository.GetById(id);
             return View(reservation);
         }
 
@@ -220,3 +223,6 @@ namespace Cowrk_Space_Mangment_System.Controllers
         }
     }
 }
+
+
+

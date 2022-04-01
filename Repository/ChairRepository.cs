@@ -1,4 +1,5 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,7 +14,7 @@ namespace Cowrk_Space_Mangment_System.Repository
         }
         public List<Chair> GetAll()
         {
-            return context.Chair.ToList();
+            return context.Chair.Include(r=>r.Room).ToList();
         }
         public Chair GetById(int id)
         {

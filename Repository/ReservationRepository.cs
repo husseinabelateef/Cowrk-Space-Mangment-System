@@ -35,7 +35,6 @@ namespace Cowrk_Space_Mangment_System.Repository
                 oldReservation.Start_Time = Reservation.Start_Time;
                 oldReservation.ExpextedHours = Reservation.ExpextedHours;
                 oldReservation.Date = Reservation.Date;
-                oldReservation.ClientCart_ID = Reservation.ClientCart_ID;
                 oldReservation.Client_ID = Reservation.Client_ID;
                 oldReservation.AppuserID = Reservation.AppuserID;
                 oldReservation.Hours_Price = Reservation.Hours_Price;

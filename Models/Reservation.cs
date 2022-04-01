@@ -23,8 +23,8 @@ namespace Cowrk_Space_Mangment_System.Models
         [ForeignKey("Client")]
         public int Client_ID { get; set; }
         [Display(Name = "ClientCart Id")]
-        [ForeignKey("ClientCart")]
-        public int ClientCart_ID { get; set; }
+        [ForeignKey("Cart")]
+        public int Cart_ID { get; set; }
         // DD/MM/YY
         [Display(Name = "Date of Session")]
         [Required(ErrorMessage = "Enter Date of Session")]
@@ -35,7 +35,7 @@ namespace Cowrk_Space_Mangment_System.Models
         [Display(Name = "Total Price")]
         public double TotalPrice { get; set; }
         public virtual Client Client { get; set; }
-        public virtual ClientCart ClientCart { get; set; }
+        public virtual Cart Cart { get; set; }
         public ICollection<RoomReserve> RoomReserve { get; set; }
         public virtual ChairReserve ChairReserves { get; set; }
         //public virtual Receptionist Receptionist  { get; set; }
