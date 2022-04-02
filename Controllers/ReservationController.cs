@@ -197,30 +197,6 @@ namespace Cowrk_Space_Mangment_System.Controllers
         }
 
 
-
-
-        // GET: ReservationController/Edit/5
-        public ActionResult EditReservation(int id)
-        {
-            Reservation reservation = reservationRepository.GetById(id);
-            return View(reservation);
-        }
-
-        // POST: ReservationController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveEditReservation(int id, Reservation reservation)
-        {
-            reservationRepository.Update(id, reservation);
-            return RedirectToAction("EditReservation");
-        }
-
-        // GET: ReservationController/Delete/5
-        public ActionResult DeleteResevation(int id)
-        {
-            reservationRepository.Delete(id);
-            return View();
-        }
     }
 }
 
