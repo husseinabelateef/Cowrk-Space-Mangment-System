@@ -1,41 +1,52 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
 using Cowrk_Space_Mangment_System.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Cowrk_Space_Mangment_System.Controllers
 {
     public class IncommingController : Controller
     {
+        private UserManager<ApplicationUser> userManager;
         IIncommingRepository incommingRepository;
-        ICartRepository cartRepository;
-        IReservationRepository reservationRepository;
-
-        public IncommingController(IIncommingRepository incomming , ICartRepository cart, IReservationRepository reserv)
+        public IncommingController(UserManager<ApplicationUser> user, IIncommingRepository incomming)
         {
-            incommingRepository = incomming;
-            cartRepository = cart;
-            reservationRepository = reserv;
-
-
+            userManager = user;
+            incommingRepository=incomming;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        private async Task<ApplicationUser> GetCurrentUserAsync() => await userManager.GetUserAsync(HttpContext.User);
         public IActionResult Show()
         {
             return View();
         }
-        public IActionResult ToatalPrice(int Id)
+        public async Task<IActionResult> ToatalPriceAsync()
         {
-            Incomming incomming=incommingRepository.GetById(Id);
-            return View("_ToatalPriceIncoming",incomming);
+            var UserModel = await GetCurrentUserAsync();
+            Incomming incomming1 = new Incomming();
+            incomming1.AppuserID = UserModel.Id;
+            List<Incomming> incommings = incommingRepository.GetAll();
+            incommings = incommings.Where(r => r.AppuserID == UserModel.Id).ToList();
+            foreach(var incomming in incommings)
+            {
+                incomming1.ShiftCloseReservationIncome += incomming.ShiftCloseReservationIncome;
+            }
+            return PartialView("_ToatalPriceIncoming", incomming1);
         }
-        public IActionResult ToatalCatring(int Id)
+        public async Task<IActionResult> ToatalCatringAsync()
         {
-            Incomming incomming = incommingRepository.GetById(Id);
-            return View("_ToatalPriceIncoming", incomming);
+            var UserModel = await GetCurrentUserAsync();
+            Incomming incomming1 = new Incomming();
+            incomming1.AppuserID = UserModel.Id;
+            List<Incomming> incommings = incommingRepository.GetAll();
+            incommings = incommings.Where(r => r.AppuserID == UserModel.Id).ToList();
+            foreach (var incomming in incommings)
+            {
+                incomming1.ShiftCloseCateringIncome += incomming.ShiftCloseCateringIncome;
+            }
+            return PartialView("_ToatalCatring", incomming1);
         }
     }
-
 }
