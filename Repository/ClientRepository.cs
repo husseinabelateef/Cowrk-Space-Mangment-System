@@ -25,6 +25,8 @@ namespace Cowrk_Space_Mangment_System.Repository
         public int Insert(Client client)
         {
             context.Client.Add(client);
+            context.SaveChanges();
+            client.QR_Code = "NOOK" + client.ID.ToString();
             return context.SaveChanges();
         }
 
