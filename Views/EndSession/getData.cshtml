@@ -1,0 +1,45 @@
+﻿
+ @model EndSessionViewModel
+<section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
+            <img src="~/assets/img/n5.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right" data-aos-delay="100">
+          <h3>Incomming Report for Shift </h3>
+           <form  method="post"  id="addInf" asp-action="Checkout" asp-controller="EndSession" >
+     <div>
+        <label asp-for="Client_ID"></label>
+        <input asp-for="Client_ID" class="form-control" />
+        <span asp-validation-for="Client_ID" class="text-danger"></span>
+    </div>
+     <br />
+     <div>
+           <label asp-for="ReservationType"></label>
+           <br />
+        <select >
+            <option  asp-for="Client_ID" class="form-control" >
+                
+                Room
+            </option>
+             <option  asp-for="Client_ID" class="form-control">
+                Individual
+            </option>
+        </select>
+
+    </div>
+     <br />
+     <input type="submit" value="Checkout" class="btn btn-success" style="background-color: #F9CB38 ; width:130px;border:1px solid white;"/>
+    </form>
+  
+    <div>
+      
+    </div>
+       </div>
+        </div>
+
+      </div>
+    </section>
+

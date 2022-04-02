@@ -3,18 +3,18 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @model Outgoing
-@{
-    
-        SelectList OutgoingList=new SelectList (ViewBag.Outgoings,"Id","Name");
-        SelectList rawProductMovments=new SelectList (ViewBag.rawM,"Id","Name");
-         SelectList productMovments=new SelectList (ViewBag.productM,"Id","Name");
-        
-}
-<button style="background-color: #F9CB38; width:100px;border:1px solid white;" id="btnclick" type="button" class="btn btn-primary ms-4" data-toggle="modal" data-target="#exampleModal">
-  Add
-</button>
-<form  method="post"  id="addInf" asp-action="AddingInformation" asp-controller="Outgoing" >
-    <div>
+
+      <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
+            <img src="~/assets/img/n2.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right" data-aos-delay="100">
+          <h3>Add New Outgoing for Nook </h3>
+              <form  method="post"  id="addInf" asp-action="AddingInformation" asp-controller="Outgoing" >
+           <div>
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
           <span asp-validation-for="Name" class="text-danger"></span>
@@ -35,22 +35,12 @@
        <input asp-for="Reciption_ID" class="form-control" />
           <span asp-validation-for="Reciption_ID" class="text-danger"></span>
     </div>
-     <div>
-        <label asp-for="RawProductMovments"></label>
-        <select class="form-control" asp-for="RawProductMovments" asp-items="rawProductMovments">
-        </select>
-    </div>
-     <div>
-        <label asp-for="ProductMovments"></label>
-        <select class="form-control" asp-for="ProductMovments" asp-items="productMovments">
-        </select>
-    </div>
-    <input type="submit" value="Save" class="btn btn-success" />
+    <input type="submit" value="Add" class="btn btn-success" style="background-color: #F9CB38; width:100px;border:1px solid white;"/>
 </form>
-<script>
-    $(document).ready(function(){
-        $('btnclick').click(function(){
-            $('#addInf').modal('toggle')
-        })
-    })
-</script>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+

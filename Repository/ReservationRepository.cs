@@ -1,4 +1,5 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -61,6 +62,11 @@ namespace Cowrk_Space_Mangment_System.Repository
         {
            Reservation reservation = context.Reservation.LastOrDefault(x => x.Client_ID == ClientId);
             return reservation == null ? null : context.Cart.FirstOrDefault(x => x.ID == reservation.Cart_ID);
+        }
+
+        public Reservation where(Func<object, object> p)
+        {
+            throw new NotImplementedException();
         }
     }
 }

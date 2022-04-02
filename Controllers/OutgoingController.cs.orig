@@ -8,28 +8,39 @@ namespace Cowrk_Space_Mangment_System.Controllers
     public class OutgoingController : Controller
     {
         IOutgoingRepository outgoingRepository;
-        
+        IRawProductMovmentRepository rawProductMovmentRepository;
+        IProductMovementsRepository productMovementsRepository;
 
-        public OutgoingController(IOutgoingRepository outgoing )
+        public OutgoingController(IOutgoingRepository outgoing , IRawProductMovmentRepository rawProductMovment, IProductMovementsRepository productMovements)
         {
             outgoingRepository=outgoing;
+            rawProductMovmentRepository=rawProductMovment;
+            productMovementsRepository=productMovements;
+        }
+        public IActionResult GetAllOutgoing()
+        {
+            List<Outgoing> OutgoingList = outgoingRepository.GetAll();
+            
+            ViewData["Outgoings"] = OutgoingList;
+            return View("_GetAllOutgoing", OutgoingList);
            
         }
-
         [HttpGet]
-        public IActionResult AddingInfo([FromRoute] int id, Outgoing NewOut)
+        public IActionResult Adding([FromRoute] int id, Outgoing NewOut)
         {
             if (NewOut.Name != null)
             {
 
                 outgoingRepository.Insert(NewOut);
 
-                return RedirectToAction("AddingInfo");
+                return RedirectToAction("GetAllOutgoing");
             }
+
             List<Outgoing> OutgoingList = outgoingRepository.GetAll();
             ViewData["Outgoings"] = OutgoingList;
             return View("_AddingInformationOutgoing", NewOut);
         }
+
 
 
         [HttpPost]
@@ -40,13 +51,14 @@ namespace Cowrk_Space_Mangment_System.Controllers
               
                 outgoingRepository.Insert(NewOut);
                 
-                return RedirectToAction("AddingInfo");
+                return RedirectToAction("GetAllOutgoing");
             }
-            List<Outgoing> OutgoingList = outgoingRepository.GetAll();
-            ViewData["Outgoings"] = OutgoingList;
-            return View("_AddingInformationOutgoing", NewOut);
-        }
 
+            List<Outgoing> OutgoingList = outgoingRepository.GetAll();
+ 
+            ViewData["Outgoings"] = OutgoingList;
+            return View("GetAllOutgoing", NewOut);
+        }
 
     }
 }

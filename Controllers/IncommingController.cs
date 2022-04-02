@@ -7,23 +7,35 @@ namespace Cowrk_Space_Mangment_System.Controllers
     public class IncommingController : Controller
     {
         IIncommingRepository incommingRepository;
-        public IncommingController(IIncommingRepository incomming)
+        ICartRepository cartRepository;
+        IReservationRepository reservationRepository;
+
+        public IncommingController(IIncommingRepository incomming , ICartRepository cart, IReservationRepository reserv)
         {
-            incommingRepository=incomming;
+            incommingRepository = incomming;
+            cartRepository = cart;
+            reservationRepository = reserv;
+
+
         }
         public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult Show()
         {
             return View();
         }
         public IActionResult ToatalPrice(int Id)
         {
             Incomming incomming=incommingRepository.GetById(Id);
-            return PartialView("_ToatalPriceIncoming",incomming);
+            return View("_ToatalPriceIncoming",incomming);
         }
         public IActionResult ToatalCatring(int Id)
         {
             Incomming incomming = incommingRepository.GetById(Id);
-            return View(incomming);
+            return View("_ToatalPriceIncoming", incomming);
         }
     }
+
 }

@@ -16,7 +16,7 @@ namespace Cowrk_Space_Mangment_System.Models
         public string AppuserID { get; set; } 
         // Collection of incomming in Receprionst
         //public Receptionist Receptionist { get; set; } 
-        public virtual ApplicationUser User { get; set; }
+       public virtual ApplicationUser User { get; set; }
 
     }
 }
