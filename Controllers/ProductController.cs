@@ -86,7 +86,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
                 // Store image in some path with the desired format
                 //Change This Path before You Test
-                barcodeImage.Save(@"D:\Professional Web Development and BI\Asp.Net MVC Core\Project\wwwroot\Images\" + Product.Name + ".png", ImageFormat.Png);
+                barcodeImage.Save(@"C:\Users\h.Embaby\source\repos\Cowrk-Space-Mangment-System\wwwroot\Images\" + Product.Name + ".png", ImageFormat.Png);
                 Product.BarCode = Product.Name + ".png";
 
                 ProductRepository.Insert(Product);
