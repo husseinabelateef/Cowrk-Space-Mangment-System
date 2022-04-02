@@ -3,7 +3,7 @@ using Cowrk_Space_Mangment_System.Models;
 
 namespace Cowrk_Space_Mangment_System.View_Model
 {
-    public class CartViewModel
+    public class CartViewModel 
     {
         public int CartId { get; set; }
         public string ClientName { get; set; }

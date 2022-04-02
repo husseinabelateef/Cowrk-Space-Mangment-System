@@ -1,138 +1,12 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+﻿@using Cowrk_Space_Mangment_System.ViewModel
+@model Cowrk_Space_Mangment_System.View_Model.ReservationViewModel 
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+<h1>Add New Reservation</h1>
 
-    
-    <link rel="stylesheet" href="~/fonts/icomoon/style.css">
-  
-    <link href='~/fullcalendar/packages/core/main.css' rel='stylesheet' />
-    <link href='~/fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
-    
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    
-    <!-- Style -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <title>Calendar #10</title>
-  </head>
-  <body>
-  
-
-  <div id='calendar-container'>
-    <div id='calendar'></div>
-  </div>
-    
-    
-
-    <script src="~/js/jquery-3.3.1.min.js"></script>
-    <script src="~/js/popper.min.js"></script>
-    <script src="~/js/bootstrap.min.js"></script>
-
-    <script src='~/fullcalendar/packages/core/main.js'></script>
-    <script src='~/fullcalendar/packages/interaction/main.js'></script>
-    <script src='~/fullcalendar/packages/daygrid/main.js'></script>
-    <script src='~/fullcalendar/packages/timegrid/main.js'></script>
-    <script src='~/fullcalendar/packages/list/main.js'></script>
-
-    
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-      height: 'parent',
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      },
-      defaultView: 'dayGridMonth',
-      defaultDate: '2020-02-12',
-      navLinks: true, // can click day/week names to navigate views
-      editable: true,
-      eventLimit: true, // allow "more" link when too many events
-      events: [
-        {
-          title: 'All Day Event',
-          start: '2020-02-01',
-        },
-        {
-          title: 'Long Event',
-          start: '2020-02-07',
-          end: '2020-02-10'
-        },
-        {
-          groupId: 999,
-          title: 'Repeating Event',
-          start: '2020-02-09T16:00:00'
-        },
-        {
-          groupId: 999,
-          title: 'Repeating Event',
-          start: '2020-02-16T16:00:00'
-        },
-        {
-          title: 'Conference',
-          start: '2020-02-11',
-          end: '2020-02-13'
-        },
-        {
-          title: 'Meeting',
-          start: '2020-02-12T10:30:00',
-          end: '2020-02-12T12:30:00'
-        },
-        {
-          title: 'Lunch',
-          start: '2020-02-12T12:00:00'
-        },
-        {
-          title: 'Meeting',
-          start: '2020-02-12T14:30:00'
-        },
-        {
-          title: 'Happy Hour',
-          start: '2020-02-12T17:30:00'
-        },
-        {
-          title: 'Dinner',
-          start: '2020-02-12T20:00:00'
-        },
-        {
-          title: 'Birthday Party',
-          start: '2020-02-13T07:00:00'
-        },
-        {
-          title: 'Click for Google',
-          url: 'http://google.com/',
-          start: '2020-02-28'
-        }
-      ]
-    });
-
-    calendar.render();
-  });
-
-    </script>
-
-    <script src="~/js/main.js"></script>
-
-
-    @*Book class*@
-
-
-  
+@{ 
+    SelectList clients = new SelectList(@Model.clients, "ID", "Name"); 
+    SelectList chairs = new SelectList(@Model.chairs, "Id","Id");
+}  
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 
 	<!-- Bootstrap -->
@@ -141,17 +15,6 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="~/css/csss/styleBook.css" />
 
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
-        
-
-        <br />
-        <br />
-    <!-- Button trigger modal -->
 <button style="background-color: #F9CB38; width:100px;border:1px solid black;color:black" id="btnclick" type="button" class="btn ms-4" data-toggle="modal" data-target="#exampleModal">
   Book
 </button>
@@ -167,12 +30,14 @@
         </button>
       </div>
       <div class="modal-body">
-       		<form>
+       		<form method="post" asp-action="SaveNewReservation" asp-controller="Reservation">
 							<div class="row">
 								
 									<div class="form-group">
-										<span class="form-label">Name</span>
-										<input class="form-control" type="text" placeholder="Enter your name">
+										@*<span class="form-label">Name</span>
+										<input class="form-control" type="text" placeholder="Enter your name">*@
+                                        <label asp-for="Client_ID" class="form-label"></label>
+                                         <input  asp-for="Client_ID" class="form-control" class="form-control" type="text" placeholder="Enter your name"/>
 									</div>
 								
 								<div class="col-sm-6">
@@ -180,74 +45,53 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<span class="form-label">Phone</span>
-								<input class="form-control" type="tel" placeholder="Enter your phone number">
+								 <label asp-for="Date_Reserve"></label>
+								 <input type="date" asp-for="Date_Reserve" class="form-control" />
 							</div>
                             <br />
 				                 <div class="row">
 								<div class="form-group col-sm-6">
-										<span class="form-label">Pickup Date</span>
-										<input class="form-control" type="date" required>
+										<label asp-for="Start_Time" class="form-label"></label>
+										<input type="time" asp-for="Start_Time" class="form-control" />
 									</div>
 						
 							<div class="form-group col-sm-6">
-										<span class="form-label">Class</span>
-										<select class="form-control">
-													<option>Nook 1</option>
-													<option>Nook 2</option>
-                                         </select>
+										 <label asp-for="type_Room" class="form-label"></label>
+											<select
+											  class="form-control"
+											  asp-for="type_Room"
+											  onchange="ShowAvailableChairs()">
+											   <option value="0">-- Select Room --</option>
+											  <option value="Nook1">Nook1</option>
+											   <option value="Nook2">Nook2</option>
+												 <option value="Shared">Shared</option>
+												   <option value="Individual">Individual</option>
+											</select>
 									</div>
 								 </div>
                                  	<br />
 									<div class="row">
 										<div class="col-sm-4">
 											<div class="form-group">
-												<span class="form-label">Hour</span>
-												<select class="form-control">
-													<option>1</option>
-													<option>2</option>
-													<option>3</option>
-													<option>4</option>
-													<option>5</option>
-													<option>6</option>
-													<option>7</option>
-													<option>8</option>
-													<option>9</option>
-													<option>10</option>
-													<option>11</option>
-													<option>12</option>
-												</select>
-												<span class="select-arrow"></span>
+												 <label asp-for="ExpextedHours"></label>
+												 <input asp-for="ExpextedHours" class="form-control" />
+												
 											</div>
 										</div>
 										<div class="col-sm-4">
 											<div class="form-group">
-												<span class="form-label">Expected Hours</span>
-												<select class="form-control">
-												    <option>1</option>
-													<option>2</option>
-													<option>3</option>
-													<option>4</option>
-													<option>5</option>
-													<option>6</option>
-													<option>7</option>
-													<option>8</option>
-													<option>9</option>
-													<option>10</option>
-													<option>11</option>
-													<option>12</option>
+											<label asp-for="Client_ID"></label>
+												<select
+												  class="form-control"
+												  asp-for="Client_ID" asp-Items="clients">
+												   <option value="0">-- Select Client --</option>
 												</select>
-												<span class="select-arrow"></span>
 											</div>
 										</div>
 										<div class="col-sm-4">
 											<div class="form-group">
-												<span class="form-label">AM/PM</span>
-												<select class="form-control">
-													<option>AM</option>
-													<option>PM</option>
-												</select>
-												<span class="select-arrow"></span>
+												 <label asp-for="NO_Available_Chair" class="form-label"></label>
+												<input  type="text" asp-for="NO_Available_Chair" class="form-control" />
 											</div>
 										</div>
 									</div>
