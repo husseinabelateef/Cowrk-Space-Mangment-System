@@ -120,7 +120,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
 
                 reservation.Reservation.Date = reservation.Date_Reserve;
-
+                reservation.Reservation.Cart.IsClient = true;
 
                 reservation.Reservation.Start_Time = reservation.Start_Time;
                 reservation.Reservation.ExpextedHours = reservation.ExpextedHours;

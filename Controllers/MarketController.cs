@@ -67,14 +67,15 @@ namespace Cowrk_Space_Mangment_System.Controllers
             {
             string msg;
             bool flag = false;
+            Guid IDd = Guid.Parse(productId);
             try
             {
-                Product product = productRepository.GetByBarCode(productId);
+                Product product = productRepository.GetById(IDd);
                
                  msg = "Successfully";
                 if (product != null)
                 {
-                    Guid IDd = product.Id;
+                    
                     var flagavail = productRepository.AvailabiltyStock(IDd, int.Parse(quntity));
                     Cart cart = cartRepository.GetById(int.Parse(CartId));
                     int finalQuentity = 0;
@@ -127,12 +128,13 @@ namespace Cowrk_Space_Mangment_System.Controllers
             var msg = "Suceesfully";
             bool status = false;
             Cart cart = null;
+            Guid IDd = Guid.Parse(productId);
             int newQun = 0, newCartID = 0;
             try
             {
                 
               
-               Product product =  productRepository.GetByBarCode(productId);
+               Product product =  productRepository.GetById(IDd);
                 int.TryParse(quntity, out newQun);
                 int.TryParse(CartId, out newCartID);
                 bool ava = productRepository.AvailabiltyStock(product.Id, newQun);
@@ -181,7 +183,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
             {
                 int cartid = 0;
                 int.TryParse(CartId, out cartid);
-                var produ = productRepository.GetByBarCode(guid);
+                Guid IDd = Guid.Parse(guid);
+                var produ = productRepository.GetById(IDd);
                 var it = cartProductsRepository.getAnItem(cartid, produ.Id);
                 var cart = cartRepository.GetById(cartid);
                 int result = cartProductsRepository.RemoveItem(it);

@@ -1,4 +1,5 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,8 +61,8 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public Cart GetLastCartForUser(int ClientId)
         {
-           Reservation reservation = context.Reservation.LastOrDefault(x => x.Client_ID == ClientId);
-            return reservation == null ? null : context.Cart.FirstOrDefault(x => x.ID == reservation.Cart_ID);
+           Reservation reservation = context.Reservation.OrderBy(x=>x.Date).Include(x=>x.Cart).LastOrDefault(x => x.Client_ID == ClientId);
+           return reservation == null ? null : context.Cart.FirstOrDefault(x => x.ID == reservation.Cart.ID);
         }
 
         public Reservation where(Func<object, object> p)

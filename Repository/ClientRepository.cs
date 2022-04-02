@@ -20,7 +20,9 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public Client GetById(int id)
         {
-            return context.Client.Include(r=>r.Reservations).FirstOrDefault(client =>client.ID  == id);
+            return context.Client.Include(r=>r.Reservations).ThenInclude(x=>x.ChairReserves).
+            Include(r => r.Reservations).ThenInclude(x => x.RoomReserve).
+            FirstOrDefault(client =>client.ID  == id);
         }
 
         public int Insert(Client client)

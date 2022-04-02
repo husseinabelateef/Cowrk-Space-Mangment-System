@@ -6,7 +6,7 @@
 
 @{ 
     SelectList clients = new SelectList(@Model.clients, "ID", "Name"); 
-    SelectList chairs = new SelectList(@Model.chairs, "Id","Id");
+    
 }
 
 @*<form method="post" asp-action="SaveNewReservation" asp-controller="Reservation">
@@ -84,8 +84,9 @@
 									<div class="form-group">
 										@*<span class="form-label">Name</span>
 										<input class="form-control" type="text" placeholder="Enter your name">*@
-                                        <label asp-for="Client_ID" class="form-label"></label>
-                                         <input  asp-for="Client_ID" class="form-control" class="form-control" type="text" placeholder="Enter your name"/>
+                                       @* <label asp-for="Client_ID" class="form-label"></label>
+                                         <input  asp-for="Client_ID" class="form-control" class="form-control" 
+                                         type="text" placeholder="Enter your name"/>*@
 									</div>
 								
 								<div class="col-sm-6">
@@ -109,11 +110,11 @@
 											  class="form-control"
 											  asp-for="type_Room"
 											  onchange="ShowAvailableChairs()">
-											   <option value="0">-- Select Room --</option>
-											  <option value="Nook1">Nook1</option>
-											   <option value="Nook2">Nook2</option>
-												 <option value="Shared">Shared</option>
-												   <option value="Individual">Individual</option>
+											 <option value="0">-- Select Room --</option>
+											 <option value="Nook1">Nook1</option>
+											 <option value="Nook2">Nook2</option>
+											 <option value="Shared">Shared</option>
+											 <option value="Individual">Individual</option>
 											</select>
 									</div>
 								 </div>

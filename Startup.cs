@@ -90,8 +90,12 @@ namespace Cowrk_Space_Mangment_System
             {
                endpoints.MapHub<CatringNotificationHub>("CatringNotification");
 
-               endpoints.MapControllerRoute( name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                endpoints.MapControllerRoute(name: "Nook",
+                     pattern: "{controller=Account}/{action=Login}");
+
+                endpoints.MapControllerRoute(name: "default",
+                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
             });
         }
     }

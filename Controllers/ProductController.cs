@@ -90,6 +90,10 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 barcodeImage.Save(@"C:\Users\h.Embaby\source\repos\Cowrk-Space-Mangment-System\wwwroot\Images\" + Product.Name + ".png", ImageFormat.Png);
                 Product.BarCode = Product.Name + ".png";
 
+
+
+                // ا
+
                 ProductRepository.Insert(Product);
                 return RedirectToAction("GetAllProducts");
             }
