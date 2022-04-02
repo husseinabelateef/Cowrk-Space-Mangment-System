@@ -77,6 +77,7 @@ namespace Cowrk_Space_Mangment_System.Repository
         {
             Receptionist receptionist = GetById(id);
             Entities.Receptionist.Remove(receptionist);
+            Entities.SaveChanges();
             var user = await userManager.FindByIdAsync(receptionist.AppId);
 
             var result = await userManager.DeleteAsync(user);

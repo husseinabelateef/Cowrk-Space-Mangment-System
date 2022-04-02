@@ -61,7 +61,7 @@
             <img src="/Images/@Model.BarCode"/>
         </dd>
     </dl>
-    <form asp-action="FinalDelete">
+    <form asp-action="FinalDelete" asp-route-id="@Model.Id">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="GetAllProducts">Back to List</a>
     </form>
