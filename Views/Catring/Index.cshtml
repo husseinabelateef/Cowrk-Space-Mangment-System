@@ -1,0 +1,212 @@
+﻿@using Cowrk_Space_Mangment_System.View_Model
+@model List<ProductsDetailsCartViewModel>
+<div   class="container mt-5 mb-5">
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-8">
+                <div class="p-2">
+                    <h4>Shopping cart</h4>
+                </div>
+
+                 <div id="product-Cart-Container" data-CartId = "@ViewData["CartId"]">
+                     @{double totalCount = 0;}
+                @{
+                    if(Model!= null)
+                        @foreach(var item in Model){
+                            totalCount += item.Quantity * item.price;
+                            <div id="@item.guid"class="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded proCont">
+                    <div class="mr-1">
+                        <img class="rounded" src="~/Images/317.jpg" width="70">
+                    </div>
+                    <div class="d-flex flex-column align-items-center product-details">
+                            <span class="font-weight-bold">@item.Name</span>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center qty">
+                       <span  >  <i onclick ="decreaseProductQty('@item.guid')" class="fa fa-minus text-danger ms-2 me-2 p-2" ></i> </span>
+                        <h5  class="text-grey">  @item.Quantity </h5>
+                     <span>  <i onclick="increseProductQty('@item.guid')" class="fa fa-plus text-success ms-2 me-2 p-2"></i> </span>
+                    </div>
+                    <div>
+                        <h5 class="text-grey">$@item.price </h5>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-trash mb-1 text-danger" onclick="DeleteProd('@item.guid')"></i>
+                    </div>
+                </div>
+                }
+                
+            }
+                </div>
+                <div class="d-flex flex-row align-items-center justify-content-between mt-3 p-2 bg-white rounded">
+                    <h5 class="text-grey" > Total Price</h5>
+                    <h5 id="totalCartPrice"class="text-grey"> @totalCount </h5>
+                </div>
+                <div class="d-flex flex-row align-items-center justify-content-center mt-3 p-2 bg-white rounded">
+                    <button class="btn btn-warning btn-block btn-lg ml-2 pay-button" onclick="paid()" type="button">Proceed to Pay
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @section Scripts{
+
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+
+    <script>
+    var VariableCartId = document.getElementById("product-Cart-Container");
+    var VariableCartIdContent  = VariableCartId.getAttribute('data-CartId');
+
+ function update(qty, guid) {
+  var proCont = document.getElementById(guid);
+  var quantity = proCont.children[2];
+  var QuntityValue = quantity.children[1]; 
+  if (QuntityValue.textContent !== 1) {
+    QuntityValue.textContent = qty;
+ 
+  } 
+ 
+  else {
+    if (confirm("Are you sure you want to Delete")) {
+      Delete(guid)
+        deleteAjaxCall(guid)
+    } else {
+      console.log("Thing was not saved to the database.");
+    }
+  }
+}
+function paid()
+{
+  if (confirm("Are you sure you want to Confirm Pay")) 
+  {
+    $.ajax({
+    url: "/Catring/Pay",
+    data: { cartid: VariableCartIdContent },
+    contentType: "application/json; charset=utf-8",
+    success: function (data) {
+        window.location.href="/Home/Catring/3"
+    },
+    error: function () {
+      alert("Error occured!!");
+    },
+  });
+  }
+  else 
+  {
+    // Do nothing!
+    console.log("Thing was not saved to the database.");
+  }
+    console.log(VariableCartIdContent)
+}
+function Delete(guid)
+{
+  var proCont = document.getElementById(guid);
+  proCont.remove();
+}
+function DeleteProd(guid) {
+  if (confirm("Are you sure you want to Delete")) 
+  {
+    Delete(guid)
+    deleteAjaxCall(guid)
+  }
+  else 
+  {
+    // Do nothing!
+    console.log("Thing was not saved to the database.");
+  }
+  console.log("Fatma");
+}
+    function decreaseProductQty(guid) 
+    {
+          var proCont = document.getElementById(guid);
+          var quantity = proCont.children[2];
+          var QuntityValue = quantity.children[1];
+          if (QuntityValue.textContent > 1) {
+              //let test = QuntityValue.textContent
+              //QuntityValue.textContent = parseInt(test)-1
+           decreaseAjaxCall(guid) 
+          }
+
+          else {
+            if (confirm("Are you sure you want to Delete")) {
+              Delete(guid);
+              
+                deleteAjaxCall(guid);
+            } else {
+              console.log("Thing was not saved to the database.");
+            }
+      }
+
+  console.log("Decrease");
+}
+function deleteAjaxCall(guid) {
+  $.ajax({
+    url: "/Catring/delete",
+    //type: "POST",
+    data: { guid: guid, CartId: VariableCartIdContent },
+    contentType: "application/json; charset=utf-8",
+    success: function (data) {
+        console.log(data)
+        document.getElementById("totalCartPrice").textContent = data.totalprice;
+      alert(data)
+    },
+    error: function () {
+      alert("Error occured!!");
+    },
+  });
+}
+function decreaseAjaxCall(guid) {
+  $.ajax({
+    url: "/Catring/decrease",
+    //type: "POST",
+    data: { guid: guid, CartId: VariableCartIdContent },
+    contentType: "application/json; charset=utf-8",
+    success: function (data) {
+      if(data.status)
+        {
+            let pric =  parseInt(data.price)
+            var totPriceCart = document.getElementById("totalCartPrice")  
+            let oldtot = parseInt(totPriceCart.textContent )
+            totPriceCart.textContent = oldtot - pric
+            update(data.quentity, data.guid )
+        }
+      else 
+      {
+          alert(Message)
+      }
+    },
+    error: function () {
+      alert("Error occured!!");
+    },
+  });
+}
+
+function increseProductQty(guid) {
+  $.ajax({
+    url: "/Catring/Increase",
+    data: { guid: guid, CartId: VariableCartIdContent },
+    success: function (data) 
+    {
+        if(data.status)
+        {
+            let pric =  parseInt(data.price)
+            var totPriceCart = document.getElementById("totalCartPrice")  
+            let oldtot = parseInt(totPriceCart.textContent )
+            totPriceCart.textContent = oldtot + pric
+            update(data.quentity, data.guid )
+        }
+      else 
+      {
+          alert(Message)
+      }
+      
+    },
+    error: function () {
+      alert("Error occured!!");
+    },
+  });
+  console.log("Increase");
+}
+
+    </script>
+    }

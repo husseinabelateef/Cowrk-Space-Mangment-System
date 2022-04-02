@@ -52,18 +52,18 @@ namespace Cowrk_Space_Mangment_System
             services.AddScoped<IRawProductMovmentRepository, RawProductMovmentsRepository>();
             services.AddScoped<IReceptionistRepository, ReceptionistRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
-            services.AddSignalR();
+            services.AddScoped<IClientCart,ClientCartRepository>();
+            services.AddScoped<ICartProductsRepository, CartProductsRepository>();
             //services.AddIdentity<ApplicationUser, IdentityRole>();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Context>();
+            services.AddSignalR();
+            services.AddCors();
         }
-
         //option => {
         //    option.Password.RequireUppercase = false;
         //    option.Password.RequiredLength = 4;
         //    option.Password.RequireDigit = false;
         //}
-
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -78,9 +78,14 @@ namespace Cowrk_Space_Mangment_System
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
+           
             app.UseAuthorization();
-
+            app.UseCors(policy =>
+            {
+                policy.WithOrigins("http://localhost").
+                AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+            });
             app.UseEndpoints(endpoints =>
             {
                endpoints.MapHub<CatringNotificationHub>("CatringNotification");

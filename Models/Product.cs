@@ -7,12 +7,14 @@ namespace Cowrk_Space_Mangment_System.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+
         //price from supplier
         public double ActualPrice { get; set; }
+
         //price I will sell to clients with
         public double SellingPrice { get; set; }
-        // barcode printed in every product 
 
+        // barcode printed in every product 
         public string BarCode { get; set; }
 
         //Actual Amount in place
@@ -20,6 +22,21 @@ namespace Cowrk_Space_Mangment_System.Models
         public DateTime ExpireDate { get; set; }
         public ICollection<Drink> Drinks { get; set; }
         public virtual ICollection<ProductMovments> ProductMovments { get; set; }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+
+        }
+        public override bool Equals(object obj)
+        {
+            Product product = obj as Product;
+            if (product == null)
+                return false;
+            if (product.Id != this.Id)
+                return false;
+            return true;
+            
+        }
 
     }
 

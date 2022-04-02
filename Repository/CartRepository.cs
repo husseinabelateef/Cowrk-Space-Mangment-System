@@ -1,15 +1,20 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Cowrk_Space_Mangment_System.Repository
 {
-    public class CartRepository: ICartRepository
+    public class CartRepository : ICartRepository
     {
         Context context;
-        public CartRepository(Context _context)
+        private readonly IIncommingRepository incommingRepository;
+
+        public CartRepository(Context _context , IIncommingRepository incommingRepository)
         {
             context = _context;
+            this.incommingRepository = incommingRepository;
         }
         public List<Cart> GetAll()
         {
@@ -35,9 +40,11 @@ namespace Cowrk_Space_Mangment_System.Repository
                 oldCart.IsClient = Cart.IsClient;
                 oldCart.TotalPrice = Cart.TotalPrice;
                 oldCart.Date = Cart.Date;
+                context.Entry(oldCart).State = EntityState.Modified;
                 return context.SaveChanges();
             }
             return 0;
+
         }
 
         public int Delete(int id)
@@ -46,5 +53,56 @@ namespace Cowrk_Space_Mangment_System.Repository
             context.Cart.Remove(oldCart);
             return context.SaveChanges();
         }
-    }
+
+        public List<Cart> GetAllUnpaidCart()
+        {
+            return context.Cart.Where(x => !x.IsPaid).ToList();
+        }
+
+        public List<Cart> GetAllUnpaidVistorsCart()
+        {
+            return context.Cart.Where(x => !x.IsClient && !x.IsPaid).ToList();
+        }
+
+        public List<Cart> GetAllUnpaidClientsCart()
+        {
+            return context.Cart.Where(x => x.IsClient && !x.IsPaid).ToList();
+        }
+
+        public int GetUnpaidCount()
+        {
+            return GetAllUnpaidCart().Count;
+        }
+
+        public int GetAllUnpaidCountVistorsCart()
+        {
+            return GetAllUnpaidVistorsCart().Count;
+        }
+
+        public int GetAllUnpaidCountClientsCart()
+        {
+            return GetAllUnpaidClientsCart().Count;
+        }
+        public int confirmPay(int CartId)
+        {
+            Cart cart = GetById(CartId);
+            cart.TotalPrice = 
+                context.CartProducts.Where(x => x.Cart_Id == cart.ID).Include(x => x.Product).
+                Select(x => x.Quentaty * x.Product.SellingPrice ).Sum();
+            cart.IsPaid = true;
+            try
+            {
+                var income = context.Incomming.Last();
+                income.ShiftCloseCateringIncome += cart.TotalPrice;
+            }
+            catch (Exception ex)
+            {
+                return context.SaveChanges();
+            }
+            return context.SaveChanges();
+
+        }
+
+
+        }
 }
