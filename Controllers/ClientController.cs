@@ -12,6 +12,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 {
     public class ClientController : Controller
     {
+
         IClientRepository clientRepository;
         public ClientController(IClientRepository ClientRepo)
         {
