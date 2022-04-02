@@ -8,5 +8,6 @@ namespace Cowrk_Space_Mangment_System.Repository
         public List<CartProducts> GetAllProductOfCategory(int categoryId);
         public int RemoveItem(CartProducts item);
         public CartProducts getAnItem(int cartId, Guid ProductId);
+        public int newUpdat(int quntity, CartProducts item);
     }
 }

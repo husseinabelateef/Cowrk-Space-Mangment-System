@@ -126,11 +126,12 @@ namespace Cowrk_Space_Mangment_System.Controllers
         {
             var msg = "Suceesfully";
             bool status = false;
-            Cart cart= null ;
+            Cart cart = null;
+            int newQun = 0, newCartID = 0;
             try
             {
                 
-                int newQun = 0, newCartID = 0;
+              
                Product product =  productRepository.GetByBarCode(productId);
                 int.TryParse(quntity, out newQun);
                 int.TryParse(CartId, out newCartID);
@@ -140,8 +141,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 {
                     if (ava)
                     {
-                        cartItem.Quentaty = newQun;
-                        cartProductsRepository.Update(newCartID, cartItem);
+                        
+                        cartProductsRepository.newUpdat(newQun, cartItem);
                         cart = cartRepository.GetById(int.Parse(CartId));
                         status = true;
                     }
@@ -157,7 +158,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                
              return Json(new { message = msg, guid = productId,
                  totalprice = cart.TotalPrice,
-                 quantity = cartItem.Quentaty, status = status });
+                 quantity = newQun, status = status });
             }
             catch (Exception ex)
             {

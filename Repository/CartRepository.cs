@@ -40,9 +40,11 @@ namespace Cowrk_Space_Mangment_System.Repository
                 oldCart.IsClient = Cart.IsClient;
                 oldCart.TotalPrice = Cart.TotalPrice;
                 oldCart.Date = Cart.Date;
+                context.Entry(oldCart).State = EntityState.Modified;
                 return context.SaveChanges();
             }
             return 0;
+
         }
 
         public int Delete(int id)

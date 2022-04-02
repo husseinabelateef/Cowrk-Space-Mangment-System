@@ -143,8 +143,7 @@ function deleteAjaxCall(guid) {
     contentType: "application/json; charset=utf-8",
     processData: false,
     success: function (data) {
-      console.log(data);
-
+        document.getElementById("totalCartPrice").textContent = data.totalprice;
       alert(data)
     },
     error: function () {

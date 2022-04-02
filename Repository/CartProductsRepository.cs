@@ -60,7 +60,7 @@ namespace Cowrk_Space_Mangment_System.Repository
             }
             prod.ActualAmount -= item.Quentaty;
             Cart cart = cartRepository1.GetById(item.Cart_Id);
-            cart.TotalPrice += item.Quentaty * prod.SellingPrice;
+            cart.TotalPrice += (item.Quentaty * prod.SellingPrice);
             cartRepository1.Update(item.Cart_Id , cart);
             productRepository.Update(prod.Id, prod);
             return context.SaveChanges();
@@ -87,7 +87,7 @@ namespace Cowrk_Space_Mangment_System.Repository
                         cart1 = cartRepository1.GetById(cart.Cart_Id);
                         cart1.TotalPrice += (cart.Quentaty - item.Quentaty) * tes.SellingPrice;
                     }
-                    cartRepository1.Update(item.Cart_Id, cart1);
+                    
                     productRepository.Update(tes.Id, tes);
                 }
                 cart.Quentaty = item.Quentaty;
@@ -104,17 +104,51 @@ namespace Cowrk_Space_Mangment_System.Repository
         {
             var product = productRepository.GetById(item.ProductId);
             product.ActualAmount += item.Quentaty;
-            context.CartProducts.Remove(item);
             //update cart 
             var cart = cartRepository1.GetById(item.Cart_Id);
-            cart.TotalPrice -= (item.Quentaty * product.SellingPrice); 
-            productRepository.Update(item.ProductId , product);
+            cart.TotalPrice = cart.TotalPrice - (item.Quentaty * product.SellingPrice);
+            cartRepository1.Update(item.Cart_Id, cart);
+            context.CartProducts.Remove(item);
+            context.Entry(item).State = EntityState.Deleted;
             return context.SaveChanges();
         }
 
         public CartProducts getAnItem(int cartId, Guid ProductId)
         {
             return context.CartProducts.FirstOrDefault(x => x.Cart_Id == cartId && x.ProductId == ProductId);
+        }
+
+        public int newUpdat(int quntity, CartProducts item)
+        {
+            CartProducts cart = getAnItem(item.Cart_Id, item.ProductId);
+            Cart cart1 = null;
+            if (cart != null)
+            {
+                if (quntity != cart.Quentaty)
+                {
+                    var tes = productRepository.GetById(item.ProductId);
+                   
+                    if (quntity > item.Quentaty)
+                    {
+                        tes.ActualAmount -= (quntity - item.Quentaty);
+                        cart1 = cartRepository1.GetById(cart.Cart_Id);
+                        cart1.TotalPrice += (quntity - item.Quentaty) * tes.SellingPrice;
+                    }
+                    else
+                    {
+                        cart1 = cartRepository1.GetById(cart.Cart_Id);
+                        cart1.TotalPrice -= (item.Quentaty - quntity) * tes.SellingPrice;
+                        tes.ActualAmount += ( item.Quentaty - quntity);
+                    }
+                    cartRepository1.Update(item.Cart_Id, cart1);
+                    
+                    productRepository.Update(tes.Id, tes);
+                }
+                cart.Quentaty = quntity;
+                context.Entry(cart).State = EntityState.Modified;
+                //context.CartProducts.Update(cart);
+            }
+            return context.SaveChanges();
         }
     }
 }

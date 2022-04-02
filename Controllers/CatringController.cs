@@ -65,8 +65,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 product = this.ProductRepository.GetById(guidd);
                 if (cartProd != null && this.ProductRepository.AvailabiltyStock(guidd, cartProd.Quentaty - 1))
                 {
-                    cartProd.Quentaty -= 1;
-                    cartProductsRepository.Update(CartId, cartProd);
+                    int q = cartProd.Quentaty - 1;
+                    cartProductsRepository.newUpdat(q, cartProd);
                 }
                 else
                 {
@@ -103,8 +103,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 product = this.ProductRepository.GetById(guidd);
                 if (cartProd != null && this.ProductRepository.AvailabiltyStock(guidd , cartProd.Quentaty+1))
                 {
-                    cartProd.Quentaty += 1;
-                    cartProductsRepository.Update(CartId, cartProd);
+                    int q = cartProd.Quentaty + 1;
+                    cartProductsRepository.newUpdat(q, cartProd);
                 }
                 else
                 {
@@ -126,12 +126,13 @@ namespace Cowrk_Space_Mangment_System.Controllers
             {
                 Guid guidd = Guid.Parse(guid);
                 var it = cartProductsRepository.getAnItem(CartId, guidd);
+                var cart = cartRepository.GetById(CartId);
                 int result = cartProductsRepository.RemoveItem(it);
-
+                double totalPrice = cart.TotalPrice;
                 if (result == 0)
-                    return Json("un SuccessFully");
+                    return Json(new { totalprice = totalPrice});
                 else
-                    return Json("Delete SuccessFully");
+                    return Json(new { totalprice = totalPrice });
             }
             catch (Exception ex)
             {

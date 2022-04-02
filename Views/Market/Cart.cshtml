@@ -188,7 +188,7 @@ function AddingAjaxCall(guid , qty) {
       else {
            
            CreateProduct(data.productID , data.quentity ,data.price , data.name);
-           update(data.quantity, data.guid , data.totalprice);
+           document.getElementById("totalCartPrice").textContent = data.totalprice;
       }
     },
     error: function () {
@@ -239,7 +239,8 @@ function decreaseProductQty(id)
     var val = parseInt(QuntityValueee.textContent)
     if (val !== 1) 
       {
-         decreaseAjaxCall(id) 
+          val = val - 1;
+         callajax(id , val) 
       } 
     else 
     {
@@ -264,8 +265,7 @@ function deleteAjaxCall(id) {
     contentType: "application/json; charset=utf-8",
     success: function (data) 
     {
-      console.log(data);
-      alert(data)
+      document.getElementById("totalCartPrice").textContent = data.totalprice;
     },
     error: function () 
     {
@@ -273,32 +273,32 @@ function deleteAjaxCall(id) {
     },
   });
 }
-function decreaseAjaxCall(id) {
-  console.log(id)
-  var proConttt = document.getElementById(id);
-  var quantityyy = proConttt.children[2];
-  var QuntityValueee = quantityyy.children[1];
-  var val = parseInt(QuntityValueee.textContent)
-  val=val-1;
-  $.ajax({
-    url: "/Market/update",
-    //type: "POST",
-    data: { productId: id, CartId: VariableCartIdContent , quntity: val },
-    contentType: "application/json; charset=utf-8",
-    success: function (data) {
-      console.log(data);
-      if(data.status){
-      update(data.quantity, data.guid , data.totalprice);
-      }
-      else{
-          alert(data.message)
-      }
-    },
-    error: function () {
-      alert("Error occured!!");
-    },
-  });
-}
+//function decreaseAjaxCall(id) {
+//  console.log(id)
+//  var proConttt = document.getElementById(id);
+//  var quantityyy = proConttt.children[2];
+//  var QuntityValueee = quantityyy.children[1];
+//  var val = parseInt(QuntityValueee.textContent)
+//  val=val-1;
+//  $.ajax({
+//    url: "/Market/update",
+//    //type: "POST",
+//    data: { productId: id, CartId: VariableCartIdContent , quntity: val },
+//    contentType: "application/json; charset=utf-8",
+//    success: function (data) {
+//      console.log(data);
+//      if(data.status){
+//      update(data.quantity, data.guid , data.totalprice);
+//      }
+//      else{
+//          alert(data.message)
+//      }
+//    },
+//    error: function () {
+//      alert("Error occured!!");
+//    },
+//  });
+//}
 
 function increseProductQty(id) 
 {
@@ -308,7 +308,11 @@ function increseProductQty(id)
   var QuntityValueee = quantityyy.children[1];
   var val = parseInt(QuntityValueee.textContent)
   val=val+1;
-  $.ajax({
+  callajax(id , val);
+  console.log("Increase");
+}
+function callajax (id , val){
+    $.ajax({
     url: "/Market/update",
     data: { productId: id, CartId: VariableCartIdContent , quntity: val },
     success: function (data) {
@@ -324,7 +328,6 @@ function increseProductQty(id)
       alert("Error occured!!");
     },
   });
-  console.log("Increase");
 }
 function CreateProduct(Id , quentity ,price , Name)
 {
