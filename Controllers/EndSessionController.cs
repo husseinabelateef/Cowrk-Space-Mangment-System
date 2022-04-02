@@ -37,7 +37,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
         }
         [HttpPost]
-        public IActionResult Checkout(EndSessionViewModel endSess )
+        public async Task<IActionResult> CheckoutAsync(EndSessionViewModel endSess )
         {
 
             Client client = clientRepository.GetById(endSess.Client_ID);
@@ -68,11 +68,11 @@ namespace Cowrk_Space_Mangment_System.Controllers
             endSess.TotalForAll = endSess.TotalPriceCatring + endSess.TotalPriceReserv;
             reservation.TotalPrice = endSess.TotalForAll;
             reservationRepository.Update(reservation.ID,reservation);
-            // var UserModel = await GetCurrentUserAsync();
-            // reservation.AppuserID = UserModel.Id;
+            var UserModel = await GetCurrentUserAsync();
+            
             Incomming incomming = new Incomming();
-            ApplicationUser applicationUser = new ApplicationUser();
-            incomming.AppuserID = applicationUser.Id;
+            
+            incomming.AppuserID = UserModel.Id;
             
             incomming.ShiftCloseReservationIncome = endSess.TotalPriceReserv;
             incomming.ShiftCloseCateringIncome = endSess.TotalPriceCatring;

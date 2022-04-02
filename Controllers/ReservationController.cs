@@ -105,7 +105,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveNewReservation(ReservationViewModel reservation)
+        public async Task<ActionResult> SaveNewReservationAsync(ReservationViewModel reservation)
         {
             if (ModelState.IsValid == true)
             {
@@ -124,13 +124,11 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
                 reservation.Reservation.Start_Time = reservation.Start_Time;
                 reservation.Reservation.ExpextedHours = reservation.ExpextedHours;
-                //reservation.Reservation.Hours_Price = 10;
                 reservation.Reservation.Client_ID = reservation.Client_ID;
 
-                //res.ClientCart_ID = reservation.Clientcart.ID;
-                //var UserModel = await GetCurrentUserAsync();
-                //ApplicationUser user = new ApplicationUser();
-                //res.AppuserID = user.Id;
+                var UserModel = await GetCurrentUserAsync();
+                reservation.Reservation.AppuserID = UserModel.Id;
+                
                 if (reservation.type_Room == "Individual" || reservation.type_Room == "Shared")
                 {
 
@@ -193,7 +191,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
 
             }
-            return View("NewReseration", reservation.Reservation);
+            return View("NewReservation", reservation.Reservation);
 
         }
 
