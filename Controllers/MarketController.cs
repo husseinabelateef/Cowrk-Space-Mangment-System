@@ -175,5 +175,26 @@ namespace Cowrk_Space_Mangment_System.Controllers
             }
             return Json(new { status = true, userId = client.ID });
         }
+        public IActionResult delete(string guid, string CartId)
+        {
+            try
+            {
+                int cartid = 0;
+                int.TryParse(CartId, out cartid);
+                var produ = productRepository.GetByBarCode(guid);
+                var it = cartProductsRepository.getAnItem(cartid, produ.Id);
+                var cart = cartRepository.GetById(cartid);
+                int result = cartProductsRepository.RemoveItem(it);
+                double totalPrice = cart.TotalPrice;
+                if (result == 0)
+                    return Json(new { totalprice = totalPrice });
+                else
+                    return Json(new { totalprice = totalPrice });
+            }
+            catch (Exception ex)
+            {
+                return Json("un SuccessFully");
+            }
+        }
     }
 }

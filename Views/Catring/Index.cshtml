@@ -15,7 +15,7 @@
                             totalCount += item.Quantity * item.price;
                             <div id="@item.guid"class="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded proCont">
                     <div class="mr-1">
-                        <img class="rounded" src="./image/317.jpg" width="70">
+                        <img class="rounded" src="~/Images/317.jpg" width="70">
                     </div>
                     <div class="d-flex flex-column align-items-center product-details">
                             <span class="font-weight-bold">@item.Name</span>
@@ -38,8 +38,8 @@
             }
                 </div>
                 <div class="d-flex flex-row align-items-center justify-content-between mt-3 p-2 bg-white rounded">
-                    <h5 class="text-grey"> Total Price</h5>
-                    <h5 id="totalCartPrice"class="text-grey">@totalCount</h5>
+                    <h5 class="text-grey" > Total Price</h5>
+                    <h5 id="totalCartPrice"class="text-grey"> @totalCount </h5>
                 </div>
                 <div class="d-flex flex-row align-items-center justify-content-center mt-3 p-2 bg-white rounded">
                     <button class="btn btn-warning btn-block btn-lg ml-2 pay-button" onclick="paid()" type="button">Proceed to Pay
@@ -68,7 +68,8 @@
  
   else {
     if (confirm("Are you sure you want to Delete")) {
-      Delete(guid);
+      Delete(guid)
+        deleteAjaxCall(guid)
     } else {
       console.log("Thing was not saved to the database.");
     }
@@ -106,6 +107,7 @@ function DeleteProd(guid) {
   if (confirm("Are you sure you want to Delete")) 
   {
     Delete(guid)
+    deleteAjaxCall(guid)
   }
   else 
   {
@@ -128,6 +130,8 @@ function DeleteProd(guid) {
           else {
             if (confirm("Are you sure you want to Delete")) {
               Delete(guid);
+              
+                deleteAjaxCall(guid);
             } else {
               console.log("Thing was not saved to the database.");
             }
@@ -141,8 +145,8 @@ function deleteAjaxCall(guid) {
     //type: "POST",
     data: { guid: guid, CartId: VariableCartIdContent },
     contentType: "application/json; charset=utf-8",
-    processData: false,
     success: function (data) {
+        console.log(data)
         document.getElementById("totalCartPrice").textContent = data.totalprice;
       alert(data)
     },

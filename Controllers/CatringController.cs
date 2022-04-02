@@ -126,8 +126,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
             {
                 int cartid = 0;
                 int.TryParse(CartId, out cartid);
-             var produ =    ProductRepository.GetByBarCode(guid);
-                var it = cartProductsRepository.getAnItem(cartid, produ.Id);
+             
+                var it = cartProductsRepository.getAnItem(cartid,Guid.Parse(guid));
                 var cart = cartRepository.GetById(cartid);
                 int result = cartProductsRepository.RemoveItem(it);
                 double totalPrice = cart.TotalPrice;
