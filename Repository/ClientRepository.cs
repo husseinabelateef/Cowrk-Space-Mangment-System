@@ -22,6 +22,7 @@ namespace Cowrk_Space_Mangment_System.Repository
         {
             return context.Client.Include(r=>r.Reservations).ThenInclude(x=>x.ChairReserves).
             Include(r => r.Reservations).ThenInclude(x => x.RoomReserve).
+            Include(r => r.Reservations).ThenInclude(x => x.Cart).
             FirstOrDefault(client =>client.ID  == id);
         }
 
@@ -40,7 +41,8 @@ namespace Cowrk_Space_Mangment_System.Repository
             {
                 oldClient.Name = client.Name;
                 oldClient.Profession= client.Profession;
-                oldClient.Faculty= client.Faculty;
+                oldClient.Faculty = client.Faculty;
+                context.Entry(oldClient).State = EntityState.Modified;
                 return context.SaveChanges();
             }
             return 0;

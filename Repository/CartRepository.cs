@@ -56,17 +56,17 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public List<Cart> GetAllUnpaidCart()
         {
-            return context.Cart.Where(x => !x.IsPaid).ToList();
+            return context.Cart.Where(x => !x.IsPaid && x.TotalPrice != 0).ToList();
         }
 
         public List<Cart> GetAllUnpaidVistorsCart()
         {
-            return context.Cart.Where(x => !x.IsClient && !x.IsPaid).ToList();
+            return context.Cart.Where(x => !x.IsClient && !x.IsPaid && x.TotalPrice != 0).ToList();
         }
 
         public List<Cart> GetAllUnpaidClientsCart()
         {
-            return context.Cart.Where(x => x.IsClient && !x.IsPaid).ToList();
+            return context.Cart.Where(x => x.IsClient && !x.IsPaid && x.TotalPrice != 0).ToList();
         }
 
         public int GetUnpaidCount()

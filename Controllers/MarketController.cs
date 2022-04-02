@@ -52,9 +52,9 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 }
                 else
                 {
-
                     cart = reservationRepository.GetLastCartForUser(int.Parse(userId));
-                    
+                    cart.IsPaid = false;
+                    cart.Date = DateTime.Now;
                 }
                 return PartialView(cart);
             }

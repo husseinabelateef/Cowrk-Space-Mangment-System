@@ -74,6 +74,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 if (clientCartRepo.GetById(c.ID) != null)
                 {
                     asd.ClientName = clientCartRepo.clientName(c.ID);
+                    asd.CartId = c.ID;
+                    asd.Products = lisPro;
                 }
                 if (asd.ClientName == null)
                 {

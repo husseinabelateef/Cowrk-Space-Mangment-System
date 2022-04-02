@@ -22,7 +22,7 @@ namespace Cowrk_Space_Mangment_System.Repository
         public Reservation GetById(int id)
         {
             return context.Reservation.Include(x=>x.ChairReserves).Include(x=>x.RoomReserve).
-                Include(c=>c.Client).FirstOrDefault(Reservation => Reservation.ID == id);
+                Include(c=>c.Client).Include(c=>c.Cart).FirstOrDefault(Reservation => Reservation.ID == id);
         }
 
         public int Insert(Reservation Reservation)
@@ -43,6 +43,7 @@ namespace Cowrk_Space_Mangment_System.Repository
                 oldReservation.AppuserID = Reservation.AppuserID;
                 oldReservation.Hours_Price = Reservation.Hours_Price;
                 oldReservation.TotalPrice = Reservation.TotalPrice;
+                context.Entry(oldReservation).State = EntityState.Modified;
                 return context.SaveChanges();
             }
             return 0;
@@ -57,12 +58,12 @@ namespace Cowrk_Space_Mangment_System.Repository
         public int GetReservationIdForUser(int ClientId)
         {
           return  context.Reservation.Where(x => x.Client_ID == ClientId).Select(x => x.ID).Last();
-            
         }
 
         public Cart GetLastCartForUser(int ClientId)
         {
-           Reservation reservation = context.Reservation.OrderBy(x=>x.Date).Include(x=>x.Cart).LastOrDefault(x => x.Client_ID == ClientId);
+           Reservation reservation = context.Reservation.OrderBy(x=>x.Date).
+           Include(x=>x.Cart).LastOrDefault(x => x.Client_ID == ClientId);
            return reservation == null ? null : context.Cart.FirstOrDefault(x => x.ID == reservation.Cart.ID);
         }
 
@@ -73,7 +74,7 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public Reservation getCartReservation(int CartId)
         {
-            return context.Reservation.FirstOrDefault(x => x.Cart_ID == CartId);
+            return context.Reservation.Include(x=>x.Client).FirstOrDefault(x => x.Cart_ID == CartId);
         }
     }
 }

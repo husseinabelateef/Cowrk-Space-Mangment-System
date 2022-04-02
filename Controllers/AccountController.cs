@@ -109,7 +109,7 @@ using System.Threading.Tasks;namespace Cowrk_Space_Mangment_System.Controllers
                     if (roleResult.Succeeded)
                     {
                         await signInManager.SignInAsync(UserModel, false);
-                        return View("Login");
+                        return RedirectToAction("Index" , "Home");
                     }
                 }
                 else

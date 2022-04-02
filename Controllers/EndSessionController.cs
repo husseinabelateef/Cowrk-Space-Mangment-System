@@ -54,7 +54,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             else
             {
                 reservation.ChairReserves.End_Time = DateTime.Now;
-                reservation.Hours_Price = (reservation.ChairReserves.End_Time - reservation.Start_Time).Hours * 5;
+                reservation.Hours_Price = (reservation.ChairReserves.End_Time - reservation.Start_Time).Minutes * 5/60;
                 endSess.TotalPriceReserv = reservation.TotalPrice;
                 endSess.TotalHoure = (reservation.ChairReserves.End_Time - reservation.Start_Time).Hours;
                 Chair chair = chairRepository.GetById(reservation.ChairReserves.Chair_Id);
@@ -64,7 +64,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
 
             }
-           endSess.TotalPriceCatring= reservation.Cart.TotalPrice;
+           endSess.TotalPriceCatring = reservation.Cart.TotalPrice;
             endSess.TotalForAll = endSess.TotalPriceCatring + endSess.TotalPriceReserv;
             reservation.TotalPrice = endSess.TotalForAll;
             reservationRepository.Update(reservation.ID,reservation);
@@ -76,12 +76,9 @@ namespace Cowrk_Space_Mangment_System.Controllers
             incomming.ShiftCloseReservationIncome = endSess.TotalPriceReserv;
             incomming.ShiftCloseCateringIncome = endSess.TotalPriceCatring;
             incomming.Date= DateTime.Now;
-            
 
             incommingRepository.Insert(incomming);
-
-            
-            return View();
+            return View(endSess);
         }
 
     }
