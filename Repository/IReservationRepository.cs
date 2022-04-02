@@ -7,5 +7,6 @@ namespace Cowrk_Space_Mangment_System.Repository
     {
         public Cart GetLastCartForUser(int client);
         Reservation where(Func<object, object> p);
+        public Reservation getCartReservation(int CartId);
     }
 }

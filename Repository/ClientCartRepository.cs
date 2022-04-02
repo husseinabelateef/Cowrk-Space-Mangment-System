@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cowrk_Space_Mangment_System.Models;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +18,18 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public string clientName(int CartId)
         {
-             Reservation res = reservation.GetById(CartId);
-            if (res != null)
+            try
             {
-                return res.Client.Name;
+                Reservation res = reservation.getCartReservation(CartId);
+                if (res != null)
+                {
+                    return res.Client.Name;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
             return null;
         }

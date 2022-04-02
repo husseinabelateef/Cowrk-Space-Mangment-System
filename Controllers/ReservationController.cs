@@ -159,10 +159,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
                         context.clientCart.Add(clientCart);
                         context.SaveChanges();
                         return RedirectToAction("GetAllReservations");
-
-
-
                     }
+                    
 
 
                 }

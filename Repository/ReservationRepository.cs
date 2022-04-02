@@ -21,7 +21,8 @@ namespace Cowrk_Space_Mangment_System.Repository
 
         public Reservation GetById(int id)
         {
-            return context.Reservation.FirstOrDefault(Reservation => Reservation.ID == id);
+            return context.Reservation.Include(x=>x.ChairReserves).Include(x=>x.RoomReserve).
+                Include(c=>c.Client).FirstOrDefault(Reservation => Reservation.ID == id);
         }
 
         public int Insert(Reservation Reservation)
@@ -68,6 +69,11 @@ namespace Cowrk_Space_Mangment_System.Repository
         public Reservation where(Func<object, object> p)
         {
             throw new NotImplementedException();
+        }
+
+        public Reservation getCartReservation(int CartId)
+        {
+            return context.Reservation.FirstOrDefault(x => x.Cart_ID == CartId);
         }
     }
 }
