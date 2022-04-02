@@ -120,13 +120,15 @@ namespace Cowrk_Space_Mangment_System.Controllers
                 return Json(new { status = status, Message = message });
             }
         }
-        public IActionResult delete(string guid, int CartId)
+        public IActionResult delete(string guid, string CartId)
         {
             try
             {
-                Guid guidd = Guid.Parse(guid);
-                var it = cartProductsRepository.getAnItem(CartId, guidd);
-                var cart = cartRepository.GetById(CartId);
+                int cartid = 0;
+                int.TryParse(CartId, out cartid);
+             var produ =    ProductRepository.GetByBarCode(guid);
+                var it = cartProductsRepository.getAnItem(cartid, produ.Id);
+                var cart = cartRepository.GetById(cartid);
                 int result = cartProductsRepository.RemoveItem(it);
                 double totalPrice = cart.TotalPrice;
                 if (result == 0)

@@ -222,6 +222,7 @@ function DeleteProd(guid) {
   if (confirm("Are you sure you want to Delete")) 
   {
     Delete(guid)
+    deleteAjaxCall(guid)
   }
   else 
   {
@@ -260,7 +261,6 @@ function deleteAjaxCall(id) {
     $.ajax
     ({
     url: "/Catring/delete",
-    //type: "POST",
     data: { guid: id, CartId: VariableCartIdContent },
     contentType: "application/json; charset=utf-8",
     success: function (data) 
