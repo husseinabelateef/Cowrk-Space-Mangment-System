@@ -575,7 +575,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
                     b.Property<string>("AppuserID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ClientCart_ID")
+                    b.Property<int>("Cart_ID")
                         .HasColumnType("int");
 
                     b.Property<int>("Client_ID")
@@ -600,7 +600,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
                     b.HasIndex("AppuserID");
 
-                    b.HasIndex("ClientCart_ID");
+                    b.HasIndex("Cart_ID");
 
                     b.HasIndex("Client_ID");
 
@@ -992,9 +992,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
                         .WithMany()
                         .HasForeignKey("AppuserID");
 
-                    b.HasOne("Cowrk_Space_Mangment_System.Models.ClientCart", "ClientCart")
+                    b.HasOne("Cowrk_Space_Mangment_System.Models.Cart", "Cart")
                         .WithMany()
-                        .HasForeignKey("ClientCart_ID")
+                        .HasForeignKey("Cart_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1006,9 +1006,9 @@ namespace Cowrk_Space_Mangment_System.Migrations
 
                     b.Navigation("Applicationuser");
 
-                    b.Navigation("Client");
+                    b.Navigation("Cart");
 
-                    b.Navigation("ClientCart");
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("Cowrk_Space_Mangment_System.Models.RoomReserve", b =>
