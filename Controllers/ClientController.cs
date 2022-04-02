@@ -48,6 +48,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     {
                         bitmap.Save(ms, ImageFormat.Png);
                         bitmap.Save("F:\\ITI\\Asp.net Core Web Api\\Project\\" + client.QR_Code + ".png", ImageFormat.Png);
+                        bitmap.Save(@"C:\Users\F\source\repos\COWS\husseinabelateef\Cowrk-Space-Mangment-System\wwwroot\Images\" + client.QR_Code + ".png", ImageFormat.Png);
                         ViewBag.QRCodeImage = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
                     }
                 }
