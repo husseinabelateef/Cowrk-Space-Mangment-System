@@ -73,7 +73,6 @@ namespace Cowrk_Space_Mangment_System.Controllers
             Incomming incomming = new Incomming();
             
             incomming.AppuserID = UserModel.Id;
-            
             incomming.ShiftCloseReservationIncome = endSess.TotalPriceReserv;
             incomming.ShiftCloseCateringIncome = endSess.TotalPriceCatring;
             incomming.Date= DateTime.Now;
