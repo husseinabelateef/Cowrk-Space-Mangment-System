@@ -64,7 +64,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
 
             }
-           endSess.TotalPriceCatring= reservation.ClientCart.Cart.TotalPrice;
+           endSess.TotalPriceCatring= reservation.Cart.TotalPrice;
             endSess.TotalForAll = endSess.TotalPriceCatring + endSess.TotalPriceReserv;
             reservation.TotalPrice = endSess.TotalForAll;
             reservationRepository.Update(reservation.ID,reservation);
