@@ -140,7 +140,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
                     List<Chair> chairs = chairRepository.GetAll();
                     Room room = roomRepository.GetByName(reservation.type_Room);
-                    reservation.chairs = chairs.Where(ch => ch.Availability == true && ch.Room_ID == room.ID).ToList();
+                    reservation.chairs = chairs.Where(ch => ch.Availability == true 
+                    && ch.Room_ID == room.ID).ToList();
                     if (reservation.chairs.Count() > 0)
                     {
                         foreach (var item in reservation.chairs)
@@ -153,7 +154,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
                             }
                         }
                         reservationRepository.Insert(reservation.Reservation);
-                        chairReserveRepository.Insert(reservation.Reservation.ChairReserves);
+                       // chairReserveRepository.Insert(reservation.Reservation.ChairReserves);
                         ClientCart clientCart = new ClientCart();
                         clientCart.Reservation_ID = reservation.Reservation.ID;
                         clientCart.Cart_Id = reservation.Reservation.Cart_ID;
