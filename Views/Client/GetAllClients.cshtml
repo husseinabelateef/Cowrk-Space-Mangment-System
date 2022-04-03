@@ -1,17 +1,20 @@
-﻿@model IEnumerable<Cowrk_Space_Mangment_System.Models.Client>
+﻿
+@model IEnumerable<Cowrk_Space_Mangment_System.Models.Client>
 
 @{
     ViewData["Title"] = "GetAllClients";
 }
+<div style="text-align:center">
 
-<h1>GetAllClients</h1>
+<h1>All Clients</h1>
 
 <p>
-    <a asp-action="NewClient">Create New</a>
+    <a asp-action="NewClient">Create New Client</a>
 </p>
-<table class="table">
+</div>
+<table class="table table-striped" >
     <thead>
-        <tr>
+        <tr class="table-warning">
             <th>
                 @Html.DisplayNameFor(model => model.ID)
             </th>
@@ -35,7 +38,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="table-active">
             <td>
                 @Html.DisplayFor(modelItem => item.ID)
             </td>
@@ -63,3 +66,4 @@
 }
     </tbody>
 </table>
+

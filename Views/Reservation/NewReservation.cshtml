@@ -2,71 +2,31 @@
 @using Cowrk_Space_Mangment_System.View_Model
 @model Cowrk_Space_Mangment_System.View_Model.ReservationViewModel 
 
-<h1>Add New Reservation</h1>
+
 
 @{ 
     SelectList clients = new SelectList(@Model.clients, "ID", "Name"); 
-    
+    SelectList chairs = new SelectList(@Model.chairs, "Id","Id");
 }
-
-@*<form method="post" asp-action="SaveNewReservation" asp-controller="Reservation">
-  <div>
-    <label asp-for="Client_ID"></label>
-    <input  type="text" asp-for="Client_ID" class="form-control" />
-  </div>
-  <div>
-    <label asp-for="Date_Reserve"></label>
-    <input type="date" asp-for="Date_Reserve" class="form-control" />
-  </div>
-  <div>
-    <label asp-for="Start_Time"></label>
-    <input type="time" asp-for="Start_Time" class="form-control" />
-  </div>
-  <div>
-    <label asp-for="ExpextedHours"></label>
-    <input asp-for="ExpextedHours" class="form-control" />
-  </div>
-
-  <div>
-    <label asp-for="Client_ID"></label>
-
-    <select
-      class="form-control"
-      asp-for="Client_ID" asp-Items="clients">
-       <option value="0">-- Select Client --</option>
-    </select>
-  </div>
-  <div>
+<style>
+	#MainDiv{
+		text-align:center;
+	}
+	
+</style>
+<div id="MainDiv" style="margin:5em">
+<h1 style="margin-bottom:1em;">Add New Reservation</h1>
 
 
-  <div>
-    <label asp-for="type_Room"></label>
-
-    <select
-      class="form-control"
-      asp-for="type_Room"
-      onchange="ShowAvailableChairs()">
-       <option value="0">-- Select Room --</option>
-      <option value="Nook1">Nook1</option>
-       <option value="Nook2">Nook2</option>
-         <option value="Shared">Shared</option>
-           <option value="Individual">Individual</option>
-       
-    </select>
- 
-    <div>
-    <label asp-for="NO_Available_Chair"></label>
-    <input  type="text" asp-for="NO_Available_Chair" class="form-control" />
-  </div>
-
-  <input type="submit" value="Save" class="btn btn-success" />
-</form>*@
-
-
-<button style="background-color: #F9CB38; width:100px;border:1px solid black;color:black" id="btnclickk" type="button" class="btn ms-4" data-toggle="modal" data-target="#exampleModal">
+<button style="background-color: #F9CB38; width:150px;border:1px solid black;color:black;font-size:1em" id="btnclickk" type="button" class="btn ms-4" data-toggle="modal" data-target="#exampleModal">
   Book
 </button>
 
+<a style="background-color: #F9CB38; width:180px;border:1px solid black;color:black;font-size:1em"  asp-action="GetAllReservations" asp-controller="Reservation" class="btn ms-4" >
+  All Reservations
+</a>
+
+</div>
 <!-- Modal -->
 <div style="color:white"  class="modal  fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-keyboard='false'>
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -85,8 +45,7 @@
 										@*<span class="form-label">Name</span>
 										<input class="form-control" type="text" placeholder="Enter your name">*@
                                        @* <label asp-for="Client_ID" class="form-label"></label>
-                                         <input  asp-for="Client_ID" class="form-control" class="form-control" 
-                                         type="text" placeholder="Enter your name"/>*@
+                                         <input  asp-for="Client_ID" class="form-control" class="form-control" type="text" placeholder="Enter your name"/>*@
 									</div>
 								
 								<div class="col-sm-6">
@@ -110,11 +69,11 @@
 											  class="form-control"
 											  asp-for="type_Room"
 											  onchange="ShowAvailableChairs()">
-											 <option value="0">-- Select Room --</option>
-											 <option value="Nook1">Nook1</option>
-											 <option value="Nook2">Nook2</option>
-											 <option value="Shared">Shared</option>
-											 <option value="Individual">Individual</option>
+											   <option value="0">-- Select Room --</option>
+											  <option value="Nook1">Nook1</option>
+											   <option value="Nook2">Nook2</option>
+												 <option value="Shared">Shared</option>
+												   <option value="Individual">Individual</option>
 											</select>
 									</div>
 								 </div>

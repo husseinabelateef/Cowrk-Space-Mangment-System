@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Cowrk_Space_Mangment_System.Models;
 using Cowrk_Space_Mangment_System.Repository;
 using Cowrk_Space_Mangment_System.View_Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Cowrk_Space_Mangment_System.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

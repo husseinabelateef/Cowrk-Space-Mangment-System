@@ -1,11 +1,13 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
 using Cowrk_Space_Mangment_System.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 
 namespace Cowrk_Space_Mangment_System.Controllers
 {
+    [Authorize]
     public class ReceptionistController : Controller
     {
         IReceptionistRepository ReceptionistRepository;

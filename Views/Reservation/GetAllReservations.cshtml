@@ -3,15 +3,16 @@
 @{
     ViewData["Title"] = "GetAllReservations";
 }
+<div style="text-align:center">
 
-<h1>GetAllReservations</h1>
-@*Reservation/NewReservation*@
+<h1>All Reservations</h1>
 <p>
-    <a asp-action="NewReservation" asp-controller="Reservation">Create New</a>
+    <a asp-action="NewReservation" asp-controller="Reservation">Create New Reservation</a>
 </p>
-<table class="table">
+</div>
+<table class="table table-striped" >
     <thead>
-        <tr>
+        <tr class="table-warning">
             <th>
                 @Html.DisplayNameFor(model => model.ID)
             </th>
@@ -43,11 +44,13 @@
         </tr>
     </thead>
     <tbody>
+        
 @foreach (var item in Model) {
-        <tr>
-            <td>
+    
+        <tr class="table-active">
+            <th>
                 @Html.DisplayFor(modelItem => item.ID)
-            </td>
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.Start_Time)
             </td>

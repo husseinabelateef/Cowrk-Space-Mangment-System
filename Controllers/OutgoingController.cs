@@ -1,27 +1,34 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
 using Cowrk_Space_Mangment_System.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Cowrk_Space_Mangment_System.Controllers
 {
+    [Authorize]
     public class OutgoingController : Controller
     {
         IOutgoingRepository outgoingRepository;
-        
+        private UserManager<ApplicationUser> userManager;
+        private async Task<ApplicationUser>
+        GetCurrentUserAsync() => await userManager.GetUserAsync(HttpContext.User);
 
-        public OutgoingController(IOutgoingRepository outgoing )
+        public OutgoingController(IOutgoingRepository outgoing , UserManager<ApplicationUser> userManager )
         {
-            outgoingRepository=outgoing;
-           
+           outgoingRepository=outgoing;
+           this.userManager=userManager;
         }
 
         [HttpGet]
-        public IActionResult AddingInfo([FromRoute] int id, Outgoing NewOut)
+        public async Task<IActionResult> AddingInfo([FromRoute] int id, Outgoing NewOut)
         {
             if (NewOut.Name != null)
             {
-
+                var UserModel = await GetCurrentUserAsync();
+                NewOut.Applicationuser.Id = UserModel.Id;
                 outgoingRepository.Insert(NewOut);
 
                 return RedirectToAction("AddingInfo");

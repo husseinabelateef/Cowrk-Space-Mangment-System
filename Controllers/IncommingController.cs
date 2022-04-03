@@ -1,5 +1,6 @@
 ﻿using Cowrk_Space_Mangment_System.Models;
 using Cowrk_Space_Mangment_System.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Cowrk_Space_Mangment_System.Controllers
 {
+    [Authorize]
     public class IncommingController : Controller
     {
         private UserManager<ApplicationUser> userManager;

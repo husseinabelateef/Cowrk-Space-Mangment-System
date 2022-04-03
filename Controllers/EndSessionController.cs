@@ -6,9 +6,11 @@ using System.Linq;
 using System;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cowrk_Space_Mangment_System.Controllers
 {
+    [Authorize]
     public class EndSessionController : Controller
     {
         IIncommingRepository incommingRepository;
@@ -46,7 +48,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             {
                 reservation.RoomReserve.Last().End_Time = DateTime.Now;
   
-                reservation.Hours_Price = (reservation.RoomReserve.Last().End_Time - reservation.Start_Time).Hours * 5;
+                reservation.Hours_Price = (reservation.RoomReserve.Last().End_Time - reservation.Start_Time).Hours * 5 / 60;
                 endSess.TotalPriceReserv = reservation.TotalPrice;
                 endSess.TotalHoure = (reservation.RoomReserve.Last().End_Time - reservation.Start_Time).Hours;
 

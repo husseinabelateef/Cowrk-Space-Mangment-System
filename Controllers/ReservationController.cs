@@ -8,10 +8,11 @@ using System.Linq;
 using System;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cowrk_Space_Mangment_System.Controllers
 {
-
+    [Authorize]
     public class ReservationController : Controller
     {
         IReservationRepository reservationRepository;

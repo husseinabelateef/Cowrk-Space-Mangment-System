@@ -35,14 +35,15 @@ using System.Threading.Tasks;namespace Cowrk_Space_Mangment_System.Controllers
         private async Task<ApplicationUser>
         GetCurrentUserAsync() => await userManager.GetUserAsync(HttpContext.User); 
         [HttpGet]
-     // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Register()
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost] 
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register(RegisterViewModel newUser)
         {
             if (ModelState.IsValid)
@@ -109,7 +110,7 @@ using System.Threading.Tasks;namespace Cowrk_Space_Mangment_System.Controllers
                     if (roleResult.Succeeded)
                     {
                         await signInManager.SignInAsync(UserModel, false);
-                        return RedirectToAction("Index" , "Home");
+                        return View("Login");
                     }
                 }
                 else
@@ -128,7 +129,7 @@ using System.Threading.Tasks;namespace Cowrk_Space_Mangment_System.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel LoginAccount)
         {
             if (ModelState.IsValid)

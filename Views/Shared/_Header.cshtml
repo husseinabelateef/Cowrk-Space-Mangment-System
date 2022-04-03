@@ -17,10 +17,6 @@
         <ul> 
               
          <li><a class="nav-link scrollto " asp-action="GetAllClients" asp-controller="Client"> Our Clients </a></li>
-          <li><a class="nav-link scrollto" asp-action="newreservation" asp-controller="reservation"> Reservation </a></li>
-         <li><a class="nav-link scrollto " asp-action="getData" asp-controller="EndSession"> Checkout </a></li>
-          <li><a class="nav-link scrollto " asp-action="AddingInfo" asp-controller="Outgoing">Outgoing</a></li>
-          <li><a class="nav-link scrollto " asp-action="Show" asp-controller="Incomming">Incomming</a></li>
           <li><a class="nav-link scrollto " asp-action="GetAllReceptionists" asp-controller="Receptionist"> Reciptionist   </a></li>
           <li><a class="nav-link scrollto" asp-action="GetAllProducts" asp-controller="Product"> Product   </a></li>
            <li><a asp-action="Catring" asp-controller="Home">Catring <span class="badge badge-danger" id="All-Bills">1</span></a></li>
@@ -55,11 +51,8 @@ else if(User.IsInRole("Reciptionist") == true)
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>                   
-          <li><a class="nav-link scrollto " asp-action="GetAllClients" asp-controller="Client"> Our Clients </a></li>
-          <li><a class="nav-link scrollto" asp-action="newreservation" asp-controller="reservation"> Reservation </a></li>
-          <li><a class="nav-link scrollto " asp-action="getData" asp-controller="EndSession"> Checkout </a></li>
-          <li><a class="nav-link scrollto " asp-action="AddingInfo" asp-controller="Outgoing">Outgoing</a></li>
-          <li><a class="nav-link scrollto " asp-action="Show" asp-controller="Incomming">Incomming</a></li>
+             <li><a class="nav-link scrollto " asp-action="GetAllClients" asp-controller="Client"> Our Clients </a></li>
+         
        <li><a asp-action="Catring" asp-controller="Home">Catring <span class="badge badge-danger" id="All-Bills">1</span></a></li>
       <li class="dropdown"><a href="#"><i class="bi bi-chevron-down"></i></a>
             <ul>

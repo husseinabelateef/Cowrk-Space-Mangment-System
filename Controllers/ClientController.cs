@@ -8,9 +8,11 @@ using System.Drawing.Imaging;
 using System;
 using System.IO;
 using System.Drawing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cowrk_Space_Mangment_System.Controllers
 {
+    [Authorize]
     public class ClientController : Controller
     {
 
@@ -48,8 +50,8 @@ namespace Cowrk_Space_Mangment_System.Controllers
                     using (Bitmap bitmap = qrCode.GetGraphic(20))
                     {
                         bitmap.Save(ms, ImageFormat.Png);
-                        bitmap.Save("F:\\ITI\\Asp.net Core Web Api\\Project\\" + client.QR_Code + ".png", ImageFormat.Png);
-                        bitmap.Save(@"C:\Users\F\source\repos\COWS\husseinabelateef\Cowrk-Space-Mangment-System\wwwroot\Images\" + client.QR_Code + ".png", ImageFormat.Png);
+                        //bitmap.Save("F:\\ITI\\Asp.net Core Web Api\\Project\\" + client.QR_Code + ".png", ImageFormat.Png);
+                        bitmap.Save(@"C:\Users\h.Embaby\source\repos\Cowrk-Space-Mangment-System\wwwroot\Images\" + client.QR_Code + ".png", ImageFormat.Png);
                         ViewBag.QRCodeImage = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
                     }
                 }
