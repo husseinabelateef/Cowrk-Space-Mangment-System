@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cowrk_Space_Mangment_System.Migrations
 {
-    public partial class ISA : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -121,7 +121,7 @@ namespace Cowrk_Space_Mangment_System.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ActualPrice = table.Column<double>(type: "float", nullable: false),
                     SellingPrice = table.Column<double>(type: "float", nullable: false),
                     BarCode = table.Column<string>(type: "nvarchar(max)", nullable: true),

@@ -15,6 +15,7 @@ namespace Cowrk_Space_Mangment_System.Models
         //total working Hours PerShift
         public int TotalHours { get; set; }
 
+
         [ForeignKey("Receptionst")]
         public string Receptionst_Id { get; set; }
         public virtual Receptionist Recpetionst { get; set; }

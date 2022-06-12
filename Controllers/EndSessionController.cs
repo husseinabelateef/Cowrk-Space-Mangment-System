@@ -44,11 +44,11 @@ namespace Cowrk_Space_Mangment_System.Controllers
 
             Client client = clientRepository.GetById(endSess.Client_ID);
             Reservation reservation = client.Reservations.Last();
-            if(endSess.ReservationType== "Room")
+            if(endSess.ReservationType == "Room")
             {
                 reservation.RoomReserve.Last().End_Time = DateTime.Now;
   
-                reservation.Hours_Price = (reservation.RoomReserve.Last().End_Time - reservation.Start_Time).Hours * 5 / 60;
+                reservation.Hours_Price = (reservation.RoomReserve.Last().End_Time - reservation.Start_Time).Minutes * 5.0 / 60.0;
                 endSess.TotalPriceReserv = reservation.TotalPrice;
                 endSess.TotalHoure = (reservation.RoomReserve.Last().End_Time - reservation.Start_Time).Hours;
 
@@ -56,7 +56,7 @@ namespace Cowrk_Space_Mangment_System.Controllers
             else
             {
                 reservation.ChairReserves.End_Time = DateTime.Now;
-                reservation.Hours_Price = (reservation.ChairReserves.End_Time - reservation.Start_Time).Minutes * 5/60;
+                reservation.Hours_Price = (reservation.ChairReserves.End_Time - reservation.Start_Time).Minutes * 5.0/60.0;
                 endSess.TotalPriceReserv = reservation.TotalPrice;
                 endSess.TotalHoure = (reservation.ChairReserves.End_Time - reservation.Start_Time).Hours;
                 Chair chair = chairRepository.GetById(reservation.ChairReserves.Chair_Id);
