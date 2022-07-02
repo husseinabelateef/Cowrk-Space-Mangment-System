@@ -35,7 +35,7 @@ using System.Threading.Tasks;namespace Cowrk_Space_Mangment_System.Controllers
         private async Task<ApplicationUser>
         GetCurrentUserAsync() => await userManager.GetUserAsync(HttpContext.User); 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+       //[Authorize(Roles = "Admin")]
 
         public IActionResult Register()
         {
@@ -43,7 +43,7 @@ using System.Threading.Tasks;namespace Cowrk_Space_Mangment_System.Controllers
         }
         [HttpPost] 
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register(RegisterViewModel newUser)
         {
             if (ModelState.IsValid)

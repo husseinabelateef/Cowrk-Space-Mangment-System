@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cowrk_Space_Mangment_System.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220612210740_Init")]
-    partial class Init
+    [Migration("20220628145833_afterpull")]
+    partial class afterpull
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

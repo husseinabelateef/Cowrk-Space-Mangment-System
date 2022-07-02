@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cowrk_Space_Mangment_System.Migrations
 {
-    public partial class Init : Migration
+    public partial class afterpull : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
