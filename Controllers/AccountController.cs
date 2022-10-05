@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;namespace Cowrk_Space_Mangment_System.Controllers
+using System.Threading.Tasks;
+namespace Cowrk_Space_Mangment_System.Controllers
 {
     public class AccountController : Controller
     {
